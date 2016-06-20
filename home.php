@@ -23,8 +23,5 @@
             <a href="registration.php" class="btn btn-default btn-lg" role="button">Register</a>
         </div>
         <!-- Container -->
-
-        <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

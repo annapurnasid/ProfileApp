@@ -501,7 +501,7 @@
                         </div>
                         <div class="row text-center">
                            <?php 
-                              if (1 == $update) {
+                              if ($update) {
                                  // If update form, update and clear button
                                  ?>
                            <button type="submit" class="btn btn-success" role="button">Update
@@ -528,7 +528,5 @@
          </div>
       </div>
       <!-- Container -->
-      <!-- Bootstrap Core JavaScript -->
-      <script src="js/bootstrap.min.js"></script>
    </body>
 </html>
