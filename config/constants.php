@@ -4,14 +4,10 @@
 		@purpose : Constants Declaration
 	*/
 
-	/*
-		*Constant for image path
-	*/
+	//Constant for image path
 	define("IMAGEPATH", "images/profilePicture/", TRUE);
 
-	/*
-		Constants for db connection
-	*/	
+	//Constants for db connection	
 	define("DBHOST", "localhost", TRUE);
 	define("DBUSER", "root", TRUE);
 	define("DBPASSWORD", "mindfire", TRUE);
