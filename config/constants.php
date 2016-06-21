@@ -12,4 +12,4 @@
 	define("DBUSER", "root", TRUE);
 	define("DBPASSWORD", "mindfire", TRUE);
 	define("DBNAME", "RegistrationInfo", TRUE);
-/*End of file constants.php*/
+//End of file constants.php
