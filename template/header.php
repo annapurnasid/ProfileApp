@@ -1,9 +1,8 @@
-<?php 
-   /*
+ 
+  <!--- /*
       @Author : Mfsi_Annapurnaa
       @purpose : Common navigation bar for all pages
-   */
-?>
+   */-->
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse">

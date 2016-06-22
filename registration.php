@@ -17,7 +17,7 @@
    // Validate Post Data and insert Record
    if(!empty($_POST))
    {
-      // include validate file
+      // Include validate file
       include('helper/validate.php');
 
       if(!$error)
@@ -66,6 +66,8 @@
           '$note', '$employer')";
 
         $result  = mysqli_query($conn, $employeeInsert);
+
+        // Id of the last inserted record
         $employeeId = mysqli_insert_id($conn);
         
         // Query to insert employee details
@@ -82,7 +84,7 @@
 
       }
 
-       //Redirect User to Employee List Page
+       // Redirect User to Employee List Page
      header('Location:list.php');
     }
 

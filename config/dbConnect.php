@@ -4,7 +4,7 @@
       @purpose : Make db connection
     */
 
-    //including the file containing the constants
+    // Including the file containing the constants
     include('constants.php');
 
     // Initialize the connection parameters

@@ -52,7 +52,7 @@
    $result = mysqli_query($conn, $displayQuery);
    if (! $result)
       {
-         echo 'Deletion failed' . mysql_error(); 
+         echo 'Operation failed' . mysql_error(); 
          header('Location:list.php');
       }
 ?>
