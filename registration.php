@@ -2,103 +2,102 @@
 /*
   @Author : Mfsi_Annapurnaa
   @purpose : Registration form layout.
-           : Update operaton on the emplolyee data
-*/
+  : Update operaton on the emplolyee data
+ */
 
-  require_once('config/dbConnect.php');
+require_once('config/dbConnect.php');
 
-  $stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 
+$stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam',
     'Bihar', 'Chandigar', 'Chhattisgarh', 'Dadra and Nagar Haveli', 'Daman and Diu', 'Delhi', 'Goa',
-     'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 
-     'Kerala', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 
-     'Nagaland', 'Orissa', 'Pondicherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Tripura', 
-     'Uttaranchal', 'Uttar Pradesh', 'West Bengal');
+    'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka',
+    'Kerala', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram',
+    'Nagaland', 'Orissa', 'Pondicherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Tripura',
+    'Uttaranchal', 'Uttar Pradesh', 'West Bengal');
 
-   // Validate Post Data and insert Record
-   if(!empty($_POST))
-   {
-      // include validate file
-      include('helper/validate.php');
+// Validate Post Data and insert Record
+if (!empty($_POST))
+{
+    // Include validate file
+    include('helper/validate.php');
 
-      if(!$error)
-      {
+    if (!$error)
+    {
 
-        if($update)
+        if ($update)
         {
-        // Update details
-        // Query for employee details
-        $empUpdate = "UPDATE Employee
+            // Update details
+            // Query for employee details
+            $empUpdate = "UPDATE Employee
           SET title = '$title', firstName = '$firstName', middleName = '$middleName', 
           lastName = '$lastName', dateOfBirth = '$dob', gender = '$gender', phone = '$phone', 
           email = '$email', maritalStatus = '$marStatus', empStatus = '$empStatus', 
           commId = '$communication', employer = '$employer', image = '$name', note = '$note'
           WHERE empId = $employeeIdUpdate";
 
-        // Query for Office address details
-        $empOfcUpdate = "UPDATE Address
+            // Query for Office address details
+            $empOfcUpdate = "UPDATE Address
           SET street = '$ofcStreet', city = '$ofcCity', zip = '$ofcZip', state = '$ofcState'
           WHERE empId = '$employeeIdUpdate' 
-          AND addressType = 'office'" ;
-        
-        // Query for Residential address details
-        $empResUpdate = "UPDATE Address
+          AND addressType = 'office'";
+
+            // Query for Residential address details
+            $empResUpdate = "UPDATE Address
           SET street = '$resStreet', city = '$resCity', zip = '$resZip', state = '$resState'
           WHERE empId = '$employeeIdUpdate' 
           AND addressType = 'residence' ";
 
-        $result  = mysqli_query($conn, $empUpdate);
-        $ofcResult = mysqli_query($conn, $empOfcUpdate);
-        $resResult = mysqli_query($conn, $empResUpdate);
+            $result = mysqli_query($conn, $empUpdate);
+            $ofcResult = mysqli_query($conn, $empOfcUpdate);
+            $resResult = mysqli_query($conn, $empResUpdate);
 
-        if (! $result && ! $ofcResult && ! $resResult)
-        {
-              echo 'Update failed' . mysql_error();  
+            if (!$result && !$ofcResult && !$resResult)
+            {
+                echo 'Update failed' . mysql_error();
+            }
         }
-
-      }
-      else
-      {
-        // Insert personal details
-        $employeeInsert = "INSERT INTO Employee(title, firstName, middleName, lastName, 
+        else
+        {
+            // Insert personal details
+            $employeeInsert = "INSERT INTO Employee(title, firstName, middleName, lastName, 
           dateOfBirth, gender, phone, email, maritalStatus, empStatus, commId, image, note, employer)
           VALUES ('$title', '$firstName', '$middleName', '$lastName', '$dob', '$gender', $phone, 
           '$email', '$marStatus', '$empStatus', '$communication','$name',
           '$note', '$employer')";
 
-        $result  = mysqli_query($conn, $employeeInsert);
-        $employeeId = mysqli_insert_id($conn);
-        
-        // Query to insert employee details
-        $address = "INSERT INTO Address(addressType, street, city, zip, state, empId) 
+            $result = mysqli_query($conn, $employeeInsert);
+
+            // Id of the last inserted record
+            $employeeId = mysqli_insert_id($conn);
+
+            // Query to insert employee details
+            $address = "INSERT INTO Address(addressType, street, city, zip, state, empId) 
             values('office', '$ofcStreet', '$ofcCity', '$ofcZip', '$ofcState', '$employeeId'), 
             ('residence', '$resStreet', '$resCity', '$resZip', '$resState', '$employeeId')";
 
-        $addressResult = mysqli_query($conn, $address);
+            $addressResult = mysqli_query($conn, $address);
 
-        if(! $result && ! $addressResult)
-        {
-            echo 'Insertion failed' . mysql_error();  
+            if (!$result && !$addressResult)
+            {
+                echo 'Insertion failed' . mysql_error();
+            }
         }
 
-      }
-
-       //Redirect User to Employee List Page
-     header('Location:list.php');
+        // Redirect User to Employee List Page
+        header('Location:list.php');
     }
+}
+else
+{
+    $errorList = array('titleErr' => '', 'firstNameErr' => '', 'middleNameErr' => '',
+        'lastNameErr' => '', 'emailErr' => '', 'phoneErr' => '', 'genderErr' => '', 'dobErr' => '',
+        'resStreetErr' => '', 'resCityErr' => '', 'resZipErr' => '', 'resStateErr' => '',
+        'marStatusErr' => '', 'empStatusErr' => '', 'employerErr' => '', 'commViaErr' => '',
+        'noteErr' => '', 'imageErr' => '', 'dobErr' => '');
+}
 
-  } 
-  else
-  {
-    $errorList = array('titleErr' => '', 'firstNameErr' => '', 'middleNameErr' => '', 
-      'lastNameErr' => '', 'emailErr' => '', 'phoneErr' => '', 'genderErr' => '', 'dobErr' => '',
-       'resStreetErr' => '', 'resCityErr' => '', 'resZipErr' => '', 'resStateErr' => '', 
-       'marStatusErr' => '', 'empStatusErr' => '', 'employerErr' => '', 'commViaErr' => '', 
-       'noteErr' => '', 'imageErr' => '', 'dobErr' => '');
-   }
-
- // Check if edit clicked, update flag value
- if(isset($_GET['edit']))
- {
+// Check if edit clicked, update flag value
+if (isset($_GET['edit']))
+{
     $update = TRUE;
     $empId = $_GET['edit'];
     $selectQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
@@ -114,18 +113,18 @@
       AND Office.addressType = 'office'
       HAVING EmpID = $empId";
 
-    $result  = mysqli_query($conn, $selectQuery);
-    if(! $result)
-        {
-            echo 'Retrival failed' . mysql_error();  
-        }
+    $result = mysqli_query($conn, $selectQuery);
+    if (!$result)
+    {
+        echo 'Retrival failed' . mysql_error();
+    }
     $row = mysqli_fetch_assoc($result);
-  }
-  else
-  {
+}
+else
+{
     // Flag value is 0
     $update = FALSE;
-  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -501,7 +500,7 @@
                         </div>
                         <div class="row text-center">
                            <?php 
-                              if (1 == $update) {
+                              if ($update) {
                                  // If update form, update and clear button
                                  ?>
                            <button type="submit" class="btn btn-success" role="button">Update
@@ -528,7 +527,5 @@
          </div>
       </div>
       <!-- Container -->
-      <!-- Bootstrap Core JavaScript -->
-      <script src="js/bootstrap.min.js"></script>
    </body>
 </html>

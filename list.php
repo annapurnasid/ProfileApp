@@ -1,40 +1,40 @@
 <?php 
    /*
-      @Author : Mfsi_Annapurnaa
-      @purpose : handle thelisting of employee data. 
-               : Deletion of a row
-   */
+  @Author : Mfsi_Annapurnaa
+  @purpose : handle thelisting of employee data.
+  : Deletion of a row
+ */
 
-   require_once('config/dbConnect.php');
-   // Delete a row
-   if(isset($_GET['delete']))
-   {
-      $empId = $_GET['delete'];
+require_once('config/dbConnect.php');
+// Delete a row
+if (isset($_GET['delete']))
+{
+    $empId = $_GET['delete'];
 
-      // Extract image name and delete it
-      $imgQuery = "SELECT image FROM Employee WHERE Employee.empId = $empId";
-      $img = mysqli_fetch_array(mysqli_query($conn, $imgQuery));
-      unlink(IMAGEPATH.$img['image']);
+    // Extract image name and delete it
+    $imgQuery = "SELECT image FROM Employee WHERE Employee.empId = $empId";
+    $img = mysqli_fetch_array(mysqli_query($conn, $imgQuery));
+    unlink(IMAGEPATH . $img['image']);
 
-      $deleteAddress = "DELETE
+    $deleteAddress = "DELETE
          FROM Address
          WHERE Address.empId = $empId";
-      $deleteEmployee = "DELETE
+    $deleteEmployee = "DELETE
          FROM Employee
-         WHERE Employee.empId = $empId"; 
+         WHERE Employee.empId = $empId";
 
-      $delResultAddr = mysqli_query($conn, $deleteAddress); 
-      $delResultEmp = mysqli_query($conn, $deleteEmployee); 
+    $delResultAddr = mysqli_query($conn, $deleteAddress);
+    $delResultEmp = mysqli_query($conn, $deleteEmployee);
 
-      if (! $delResultAddr && ! $delResultEmp)
-      {
-         echo 'Deletion failed' . mysql_error(); 
-         header('Location:list.php');
-      }
-   }
+    if (!$delResultAddr && !$delResultEmp)
+    {
+        echo 'Deletion failed' . mysql_error();
+        header('Location:list.php');
+    }
+}
 
-   // Query to fetch data from database
-   $displayQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
+// Query to fetch data from database
+$displayQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
       ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
       Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
       CONCAT(Residence.street, '<br />' , Residence.city , '<br />', Residence.zip,'<br />', 
@@ -49,12 +49,12 @@
       JOIN Address AS Office ON Employee.empId = Office.empId 
       AND Office.addressType = 'office'";
 
-   $result = mysqli_query($conn, $displayQuery);
-   if (! $result)
-      {
-         echo 'Deletion failed' . mysql_error(); 
-         header('Location:list.php');
-      }
+$result = mysqli_query($conn, $displayQuery);
+if (!$result)
+{
+    echo 'Operation failed' . mysql_error();
+    header('Location:list.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,7 +155,5 @@
          </table>
       </div>
       <!-- Container -->
-      <!-- Bootstrap Core JavaScript -->
-      <script src="js/bootstrap.min.js"></script>
    </body>
 </html>

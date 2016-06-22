@@ -13,8 +13,8 @@
         <link href="css/styles.css" rel="stylesheet">
     </head>
     <body>
-        <?php 
-            include('template/header.php'); 
+        <?php
+        include('template/header.php');
         ?>
         <!-- Page Content -->
         <div class="container text-center">           
@@ -23,8 +23,5 @@
             <a href="registration.php" class="btn btn-default btn-lg" role="button">Register</a>
         </div>
         <!-- Container -->
-
-        <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
