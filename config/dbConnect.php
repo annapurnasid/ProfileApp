@@ -8,14 +8,8 @@
 // Including the file containing the constants
 include('constants.php');
 
-// Initialize the connection parameters
-$host = DBHOST;
-$uName = DBUSER;
-$password = DBPASSWORD;
-$database = DBNAME;
-
 // Making connection
-$conn = mysqli_connect($host, $uName, $password, $database);
+$conn = mysqli_connect(DBHOST, DBUSER, DBPASSWORD, DBNAME);
 
 // Checking connection
 if (mysqli_connect_error($conn))
