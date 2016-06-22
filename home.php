@@ -13,8 +13,8 @@
         <link href="css/styles.css" rel="stylesheet">
     </head>
     <body>
-        <?php 
-            include('template/header.php'); 
+        <?php
+        include('template/header.php');
         ?>
         <!-- Page Content -->
         <div class="container text-center">           

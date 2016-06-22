@@ -1,24 +1,26 @@
 <?php
-    /*
-      @Author : Mfsi_Annapurnaa
-      @purpose : Make db connection
-    */
 
-    // Including the file containing the constants
-    include('constants.php');
+/*
+  @Author : Mfsi_Annapurnaa
+  @purpose : Make db connection
+ */
 
-    // Initialize the connection parameters
-    $host = DBHOST;
-    $uName = DBUSER;
-    $password = DBPASSWORD;
-    $database = DBNAME;
+// Including the file containing the constants
+include('constants.php');
 
-    // Making connection
-    $conn = mysqli_connect($host, $uName, $password, $database);
+// Initialize the connection parameters
+$host = DBHOST;
+$uName = DBUSER;
+$password = DBPASSWORD;
+$database = DBNAME;
 
-    // Checking connection
-    if(mysqli_connect_error($conn)) 
-    {
-      die('Failed to connect to database' .mysqli_connect_error());
-    }
+// Making connection
+$conn = mysqli_connect($host, $uName, $password, $database);
+
+// Checking connection
+if (mysqli_connect_error($conn))
+{
+    die('Failed to connect to database' . mysqli_connect_error());
+}
+
 ?>
