@@ -88,7 +88,7 @@ if (isset($_GET['edit']))
     $empId = $_GET['edit'];
     $result = $obj->getEmployeeDetail($empId);
 
-    if (!$result)
+    if ( ! $result)
     {
         echo 'Retrival failed' . mysql_error();
     }

@@ -29,24 +29,36 @@ class queryOperation
      */
     function getEmployeeDetail($id = '')
     {
-        $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
-            ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
-            Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
-            CONCAT(Residence.street, '<br />' , Residence.city , '<br />', Residence.zip,'<br />', 
-            Residence.state ) AS Res,
-            CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />', Office.state) AS Ofc,
-            Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
-            Employee.employer AS Employer, Employee.commId AS Communication, Employee.image AS Image, 
-            Employee.note AS Note
-            FROM Employee 
-            JOIN Address AS Residence ON Employee.empId = Residence.empId 
-            AND Residence.addressType = 'residence'
-            JOIN Address AS Office ON Employee.empId = Office.empId 
-            AND Office.addressType = 'office'";
-        
-        if ( ! empty($id))
-        {
-            $sqlQuery .= "WHERE EmpID = $id";
+        if (!empty($id))
+        {	
+            $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
+                Employee.lastName, Employee.email, Employee.phone, Employee.gender, Employee.dateOfBirth, 
+                Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
+                Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
+                AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
+                Employee.image, Employee.employer, Employee.commId, Employee.note
+                FROM Employee 
+                JOIN Address AS Residence ON Employee.empId = Residence.empId 
+                AND Residence.addressType = 'residence'
+                JOIN Address AS Office ON Employee.empId = Office.empId 
+                AND Office.addressType = 'office'
+                HAVING EmpID = $id";
+        }
+        else{
+            $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
+                ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
+                Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
+                CONCAT(Residence.street, '<br />' , Residence.city , '<br />', Residence.zip,'<br />', 
+                Residence.state ) AS Res,
+                CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />', Office.state) AS Ofc,
+                Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
+                Employee.employer AS Employer, Employee.commId AS Communication, Employee.image AS Image, 
+                Employee.note AS Note
+                FROM Employee 
+                JOIN Address AS Residence ON Employee.empId = Residence.empId 
+                AND Residence.addressType = 'residence'
+                JOIN Address AS Office ON Employee.empId = Office.empId 
+                AND Office.addressType = 'office'";
         }
 
         // If connection made, return query result
