@@ -1,60 +1,40 @@
 <?php 
    /*
-  @Author : Mfsi_Annapurnaa
-  @purpose : handle thelisting of employee data.
-  : Deletion of a row
- */
+      @Author : Mfsi_Annapurnaa
+      @purpose : handle thelisting of employee data. 
+               : Deletion of a row
+   */
+   ini_set('display_errors', 1);
+   ini_set('display_startup_errors', 1);
+   error_reporting(E_ALL);
+   require_once('queryOperation.php');
 
-require_once('config/dbConnect.php');
-// Delete a row
-if (isset($_GET['delete']))
-{
-    $empId = $_GET['delete'];
-
-    // Extract image name and delete it
-    $imgQuery = "SELECT image FROM Employee WHERE Employee.empId = $empId";
-    $img = mysqli_fetch_array(mysqli_query($conn, $imgQuery));
-    unlink(IMAGEPATH . $img['image']);
-
-    $deleteAddress = "DELETE
-         FROM Address
-         WHERE Address.empId = $empId";
-    $deleteEmployee = "DELETE
-         FROM Employee
-         WHERE Employee.empId = $empId";
-
-    $delResultAddr = mysqli_query($conn, $deleteAddress);
-    $delResultEmp = mysqli_query($conn, $deleteEmployee);
-
-    if (!$delResultAddr && !$delResultEmp)
+   $obj = new queryOperation();
+   // Delete a row
+   if (isset($_GET['delete']))
     {
-        echo 'Deletion failed' . mysql_error();
-        header('Location:list.php');
+       
+        $empId = $_GET['delete'];
+        
+        // Extract image name and delete it
+        $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+        $result = $obj->select('Employee', 'image', $condition);
+        $img = mysqli_fetch_array($result);
+        unlink(IMAGEPATH . $img['image']);
+        
+        // Delete the address detail
+        $condition = ['column' => 'Address.empId', 'operator' => '=', 'val' => $empId];
+        $obj->delete('Address', $condition);
+
+        // Delete the employee detail
+        $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+        $obj->delete('Employee', $condition);
+        
     }
-}
 
-// Query to fetch data from database
-$displayQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
-      ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
-      Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
-      CONCAT(Residence.street, '<br />' , Residence.city , '<br />', Residence.zip,'<br />', 
-      Residence.state ) AS Res,
-      CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />', Office.state) AS Ofc,
-      Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
-      Employee.employer AS Employer, Employee.commId AS Communication, Employee.image AS Image, 
-      Employee.note AS Note
-      FROM Employee 
-      JOIN Address AS Residence ON Employee.empId = Residence.empId 
-      AND Residence.addressType = 'residence'
-      JOIN Address AS Office ON Employee.empId = Office.empId 
-      AND Office.addressType = 'office'";
+// Call the required query function
+   $result = $obj->getEmployeeDetail();
 
-$result = mysqli_query($conn, $displayQuery);
-if (!$result)
-{
-    echo 'Operation failed' . mysql_error();
-    header('Location:list.php');
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,15 +92,16 @@ if (!$result)
                         }
                         else if ('Communication' === $key)
                         {
-                           $commQuery = "SELECT CommMedium FROM  `Communication` WHERE  `CommId` 
-                              IN ($value)";
-                           $commResult = mysqli_query($conn, $commQuery);
+                           $condition = ['column' => 'CommId', 'operator' => 'IN', 'val' => "($value)"];
+
+                           // Call the required query function
+                           $commResult = $obj->select('Communication', 'CommMedium', $condition);
 
                            while ($commRow = mysqli_fetch_array($commResult, MYSQLI_ASSOC))
                            {
                               foreach ($commRow as $key => $value)
                               {
-                                 echo $value . '<br /> ';
+                                echo $value . '<br /> ';
                               }
                            }
                         }
