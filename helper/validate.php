@@ -192,6 +192,15 @@ if (empty($resZip))
     $errorList['resZipErr'] = 'Residential Zip code is required';
     $error = TRUE;
 }
+else
+{
+    // Check if number only contains digits
+    if (!preg_match('/^\d{6}$/', $phone))
+    {
+        $errorList['resZipErr'] = 'Invalid zip';
+        $error = TRUE;
+    }
+}
 
 
 // Check if resident state is selected
