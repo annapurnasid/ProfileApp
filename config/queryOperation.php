@@ -36,7 +36,7 @@ class queryOperation
      */
     function getEmployeeDetail($id = '')
     {
-        // To fetch the deatils for update, after log in
+        // To fetch the details for update, after log in
         if (!empty($id))
         {	
             $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
@@ -44,7 +44,7 @@ class queryOperation
                 Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
                 Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
                 AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
-                Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password
+                Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, Employee.note
                 FROM Employee 
                 JOIN Address AS Residence ON Employee.empId = Residence.empId 
                 AND Residence.addressType = 'residence'
@@ -159,7 +159,6 @@ class queryOperation
     {
         $count = 0;
         $fields = '';
-        echo '====';
         foreach ($data as $key => $val)
         {
             if ($count++ != 0)
@@ -175,7 +174,7 @@ class queryOperation
         // Insert values into db
         if (!$isUpdate)
         {
-            $empQuery = "INSERT INTO $table SET $fields";
+            $empQuery = 'INSERT INTO $table SET $fields';
         }
         else
         {

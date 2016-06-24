@@ -213,7 +213,6 @@ class validateInput
         // Move image to desired folder
         if (isset($name) && !empty($name) && (empty($this->errorList['image'])))
         {
-            echo $imageTmp;
             move_uploaded_file($imageTmp, IMAGEPATH . $name);
         }
         

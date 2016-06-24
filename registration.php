@@ -496,8 +496,8 @@ else
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="Note">Note</label>
                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                               <!-- check and display note if it is new or update form -->                  
-                              <textarea class="form-control" id="Note" name="note" rows="6" placeholder="Write something about yourself"
-                                  value="<?php echo ($update) ? $row['note'] : ''; ?>"></textarea>
+                              <textarea class="form-control" id="Note" name="note" rows="6" placeholder="Write something about yourself"><?php echo ($update) ? $row['note'] : (isset($_POST['note']) ? 
+                                $_POST['note'] : ''); ?></textarea>
                            </div>
                         </div>
                         <div class="row text-center">
