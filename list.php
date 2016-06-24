@@ -10,12 +10,15 @@
    error_reporting(E_ALL);
    
     require_once('config/session.php');
+
     $objSes = new session();
     $objSes->start();
+
     $resultSes = $objSes->checkSession();
+
     if(!$resultSes)
     {
-    header('Location:login.php');
+        header('Location:login.php');
     }
    
    require_once('config/queryOperation.php');
@@ -131,9 +134,13 @@
                         } 
                         ?>
                         <!--Edit graphic-->
-                        <td><a href="registration.php?edit=<?php echo $row['EmpID']; ?>">
+                        <td>
+                            <?php if ( $_SESSION['id'] === $row['EmpID'])
+                            { ?>
+                            <a href="registration.php">
                            <span class="glyphicon glyphicon-pencil"></span>
                            </a>
+                            <?php } ?>
                         </td>
                         <!--Delete graphic-->
                         <td><a href="list.php?delete=<?php echo $row['EmpID']; ?>">

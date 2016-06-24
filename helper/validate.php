@@ -35,6 +35,10 @@ $note = isset($_POST['note']) ? $_POST['note'] : '';
 $update = (isset($_POST['checkUpdate']) && 1 == $_POST['checkUpdate']) ? TRUE : FALSE;
 $employeeIdUpdate = isset($_POST['employeeId']) ? $_POST['employeeId'] : '';
 
+if (!$_FILES['image']['error'])
+{
+    $name = $_FILES['image']['name']; //file name uploaded
+}
 $error = FALSE;
 $valObj = new validateInput($inputData, $update);
 

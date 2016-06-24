@@ -52,7 +52,7 @@ class queryOperation
                 AND Office.addressType = 'office'
                 HAVING EmpID = $id";
         }
-        // To fetch the details to insert, sign up
+        // To fetch the details to display
         else{
             $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
                 ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 

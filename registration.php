@@ -77,7 +77,7 @@ if (!empty($_POST))
         }
         else
         {
-            // Call the required query function
+            // Insert data
             $employeeId = $obj->insertUpdate('Employee', $empData);
 
             // Insert office address detail
@@ -100,20 +100,6 @@ else
         'resStreet' => '', 'resCity' => '', 'resZip' => '', 'resState' => '',
         'marStatus' => '', 'empStatus' => '', 'employer' => '', 'comm' => '', 'confirm' => '',
         'password' => '', 'note' => '', 'image' => '', 'dob' => '');
-}
-
-// Check if edit clicked, update flag value
-if (isset($_GET['edit']))
-{
-    $update = TRUE;
-    $empId = $_GET['edit'];
-    $result = $obj->getEmployeeDetail($empId);
-
-    if (!$result)
-    {
-        echo 'Retrival failed' . mysql_error();
-    }
-    $row = mysqli_fetch_assoc($result);
 }
 
 ?>
@@ -215,7 +201,7 @@ if (isset($_GET['edit']))
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="textinput">Email</label>  
                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <!-- Check and assign the value if it is new or update form -->
-                              <input id="emailInput" name="email" type="text" 
+                              <input id="emailInput" name="email" type="text" <?php echo ($update) ? 'readonly' : ''; ?>
                                 placeholder="name@email.com" class="form-control input-md" value="<?php 
                                 echo ($update) ? $row['email'] : (isset($_POST['email']) ? $_POST['email'] : ''); ?>">
                               <span class="error"><?php echo $errorList['email'];?></span>
@@ -226,9 +212,10 @@ if (isset($_GET['edit']))
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="textinput">Password</label>  
                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <!-- Check and assign the value if it is new or update form -->
-                              <input id="passwordInput" name="password" type="text" 
+                              <input id="passwordInput" name="password" type="password" 
                                 placeholder="***************" class="form-control input-md" value="<?php 
-                                echo ($update) ? $row['password'] : (isset($_POST['password']) ? $_POST['password'] : ''); ?>">
+                                echo ($update) ? $row['password'] : (isset($_POST['password']) ? $_POST['password'] : ''); ?>"
+                                type="<?php echo $update ? 'hidden' : ''; ?>">
                               <span class="error"><?php echo $errorList['password'];?></span>
                            </div>
                         </div>
@@ -237,10 +224,11 @@ if (isset($_GET['edit']))
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="textinput">Confirm Password</label>  
                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <!-- Check and assign the value if it is new or update form -->
-                              <input id="confirmPassword" name="confirm" type="text" 
-                                placeholder="***************" class="form-control input-md" value="<?php 
-                                echo ($update) ? $row['password'] : (isset($_POST['password']) ? $_POST['password'] : ''); ?>">
-                              <span class="error"><?php echo $errorList['password'];?></span>
+                              <input id="confirmPassword" name="confirm" type="password" 
+                                placeholder="***************" class="form-control input-md"
+                                type="<?php echo $update ? 'hidden' : ''; ?>"
+                                >
+                              <span class="error"><?php echo $errorList['confirm'];?></span>
                            </div>
                         </div>
                         
@@ -508,9 +496,8 @@ if (isset($_GET['edit']))
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="Note">Note</label>
                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                               <!-- check and display note if it is new or update form -->                  
-                              <textarea class="form-control" id="Note" name="note" rows="6" 
-                                placeholder="Write something about yourself"> <?php echo ($update) ? $row['note'] : ''; ?>
-                              </textarea>
+                              <textarea class="form-control" id="Note" name="note" rows="6" placeholder="Write something about yourself"
+                                  value="<?php echo ($update) ? $row['note'] : ''; ?>"></textarea>
                            </div>
                         </div>
                         <div class="row text-center">

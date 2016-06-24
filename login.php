@@ -67,7 +67,8 @@ else
       <?php include('template/header.php'); ?>
       <!-- Page Content -->
       <div class="container">
-          <div> <h3>Welcome <?php echo ''?></h3></div>
+          
+          <div> <h3><?php //echo (empty($_POST) ? 'Registered Successfully!!!' : '');?></h3></div>
           <form class="form-horizontal" action="login.php" method="POST" enctype="multipart/form-data">
          <fieldset>
             <!-- Text input-->

@@ -4,7 +4,6 @@
   @Author : Mfsi_Annapurnaa
   @purpose : Form Validation
  */
-
 class validateInput
 {
     
@@ -210,10 +209,11 @@ class validateInput
         {
             $this->errorList['image'] = 'File size must be excately 2 MB';
         }
-        
+
         // Move image to desired folder
-        if (isset($name) && !empty($name) && (0 === count($this->errorList)))
+        if (isset($name) && !empty($name) && (empty($this->errorList['image'])))
         {
+            echo $imageTmp;
             move_uploaded_file($imageTmp, IMAGEPATH . $name);
         }
         
