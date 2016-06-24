@@ -3,6 +3,18 @@
       @Author : Mfsi_Annapurnaa
       @purpose : Common navigation bar for all pages
    */
+
+require_once('config/session.php');
+$objSes = new session();
+$resultSes = $objSes->checkSession();
+if(!$resultSes)
+{
+    $loggedIn = FALSE;
+}
+else
+{
+    $loggedIn = TRUE;
+}
 ?>
 
 <!-- Navigation -->
@@ -13,6 +25,7 @@
          <p class="navbar-brand">GetEmpl0yed.com</p>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
+      <?php if(!$loggedIn){?>
       <ul class="nav navbar-nav">
          <li>
             <a href="home.php">Home</a>
@@ -21,9 +34,26 @@
             <a href="registration.php">Registration</a>
          </li>
          <li>
-            <a href="list.php">Employee Data</a>
+            <a href="login.php">Login</a>
          </li>
       </ul>
+      <?php }
+      else {?>
+      <ul class="nav navbar-nav">
+         <li>
+            <a href="userHome.php">User Home</a>
+         </li>
+         <li>
+             <a href="registration.php">Update</a>
+         </li>
+         <li>
+            <a href="list.php">Employee Data</a>
+         </li>
+         <li>
+             <a href="signOut.php">Sign Out</a>
+         </li>
+      </ul>
+      <?php }?>
    </div>
    <!-- Container -->
 </nav>

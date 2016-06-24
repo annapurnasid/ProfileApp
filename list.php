@@ -1,4 +1,5 @@
 <?php 
+
    /*
       @Author : Mfsi_Annapurnaa
       @purpose : handle thelisting of employee data.
@@ -7,7 +8,17 @@
    ini_set('display_errors', 1);
    ini_set('display_startup_errors', 1);
    error_reporting(E_ALL);
-   require_once('queryOperation.php');
+   
+    require_once('config/session.php');
+    $objSes = new session();
+    $objSes->start();
+    $resultSes = $objSes->checkSession();
+    if(!$resultSes)
+    {
+    header('Location:login.php');
+    }
+   
+   require_once('config/queryOperation.php');
 
    $obj = new queryOperation();
    // Delete a row

@@ -2,15 +2,35 @@
 /*
   @Author : Mfsi_Annapurnaa
   @purpose : Registration form layout.
-  : Update operaton on the emplolyee data
+           : Update operaton on the emplolyee data
  */
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('queryOperation.php');
-
+require_once('config/queryOperation.php');
 $obj = new queryOperation();
+
+require_once('config/session.php');
+$objSes = new session();
+$objSes->start();
+$result = $objSes->checkSession();
+if(!$result)
+{
+     $update = FALSE;
+}
+else
+{
+    $update = TRUE;
+    $empId = $_SESSION['id'];
+    $result = $obj->getEmployeeDetail($empId, $update);
+    if (!$result)
+    {
+        echo 'Retrival failed' . mysql_error();
+    }
+    $row = mysqli_fetch_assoc($result);
+}
 
 $stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam',
     'Bihar', 'Chandigar', 'Chhattisgarh', 'Dadra and Nagar Haveli', 'Daman and Diu', 'Delhi', 'Goa',
@@ -18,19 +38,19 @@ $stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal P
     'Kerala', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram',
     'Nagaland', 'Orissa', 'Pondicherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Tripura',
     'Uttaranchal', 'Uttar Pradesh', 'West Bengal');
-
-if ( ! empty($_POST))
+if (!empty($_POST))
 {
     // Include validate file
     include('helper/validate.php');
 
-    if ( ! $error)
+    if (!$error)
     {
         // Create employee data for insert/update
         $empData = ['title' => $title, 'firstName' => $firstName, 'middleName' => $middleName,
             'lastName' => $lastName, 'dateOfBirth' => $dob, 'gender' => $gender, 'phone' => $phone,
             'email' => $email, 'maritalStatus' => $marStatus, 'empStatus' => $empStatus,
-            'commId' => $communication, 'image' => $name, 'note' => $note, 'employer' => $employer];
+            'commId' => $communication, 'image' => $name, 'note' => $note, 'employer' => $employer,
+            'password' => $password];
 
         if ($update)
         {
@@ -51,6 +71,9 @@ if ( ! empty($_POST))
                 'zip' => $resZip, 'state' => $resState];
             $condition = ['column' => 'empId', 'operator' => '=', 'val' => "'$employeeIdUpdate' AND addressType = 'residence'"];
             $obj->insertUpdate('Address', $empResData, $condition, TRUE);
+
+            //Redirect User to Employee List Page
+            header('Location:list.php');
         }
         else
         {
@@ -66,10 +89,8 @@ if ( ! empty($_POST))
             $empResData = array('addressType' => 'residence', 'street' => $resStreet, 'city' => $resCity,
                 'zip' => $resZip, 'state' => $resState, 'empId' => $employeeId);
             $obj->insertUpdate('Address', $empResData);
+            header('Location:login.php?success=1');
         }
-
-        //Redirect User to Employee List Page
-        header('Location:list.php');
     }
 }
 else
@@ -77,8 +98,8 @@ else
     $errorList = array('title' => '', 'firstName' => '', 'middleName' => '',
         'lastName' => '', 'email' => '', 'phone' => '', 'gender' => '', 'dob' => '',
         'resStreet' => '', 'resCity' => '', 'resZip' => '', 'resState' => '',
-        'marStatus' => '', 'empStatus' => '', 'employer' => '', 'comm' => '',
-        'note' => '', 'image' => '', 'dob' => '');
+        'marStatus' => '', 'empStatus' => '', 'employer' => '', 'comm' => '', 'confirm' => '',
+        'password' => '', 'note' => '', 'image' => '', 'dob' => '');
 }
 
 // Check if edit clicked, update flag value
@@ -88,16 +109,11 @@ if (isset($_GET['edit']))
     $empId = $_GET['edit'];
     $result = $obj->getEmployeeDetail($empId);
 
-    if ( ! $result)
+    if (!$result)
     {
         echo 'Retrival failed' . mysql_error();
     }
     $row = mysqli_fetch_assoc($result);
-}
-else
-{
-    // Flag value is 0
-    $update = FALSE;
 }
 
 ?>
@@ -131,7 +147,8 @@ else
       </style>
    </head>
    <body>
-      <?php include('template/header.php'); ?>
+       <?php include('template/header.php')?>
+
       <!-- Page Content -->
       <div class="container">
          <div class="row">
@@ -161,7 +178,7 @@ else
                         <input type="hidden" name="checkUpdate" value="<?php echo $update; ?>">
                         <input type="hidden" name="employeeId" value="<?php echo ($update) ? 
                           $row['empId'] : FALSE; ?>">
-                        <!-- Feilds for name-->
+                        <!-- Fields for name-->
                       <div class="row form-group">
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">Name</label>
                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
@@ -198,12 +215,35 @@ else
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="textinput">Email</label>  
                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <!-- Check and assign the value if it is new or update form -->
-                              <input id="textinput" name="email" type="text" 
+                              <input id="emailInput" name="email" type="text" 
                                 placeholder="name@email.com" class="form-control input-md" value="<?php 
                                 echo ($update) ? $row['email'] : (isset($_POST['email']) ? $_POST['email'] : ''); ?>">
                               <span class="error"><?php echo $errorList['email'];?></span>
                            </div>
                         </div>
+                        
+                        <div class="row form-group">
+                           <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="textinput">Password</label>  
+                           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              <!-- Check and assign the value if it is new or update form -->
+                              <input id="passwordInput" name="password" type="text" 
+                                placeholder="***************" class="form-control input-md" value="<?php 
+                                echo ($update) ? $row['password'] : (isset($_POST['password']) ? $_POST['password'] : ''); ?>">
+                              <span class="error"><?php echo $errorList['password'];?></span>
+                           </div>
+                        </div>
+                        
+                        <div class="row form-group">
+                           <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="textinput">Confirm Password</label>  
+                           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              <!-- Check and assign the value if it is new or update form -->
+                              <input id="confirmPassword" name="confirm" type="text" 
+                                placeholder="***************" class="form-control input-md" value="<?php 
+                                echo ($update) ? $row['password'] : (isset($_POST['password']) ? $_POST['password'] : ''); ?>">
+                              <span class="error"><?php echo $errorList['password'];?></span>
+                           </div>
+                        </div>
+                        
                         <!-- Phone number input-->
                         <div class="row form-group">
                            <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " for="number">Mobile</label>  

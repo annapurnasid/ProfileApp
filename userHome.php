@@ -1,18 +1,19 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('config/session.php');
 $objSes = new session();
-if(TRUE == $objSes->checkSession())
+$objSes->start();
+$resultSes = $objSes->checkSession();
+if(!$resultSes)
 {
-    $objSes->signOut();
+    header('Location:login.php');
 }
 
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -34,8 +35,10 @@ if(TRUE == $objSes->checkSession())
         <!-- Page Content -->
         <div class="container text-center">           
             <h1>Welcome to GetEmployed.com</h1>
-            <h3 class="primary">Fill the registration form to submit your details. You will get call for the best suitable job available for you.</h3>
-            <a href="registration.php" class="btn btn-default btn-lg" role="button">Register</a>
+            <h3 class="primary">We are glad to welcome<b> <?php echo $_SESSION['title'] . ' ' . $_SESSION['firstName'] . ' ' . 
+                                    $_SESSION['middleName'] . ' ' . $_SESSION['lastName']; ?></b>
+                to our family. Keep in touch and check your mailbox regularly</h3>
+            <a href="registration.php" class="btn btn-default btn-lg" role="button">Update</a>
         </div>
         <!-- Container -->
     </body>

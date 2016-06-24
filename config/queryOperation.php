@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require('connection.php');
+require('config/connection.php');
 
 class queryOperation
 {
@@ -13,6 +13,13 @@ class queryOperation
     public $connObj;
     public $result;
 
+    /**
+     * Constructor function
+     *
+     * @access public
+     * @param  void
+     * @return void
+     */
     function __construct()
     {
         // Creating the Connection class obj to make connection
@@ -24,11 +31,12 @@ class queryOperation
      * Function for getting all details of employee
      *
      * @access public
-     * @param  int
-     * @return void
+     * @param  int $id
+     * @return array
      */
     function getEmployeeDetail($id = '')
     {
+        // To fetch the deatils for update, after log in
         if (!empty($id))
         {	
             $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
@@ -36,7 +44,7 @@ class queryOperation
                 Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
                 Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
                 AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
-                Employee.image, Employee.employer, Employee.commId, Employee.note
+                Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password
                 FROM Employee 
                 JOIN Address AS Residence ON Employee.empId = Residence.empId 
                 AND Residence.addressType = 'residence'
@@ -44,6 +52,7 @@ class queryOperation
                 AND Office.addressType = 'office'
                 HAVING EmpID = $id";
         }
+        // To fetch the details to insert, sign up
         else{
             $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
                 ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
@@ -72,7 +81,7 @@ class queryOperation
      * @param  table  $table
      * @param  column $field
      * @param  array  $condition
-     * @return void
+     * @return array
      */
     function select($table, $field, $condition = '')
     {
@@ -107,6 +116,13 @@ class queryOperation
                 }
             }
         }
+        
+        if('email, empId, password, title, firstName, lastName, middleName' === $field)
+        {
+            $result = $this->connObj->executeConnection($this->conn, $selectQuery);
+            $row = mysqli_fetch_assoc($result);
+            return $row;
+        }
 
     return $this->connObj->executeConnection($this->conn, $selectQuery);
     }
@@ -118,7 +134,7 @@ class queryOperation
      * @param  table   $table
      * @param  array   $data
      * @param  array   $condition
-     * @return boolean $update
+     * @return void
      */
     function delete($table, $condition){
         $deleteQuery = "DELETE FROM $table WHERE $condition[column]  $condition[operator]  $condition[val]";
@@ -129,9 +145,6 @@ class queryOperation
             }
     }
 
-
-    
-
     /**
      * Function for inserting employee details
      *
@@ -139,7 +152,8 @@ class queryOperation
      * @param  table   $table
      * @param  array   $data
      * @param  array   $condition
-     * @return boolean $update
+     * @param boolean $update
+     * @return void
      */
     function insertUpdate($table, $data, $condition = '', $isUpdate = FALSE)
     {
@@ -158,38 +172,34 @@ class queryOperation
             $fields .= "$col = '$val'";
         }
 
+        // Insert values into db
         if (!$isUpdate)
         {
-            $empInsert = "INSERT INTO $table SET $fields";
-            $result = $this->connObj->executeConnection($this->conn, $empInsert);
-            if (!$result)
-            {
-                echo 'Insertion Failed';
-            }
-            else
-            {
-                echo 'inserted';
-            }
+            $empQuery = "INSERT INTO $table SET $fields";
+        }
+        else
+        {
+            // Update values in db
+            $empQuery = "UPDATE $table
+                SET $fields
+                WHERE $condition[column]  $condition[operator]  $condition[val]";
+        }
 
+        $result = $this->connObj->executeConnection($this->conn, $empQuery);
+
+        if (!$result)
+        {
+            echo ($isUpdate) ? 'Update Failed.' : 'Insertion Failed';
+        }
+
+        if (!$isUpdate)
+        {
             // Id of the last inserted record
             $employeeId = mysqli_insert_id($this->conn);
             return $employeeId;
         }
-        else
-        {
-            $empUpdate = "UPDATE $table
-                SET $fields
-                WHERE $condition[column]  $condition[operator]  $condition[val]";
-            $result = $this->connObj->executeConnection($this->conn, $empUpdate);
-            if (!$result)
-            {
-                echo 'Update Failed';
-            }
-            else
-            {
-                echo 'Updated';
-            }
-        }
+
+        return TRUE;
     }
 
 }

@@ -1,12 +1,14 @@
 <?php
 
+/*
+  @Author : Mfsi_Annapurnaa
+  @purpose : Form Validation
+ */
+
 class validateInput
 {
-    /*
-      @Author : Mfsi_Annapurnaa
-      @purpose : Form Validation
-     */
-
+    
+    
     public $inputData;
     public $fileData;
     public $update;
@@ -14,9 +16,17 @@ class validateInput
         'lastName' => '', 'email' => '', 'phone' => '', 'gender' => '',
         'dob' => '', 'resStreet' => '', 'resCity' => '', 'resZip' => '',
         'resState' => '', 'marStatus' => '', 'empStatus' => '',
-        'employer' => '', 'comm' => '',
+        'employer' => '', 'comm' => '', 'confirm' => '', 'password'=> '',
         'note' => '', 'image' => '', 'dob' => ''];
 
+    /**
+     * Constructor function
+     *
+     * @access public
+     * @param  array  $input
+     * @param  int    $up 
+     * @return void
+     */
     function __construct($input, $up)
     {
         $this->inputData = $input['postData'];
@@ -24,15 +34,25 @@ class validateInput
         $this->update = $up;
     }
 
+    /**
+     * Function to check required fields
+     *
+     * @access public
+     * @param  array $requiredField  
+     * @return array $this->errorList
+     */
     function required($requiredField)
     {
+        
         foreach ($this->inputData as $key => $value)
         {
+            // Check if $key is present in array $required 
             if (in_array($key, $requiredField) && empty($this->inputData[$key]))
             {
                 $this->errorList[$key] = 'Field is required';
             }
    
+            // Validation if field is not empty
             if (!empty($this->inputData[$key]))
             {
                 switch ($key)
@@ -53,6 +73,9 @@ class validateInput
                     case 'empStatus':
                         $this->errorList = $this->employement($value, $key);
                         break;
+                    case 'password':
+                        $this->errorList = $this->password($value, $key);
+                        break;
 
                     default:
                         break;
@@ -60,6 +83,7 @@ class validateInput
             }
         }
 
+        // Validation for image
         if ( ! $this->fileData['image']['error'])
         {
             $name = $this->fileData['image']['name']; //file name uploaded
@@ -69,10 +93,22 @@ class validateInput
             
             $this->errorList = $this->image($name, $imageSize, $imageTmp, $imageExt);
         }
+        else if ( ! $this->update)
+        {
+            $this->errorList['image'] = 'Select an image';
+        }
 
         return $this->errorList;
     }
 
+    /**
+     * Function to validate text fields
+     *
+     * @access public
+     * @param  string $value
+     * @param  string $key
+     * @return array $this->errorList
+     */
     function alphabets($value, $key)
     {
         // Check if title only contains letters and whitespace
@@ -83,17 +119,47 @@ class validateInput
         return $this->errorList;
     }
 
+    /**
+     * Function to validate email
+     *
+     * @access public
+     * @param  string $value
+     * @param  string $key
+     * @return array $this->errorList
+     */
     function email($value, $key)
     {
+
+        $queryObj = new queryOperation();
+        
+        // Check email format
         if (!filter_var($value, FILTER_VALIDATE_EMAIL))
         {
             $this->errorList[$key] = 'Invalid email format';
         }
+
+        // Check unique email
+        $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . $value . '\''];
+        $result = $queryObj->select('Employee', 'email', $condition);
+        if (mysqli_num_rows($result) > 0 && !$this->update) 
+        {
+            $this->errorList[$key] = 'Email taken';
+        }
+          
         return $this->errorList;
     }
 
+    /**
+     * Function to validate numeric field
+     *
+     * @access public
+     * @param  string $value
+     * @param  string $key
+     * @return array $this->errorList
+     */
     function number($value, $key)
     {
+        // Validate phone number
         if ('phone' === $key)
         {
             if (!preg_match('/^\d{10}$/', $value))
@@ -101,6 +167,8 @@ class validateInput
                 $this->errorList[$key] = 'Invalid phone number';
             }
         }
+        
+        // Validate zip
         else
         {
             if (!preg_match('/^\d{6}$/', $value))
@@ -112,6 +180,16 @@ class validateInput
         return $this->errorList;
     }
 
+   /**
+     * Function to validate image
+     *
+     * @access public
+     * @param  string $name
+     * @param  int    $imageSize
+     *  @param string $imageTmp
+     *  @param string $imageExt
+     * @return array $this->errorList
+     */
     function image($name, $imageSize, $imageTmp, $imageExt)
     {
         // Image file type validation
@@ -119,6 +197,7 @@ class validateInput
         $imageExt = strtolower(end($exploded));
         $extensions = array('jpeg', 'jpg', 'png');
 
+        // Validate image type
         if (!in_array($imageExt, $extensions))
         {
             $this->errorList['image'] = 'Extension not allowed, please choose a JPEG or PNG file';
@@ -137,25 +216,57 @@ class validateInput
         {
             move_uploaded_file($imageTmp, IMAGEPATH . $name);
         }
-        else if ( ! $this->update)
-        {
-            $this->errorList['image'] = 'Select an image';
-        }
+        
 
         return $this->errorList;
     }
     
+     /**
+     * Function to validate employement andemployer field
+     *
+     * @access public
+     * @param  string $value
+     * @param  string $key
+     * @return array $this->errorList
+     */
     function employement($value, $key)
     {
         if ('self-employed' === $value)
         {
-            $this->inputData['employer'] = 'Self';
-            $employer = $this->inputData['employer'];
+            $_POST['employer'] = 'Self';
+            $employer = $_POST['employer'];
         }
-        else if ('employed' === $value && empty($this->inputData['employer']))
+        if ('employed' === $value && '' === $_POST['employer'])
         {
+            echo'++++';exit();
             $this->errorList['employer'] = 'Specify Your employer';
         }
+        return $this->errorList;
+    }
+    
+   /**
+     * Function to validate input password
+     *
+     * @access public
+     * @param  string $value
+     * @param  string $key
+     * @return array $this->errorList
+     */
+    function password($value, $key)
+    {
+        
+        // Validate password length
+        if ( 8 > strlen($value))
+        {
+            $this->errorList[$key] = 'Minimum 8 characters required';
+        }
+        
+        // Validate password confirmation
+        else if($this->inputData['confirm'] !== $value)
+        {
+            $this->errorList['confirm'] = 'Passwords do not match';
+        }
+        
         return $this->errorList;
     }
 
