@@ -4,18 +4,18 @@
   @Author : Mfsi_Annapurnaa
   @purpose : Form Validation
  */
+
 class validateInput
 {
-    
-    
+
     public $inputData;
     public $fileData;
     public $update;
     public $errorList = ['title' => '', 'firstName' => '', 'middleName' => '',
         'lastName' => '', 'email' => '', 'phone' => '', 'gender' => '',
         'dob' => '', 'resStreet' => '', 'resCity' => '', 'resZip' => '',
-        'resState' => '', 'marStatus' => '', 'empStatus' => '',
-        'employer' => '', 'comm' => '', 'confirm' => '', 'password'=> '',
+        'resState' => '', 'ofcZip' =>'', 'marStatus' => '', 'empStatus' => '',
+        'employer' => '', 'comm' => '', 'confirm' => '', 'password' => '',
         'note' => '', 'image' => '', 'dob' => ''];
 
     /**
@@ -42,7 +42,7 @@ class validateInput
      */
     function required($requiredField)
     {
-        
+
         foreach ($this->inputData as $key => $value)
         {
             // Check if $key is present in array $required 
@@ -50,7 +50,7 @@ class validateInput
             {
                 $this->errorList[$key] = 'Field is required';
             }
-   
+
             // Validation if field is not empty
             if (!empty($this->inputData[$key]))
             {
@@ -67,6 +67,7 @@ class validateInput
                         break;
                     case 'phone':
                     case 'resZip':
+                    case 'ofcZip':
                         $this->errorList = $this->number($value, $key);
                         break;
                     case 'empStatus':
@@ -83,16 +84,16 @@ class validateInput
         }
 
         // Validation for image
-        if ( ! $this->fileData['image']['error'])
+        if (!$this->fileData['image']['error'])
         {
             $name = $this->fileData['image']['name']; //file name uploaded
             $imageSize = $this->fileData['image']['size'];
             $imageTmp = $this->fileData['image']['tmp_name'];
             $imageExt = $this->fileData['image']['type'];
-            
+
             $this->errorList = $this->image($name, $imageSize, $imageTmp, $imageExt);
         }
-        else if ( ! $this->update)
+        else if (!$this->update)
         {
             $this->errorList['image'] = 'Select an image';
         }
@@ -128,9 +129,8 @@ class validateInput
      */
     function email($value, $key)
     {
-
         $queryObj = new queryOperation();
-        
+
         // Check email format
         if (!filter_var($value, FILTER_VALIDATE_EMAIL))
         {
@@ -140,11 +140,12 @@ class validateInput
         // Check unique email
         $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . $value . '\''];
         $result = $queryObj->select('Employee', 'email', $condition);
-        if (mysqli_num_rows($result) > 0 && !$this->update) 
+        
+        if (mysqli_num_rows($result) > 0 && !$this->update)
         {
             $this->errorList[$key] = 'Email taken';
         }
-          
+
         return $this->errorList;
     }
 
@@ -166,7 +167,7 @@ class validateInput
                 $this->errorList[$key] = 'Invalid phone number';
             }
         }
-        
+
         // Validate zip
         else
         {
@@ -175,11 +176,11 @@ class validateInput
                 $this->errorList[$key] = 'Invalid zip';
             }
         }
-        
+
         return $this->errorList;
     }
 
-   /**
+    /**
      * Function to validate image
      *
      * @access public
@@ -203,9 +204,8 @@ class validateInput
         }
 
         // Image size validation
-        $maxSize = 2097152;
 
-        if ($imageSize > $maxSize)
+        if (MAXSIZE < $imageSize)
         {
             $this->errorList['image'] = 'File size must be excately 2 MB';
         }
@@ -215,12 +215,12 @@ class validateInput
         {
             move_uploaded_file($imageTmp, IMAGEPATH . $name);
         }
-        
+
 
         return $this->errorList;
     }
-    
-     /**
+
+    /**
      * Function to validate employement andemployer field
      *
      * @access public
@@ -230,20 +230,22 @@ class validateInput
      */
     function employement($value, $key)
     {
+
         if ('self-employed' === $value)
         {
-            $_POST['employer'] = 'Self';
-            $employer = $_POST['employer'];
+            $this->inputData['employer'] = 'Self';
+            //$employer = $this->inputData['employer'];
         }
-        if ('employed' === $value && '' === $_POST['employer'])
+
+        else if ('employed' === $value && '' === $this->inputData['employer'])
         {
-            echo'++++';exit();
             $this->errorList['employer'] = 'Specify Your employer';
         }
+
         return $this->errorList;
     }
-    
-   /**
+
+    /**
      * Function to validate input password
      *
      * @access public
@@ -253,19 +255,19 @@ class validateInput
      */
     function password($value, $key)
     {
-        
+
         // Validate password length
-        if ( 8 > strlen($value))
+        if (8 > strlen($value))
         {
             $this->errorList[$key] = 'Minimum 8 characters required';
         }
-        
+
         // Validate password confirmation
-        else if($this->inputData['confirm'] !== $value)
+        else if ($this->inputData['confirm'] !== $value)
         {
             $this->errorList['confirm'] = 'Passwords do not match';
         }
-        
+
         return $this->errorList;
     }
 

@@ -4,7 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require('config/connection.php');
+require_once('config/connection.php');
+require_once ('config/session.php');
 
 class queryOperation
 {
@@ -38,7 +39,7 @@ class queryOperation
     {
         // To fetch the details for update, after log in
         if (!empty($id))
-        {	
+        {
             $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
                 Employee.lastName, Employee.email, Employee.phone, Employee.gender, Employee.dateOfBirth, 
                 Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
@@ -53,7 +54,8 @@ class queryOperation
                 HAVING EmpID = $id";
         }
         // To fetch the details to display
-        else{
+        else
+        {
             $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
                 ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
                 Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
@@ -78,37 +80,44 @@ class queryOperation
      * Function for getting communication detail of employee
      *
      * @access public
-     * @param  table  $table
-     * @param  column $field
-     * @param  array  $condition
+     * @param string $table
+     * @param column $field
+     * @param array  $condition
      * @return array
      */
     function select($table, $field, $condition = '')
     {
         $selectQuery = "SELECT $field FROM $table";
 
+        // If $condition has some value 
         if (0 < count($condition))
         {
+
+            // Add WHERE to concate condition with query
             $selectQuery .= ' WHERE ';
-            
-            $c = count($condition) - 1;
+
+            // To keep track of last but one condition in $condition array
+            $indexCount = count($condition) - 1;
 
             foreach ($condition as $key => $val)
             {
+
+                // Check if $condition is array i.e it has multiple values
                 if (is_array($val))
                 {
-                    // Multi Asoociative
+                    // Multi associative array
                     foreach ($val as $col => $value)
                     {
                         $selectQuery .= $val[$col] . ' ';
                     }
 
-                    if (0 !== $c)
+                    // If last but 1 index not reached, add AND
+                    if (0 !== $indexCount)
                     {
                         $selectQuery .= ' AND ';
                     }
 
-                    $c--;
+                    $indexCount--;
                 }
                 else
                 {
@@ -116,42 +125,44 @@ class queryOperation
                 }
             }
         }
-        
-        if('email, empId, password, title, firstName, lastName, middleName' === $field)
+
+        // If fieldsare for display in userHome page, return $row 
+        if ('email, empId, password, title, firstName, lastName, middleName' === $field)
         {
             $result = $this->connObj->executeConnection($this->conn, $selectQuery);
             $row = mysqli_fetch_assoc($result);
             return $row;
         }
 
-    return $this->connObj->executeConnection($this->conn, $selectQuery);
+        return $this->connObj->executeConnection($this->conn, $selectQuery);
     }
-    
+
     /**
      * Function for deleting employee details
      *
      * @access public
-     * @param  table   $table
-     * @param  array   $data
-     * @param  array   $condition
+     * @param string $table
+     * @param array $data
+     * @param array $condition
      * @return void
      */
-    function delete($table, $condition){
+    function delete($table, $condition)
+    {
         $deleteQuery = "DELETE FROM $table WHERE $condition[column]  $condition[operator]  $condition[val]";
         $result = $this->connObj->executeConnection($this->conn, $deleteQuery);
         if (!$result)
-            {
-                echo 'Deletetion Failed';
-            }
+        {
+            echo 'Deletetion Failed';
+        }
     }
 
     /**
      * Function for inserting employee details
      *
      * @access public
-     * @param  table   $table
-     * @param  array   $data
-     * @param  array   $condition
+     * @param string $table
+     * @param array $data
+     * @param array $condition
      * @param boolean $update
      * @return void
      */
@@ -161,7 +172,7 @@ class queryOperation
         $fields = '';
         foreach ($data as $key => $val)
         {
-            if ($count++ != 0)
+            if (0 !== $count++)
             {
                 $fields .= ', ';
             }
@@ -174,7 +185,9 @@ class queryOperation
         // Insert values into db
         if (!$isUpdate)
         {
-            $empQuery = 'INSERT INTO $table SET $fields';
+            $empQuery = "INSERT INTO $table SET $fields";
+            session_start();
+            $_SESSION['insert'] = 1;
         }
         else
         {
@@ -188,8 +201,10 @@ class queryOperation
 
         if (!$result)
         {
-            echo ($isUpdate) ? 'Update Failed.' : 'Insertion Failed';
+            echo ($isUpdate) ? 'Update Failed!' : 'Insertion Failed!';
         }
+        
+        // Use session variable
 
         if (!$isUpdate)
         {
@@ -202,4 +217,5 @@ class queryOperation
     }
 
 }
+
 ?>

@@ -2,6 +2,7 @@
 
 class session
 {
+
     /**
      * Function to start session
      *
@@ -13,7 +14,7 @@ class session
     {
         session_start();
     }
-    
+
     /**
      * Function to initialize session fields
      *
@@ -26,7 +27,7 @@ class session
     {
         $_SESSION[$key] = $value;
     }
-    
+
     /**
      * Function to check if session exists
      *
@@ -36,7 +37,7 @@ class session
      */
     function checkSession()
     {
-        if(isset($_SESSION['id']) && !empty($_SESSION['id']))
+        if (isset($_SESSION['id']) && !empty($_SESSION['id']))
         {
             return TRUE;
         }
@@ -45,7 +46,7 @@ class session
             return FALSE;
         }
     }
-    
+
     /**
      * Function to signout
      *
@@ -58,5 +59,7 @@ class session
         session_unset();
         session_destroy();
     }
+
 }
+
 ?>

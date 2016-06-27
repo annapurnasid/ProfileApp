@@ -21,23 +21,25 @@ if (!empty($_POST))
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
         $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . $email . '\''];
+        
+        // Select the fields for display in userHome page
         $row = $obj->select('Employee', 'email, empId, password, title, firstName, lastName, middleName', $condition);
 
-            if ($password !== $row['password'])
-            {
-                $error = 'Invalid username or password';
-            }
-            else
-            {
-                $objSes = new session();
-                $objSes->start();
-                $objSes->init('id', $row['empId']);
-                $objSes->init('title', $row['title']);
-                $objSes->init('firstName', $row['firstName']);
-                $objSes->init('middleName', $row['middleName']);
-                $objSes->init('lastName', $row['lastName']);
-                header('Location:userHome.php');
-            } 
+        if ($password !== $row['password'])
+        {
+            $error = 'Invalid username or password';
+        }
+        else
+        {
+            $objSes = new session();
+            $objSes->start();
+            $objSes->init('id', $row['empId']);
+            $objSes->init('title', $row['title']);
+            $objSes->init('firstName', $row['firstName']);
+            $objSes->init('middleName', $row['middleName']);
+            $objSes->init('lastName', $row['lastName']);
+            header('Location:userHome.php');
+        } 
     }
     else
     {
@@ -67,10 +69,11 @@ else
       <?php include('template/header.php'); ?>
       <!-- Page Content -->
       <div class="container">
-          
-          <div> <h3><?php //echo (empty($_POST) ? 'Registered Successfully!!!' : '');?></h3></div>
+          <fieldset>
+              <?php session_start();?>
+          <div><b> <h3><?php echo isset($_SESSION['insert']) ? 'Registration Successful!' : ''; unset($_SESSION['insert']); ?></h3><b></div>
           <form class="form-horizontal" action="login.php" method="POST" enctype="multipart/form-data">
-         <fieldset>
+         
             <!-- Text input-->
             <div class="form-group">
                <label class="col-md-4 control-label" for="email">Username</label>  

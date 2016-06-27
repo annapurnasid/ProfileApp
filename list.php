@@ -34,7 +34,8 @@
         $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
         $result = $obj->select('Employee', 'image', $condition);
         $img = mysqli_fetch_array($result);
-        if(file_exists($img))
+        
+        if(file_exists($img['image']))
         {
             unlink(IMAGEPATH . $img['image']);
         }

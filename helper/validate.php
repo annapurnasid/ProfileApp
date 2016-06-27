@@ -4,36 +4,37 @@
   @Author : Mfsi_Annapurnaa
   @purpose : Form Validation
  */
+
+require_once('validateInput.php');
 $inputData['postData'] = $_POST;
 $inputData['fileData'] = $_FILES;
-require_once('validateInput.php');
 
-$title = isset($_POST['title']) ? $_POST['title'] : '';
-$firstName = isset($_POST['firstName']) ? $_POST['firstName'] : '';
-$middleName = isset($_POST['middleName']) ? $_POST['middleName'] : '';
-$lastName = isset($_POST['lastName']) ? $_POST['lastName'] : '';
-$email = isset($_POST['email']) ? $_POST['email'] : '';
-$password = isset($_POST['password']) ? $_POST['password'] : '';
-$confirmPassword = isset($_POST['confirm']) ? $_POST['confirm'] : '';
-$gender = isset($_POST['gender']) ? $_POST['gender'] : '';
-$dob = isset($_POST['dob']) ? $_POST['dob'] : '';
-$phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-$email = isset($_POST['email']) ? $_POST['email'] : '';
-$resStreet = isset($_POST['resStreet']) ? $_POST['resStreet'] : '';
-$resCity = isset($_POST['resCity']) ? $_POST['resCity'] : '';
-$resZip = isset($_POST['resZip']) ? $_POST['resZip'] : '';
-$resState = isset($_POST['resState']) ? $_POST['resState'] : '';
-$ofcStreet = isset($_POST['ofcStreet']) ? $_POST['ofcStreet'] : '';
-$ofcCity = isset($_POST['ofcCity']) ? $_POST['ofcCity'] : '';
-$ofcZip = isset($_POST['ofcZip']) ? $_POST['ofcZip'] : '';
-$ofcState = isset($_POST['ofcState']) ? $_POST['ofcState'] : '';
-$marStatus = isset($_POST['marStatus']) ? $_POST['marStatus'] : '';
-$empStatus = isset($_POST['empStatus']) ? $_POST['empStatus'] : '';
-$employer = isset($_POST['employer']) ? $_POST['employer'] : '';
-$communication = (isset($_POST['comm']) && !empty($_POST['comm'])) ? implode(", ", $_POST['comm']) : '';
-$note = isset($_POST['note']) ? $_POST['note'] : '';
-$update = (isset($_POST['checkUpdate']) && 1 == $_POST['checkUpdate']) ? TRUE : FALSE;
-$employeeIdUpdate = isset($_POST['employeeId']) ? $_POST['employeeId'] : '';
+$title = isset($inputData['postData']['title']) ? $inputData['postData']['title'] : '';
+$firstName = isset($inputData['postData']['firstName']) ? $inputData['postData']['firstName'] : '';
+$middleName = isset($inputData['postData']['middleName']) ? $inputData['postData']['middleName'] : '';
+$lastName = isset($inputData['postData']['lastName']) ? $inputData['postData']['lastName'] : '';
+$email = isset($inputData['postData']['email']) ? $inputData['postData']['email'] : '';
+$password = isset($inputData['postData']['password']) ? $inputData['postData']['password'] : '';
+$confirmPassword = isset($inputData['postData']['confirm']) ? $inputData['postData']['confirm'] : '';
+$gender = isset($inputData['postData']['gender']) ? $inputData['postData']['gender'] : '';
+$dob = isset($inputData['postData']['dob']) ? $inputData['postData']['dob'] : '';
+$phone = isset($inputData['postData']['phone']) ? $inputData['postData']['phone'] : '';
+$email = isset($inputData['postData']['email']) ? $inputData['postData']['email'] : '';
+$resStreet = isset($inputData['postData']['resStreet']) ? $inputData['postData']['resStreet'] : '';
+$resCity = isset($inputData['postData']['resCity']) ? $inputData['postData']['resCity'] : '';
+$resZip = isset($inputData['postData']['resZip']) ? $inputData['postData']['resZip'] : '';
+$resState = isset($inputData['postData']['resState']) ? $inputData['postData']['resState'] : '';
+$ofcStreet = isset($inputData['postData']['ofcStreet']) ? $inputData['postData']['ofcStreet'] : '';
+$ofcCity = isset($inputData['postData']['ofcCity']) ? $inputData['postData']['ofcCity'] : '';
+$ofcZip = isset($inputData['postData']['ofcZip']) ? $inputData['postData']['ofcZip'] : '';
+$ofcState = isset($inputData['postData']['ofcState']) ? $inputData['postData']['ofcState'] : '';
+$marStatus = isset($inputData['postData']['marStatus']) ? $inputData['postData']['marStatus'] : '';
+$empStatus = isset($inputData['postData']['empStatus']) ? $inputData['postData']['empStatus'] : '';
+$employer = isset($inputData['postData']['employer']) ? $inputData['postData']['employer'] : '';
+$communication = (isset($inputData['postData']['comm']) && !empty($inputData['postData']['comm'])) ? implode(',', $inputData['postData']['comm']) : '';
+$note = isset($inputData['postData']['note']) ? $inputData['postData']['note'] : '';
+$update = (isset($inputData['postData']['checkUpdate']) && 1 == $inputData['postData']['checkUpdate']) ? TRUE : FALSE;
+$employeeIdUpdate = isset($inputData['postData']['employeeId']) ? $inputData['postData']['employeeId'] : '';
 
 if (!$_FILES['image']['error'])
 {
@@ -43,8 +44,14 @@ $error = FALSE;
 $valObj = new validateInput($inputData, $update);
 
 // List of required fields
-$requiredField = ['title', 'firstName', 'lastName', 'email', 'phone', 'dob', 'resStreet', 'password', 'confirm',
+$requiredField = ['title', 'firstName', 'lastName', 'email', 'phone', 'dob', 'resStreet',
     'resCity', 'resZip', 'resState', 'marStatus', 'empStatus', 'employer', 'comm', 'image'];
+
+// Add required fields specific to registration
+if ( ! $update)
+{
+    array_push($requiredField, ['password', 'confirm']);
+}
 
 // Error list after validation
 $errorList = $valObj->required($requiredField);

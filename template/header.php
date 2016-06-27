@@ -7,14 +7,13 @@
 require_once('config/session.php');
 $objSes = new session();
 $resultSes = $objSes->checkSession();
-if(!$resultSes)
-{
-    $loggedIn = FALSE;
-}
-else
+$loggedIn = FALSE;
+
+if ($resultSes)
 {
     $loggedIn = TRUE;
 }
+
 ?>
 
 <!-- Navigation -->
@@ -28,7 +27,7 @@ else
       <?php if(!$loggedIn){?>
       <ul class="nav navbar-nav">
          <li>
-            <a href="home.php">Home</a>
+            <a href="index.php">Home</a>
          </li>
          <li>
             <a href="registration.php">Registration</a>
@@ -42,9 +41,6 @@ else
       <ul class="nav navbar-nav">
          <li>
             <a href="userHome.php">User Home</a>
-         </li>
-         <li>
-             <a href="registration.php">Update</a>
          </li>
          <li>
             <a href="list.php">Employee Data</a>
