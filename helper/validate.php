@@ -19,7 +19,6 @@ $confirmPassword = isset($inputData['postData']['confirm']) ? $inputData['postDa
 $gender = isset($inputData['postData']['gender']) ? $inputData['postData']['gender'] : '';
 $dob = isset($inputData['postData']['dob']) ? $inputData['postData']['dob'] : '';
 $phone = isset($inputData['postData']['phone']) ? $inputData['postData']['phone'] : '';
-$email = isset($inputData['postData']['email']) ? $inputData['postData']['email'] : '';
 $resStreet = isset($inputData['postData']['resStreet']) ? $inputData['postData']['resStreet'] : '';
 $resCity = isset($inputData['postData']['resCity']) ? $inputData['postData']['resCity'] : '';
 $resZip = isset($inputData['postData']['resZip']) ? $inputData['postData']['resZip'] : '';

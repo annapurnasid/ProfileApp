@@ -59,11 +59,13 @@ class queryOperation
             $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
                 ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
                 Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
-                CONCAT(Residence.street, '<br />' , Residence.city , '<br />', Residence.zip,'<br />', 
-                Residence.state ) AS Res,
-                CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />', Office.state) AS Ofc,
+                CONCAT(Residence.street, '<br />' , Residence.city , '<br />',
+                Residence.zip,'<br />', Residence.state ) AS Res,
+                CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />',
+                Office.state) AS Ofc,
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
-                Employee.employer AS Employer, Employee.commId AS Communication, Employee.image AS Image, 
+                Employee.employer AS Employer, Employee.commId AS Communication,
+                Employee.image AS Image, 
                 Employee.note AS Note
                 FROM Employee 
                 JOIN Address AS Residence ON Employee.empId = Residence.empId 

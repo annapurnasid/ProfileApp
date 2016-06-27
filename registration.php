@@ -49,12 +49,10 @@ if (!empty($_POST))
         $empData = ['title' => $title, 'firstName' => $firstName, 'middleName' => $middleName,
             'lastName' => $lastName, 'dateOfBirth' => $dob, 'gender' => $gender, 'phone' => $phone,
             'email' => $email, 'maritalStatus' => $marStatus, 'empStatus' => $empStatus,
-            'commId' => $communication, 'image' => $name, 'note' => $note, 'employer' => $employer,
-            'password' => $password];
+            'commId' => $communication, 'image' => $name, 'note' => $note, 'employer' => $employer];
 
         if ($update)
         {
-            // Update details
             // Query for employee details
             $condition = ['column' => 'empId', 
                 'operator' => '=', 
@@ -62,15 +60,11 @@ if (!empty($_POST))
             $obj->insertUpdate('Employee', $empData, $condition, TRUE);
 
             // Query for Office address details
-            $empOfcData = ['street' => $ofcStreet, 
-                'city' => $ofcCity,
-                'zip' => $ofcZip, 
-                'state' => $ofcState];
-            $condition = ['column' => 'empId', 
-                'operator' => '=', 
+            $empOfcData = ['street' => $ofcStreet,'city' => $ofcCity,
+                'zip' => $ofcZip, 'state' => $ofcState];
+            $condition = ['column' => 'empId', 'operator' => '=', 
                 'val' => "'$employeeIdUpdate' AND addressType = 'office'"];
             $obj->insertUpdate('Address', $empOfcData, $condition, TRUE);
-
 
             // Query for Residential address details
             $empResData = ['street' => $resStreet, 
@@ -87,8 +81,9 @@ if (!empty($_POST))
         }
         else
         {
-            // Insert data
-            
+            array_push($empData, ['password' => $password]);
+
+            // Insert data   
             $employeeId = $obj->insertUpdate('Employee', $empData);
 
             // Insert office address detail
@@ -135,12 +130,10 @@ else
       <?php
          }
          ?>  
-      <!-- Bootstrap Core CSS -->
-      <link href="css/bootstrap.min.css" rel="stylesheet">
-      <!-- Custom CSS -->
-      <link href="css/styles.css" rel="stylesheet">
-      <style type="text/css"></style>
-      <script src="js/javascript.js?version=1.2"></script>
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="css/styles.css" rel="stylesheet">
    </head>
    <body>
       <?php include('template/header.php')?>
@@ -495,9 +488,8 @@ else
                                     </div>
                                     <div class = "modal-body">
                                        <img src = "<?php echo IMAGEPATH.($update ? $row['image'] : 
-                                           (isset($_POST['image']) ? 
-                                            $_POST['image'] : '')); ?>" alt = "No image" 
-                                            height = "300" width = "500">
+                                           (isset($_POST['image']) ? $_POST['image'] : '')); ?>" 
+                                           alt = "No image" height = "300" width = "500">
                                     </div>
                                     <div class="modal-footer">
                                        <button type="button" class="btn btn-default" 
@@ -605,5 +597,7 @@ else
          </div>
       </div>
       <!-- Container -->
+      <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.min.js"></script>
    </body>
 </html>

@@ -76,6 +76,9 @@ class validateInput
                     case 'password':
                         $this->errorList = $this->password($value, $key);
                         break;
+                    case 'comm':
+                        $this->errorList = $this->communication($value, $key);
+                        break;
 
                     default:
                         break;
@@ -268,6 +271,12 @@ class validateInput
             $this->errorList['confirm'] = 'Passwords do not match';
         }
 
+        return $this->errorList;
+    }
+    
+    function communication($value, $key)
+    {
+        //echo $key. '===' . $value; exit;
         return $this->errorList;
     }
 

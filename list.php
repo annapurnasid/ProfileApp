@@ -122,9 +122,18 @@
                            }
                         }
                         else if ('Image' === $key) 
-                           { ?>
-                           <img src = "<?php echo IMAGEPATH.$value;?>" alt = "No image" height = "50"
-                               width = "50"><?php
+                           { 
+                            $imageName = IMAGEPATH . $value;
+
+                            if (!empty($value) && file_exists($imageName))
+                            {?>
+                            <img src = "<?php echo $imageName;?>" alt = "No image" height = "50"
+                               width = "50">
+                            <?php }
+                            else
+                            {
+                                echo 'No Image';
+                            }
                         }
                         else 
                         {
