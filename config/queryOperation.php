@@ -56,8 +56,10 @@ class queryOperation
         // To fetch the details to display
         else
         {
-            $sqlQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
-                ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
+            $sqlQuery = "SELECT Employee.empId AS EmpID,
+                CONCAT(Employee.title, ' ', Employee.firstName, 
+                ' ', Employee.middleName, ' ', Employee.lastName) AS Name,
+                Employee.email AS EmailID, 
                 Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
                 CONCAT(Residence.street, '<br />' , Residence.city , '<br />',
                 Residence.zip,'<br />', Residence.state ) AS Res,
@@ -150,8 +152,10 @@ class queryOperation
      */
     function delete($table, $condition)
     {
-        $deleteQuery = "DELETE FROM $table WHERE $condition[column]  $condition[operator]  $condition[val]";
+        $deleteQuery = 'DELETE FROM ' . $table . ' WHERE ' . $condition[column] . ' ' .
+                $condition[operator] . ' ' . $condition[val];
         $result = $this->connObj->executeConnection($this->conn, $deleteQuery);
+
         if (!$result)
         {
             echo 'Deletetion Failed';
@@ -205,7 +209,7 @@ class queryOperation
         {
             echo ($isUpdate) ? 'Update Failed!' : 'Insertion Failed!';
         }
-        
+
         // Use session variable
 
         if (!$isUpdate)

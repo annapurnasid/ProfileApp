@@ -30,9 +30,11 @@ $ofcState = isset($inputData['postData']['ofcState']) ? $inputData['postData']['
 $marStatus = isset($inputData['postData']['marStatus']) ? $inputData['postData']['marStatus'] : '';
 $empStatus = isset($inputData['postData']['empStatus']) ? $inputData['postData']['empStatus'] : '';
 $employer = isset($inputData['postData']['employer']) ? $inputData['postData']['employer'] : '';
-$communication = (isset($inputData['postData']['comm']) && !empty($inputData['postData']['comm'])) ? implode(',', $inputData['postData']['comm']) : '';
+$communication = (isset($inputData['postData']['comm']) && !empty($inputData['postData']['comm'])) ? 
+    implode(',', $inputData['postData']['comm']) : '';
 $note = isset($inputData['postData']['note']) ? $inputData['postData']['note'] : '';
-$update = (isset($inputData['postData']['checkUpdate']) && 1 == $inputData['postData']['checkUpdate']) ? TRUE : FALSE;
+$update = (isset($inputData['postData']['checkUpdate']) && 1 == $inputData['postData']['checkUpdate']) 
+    ? TRUE : FALSE;
 $employeeIdUpdate = isset($inputData['postData']['employeeId']) ? $inputData['postData']['employeeId'] : '';
 
 if (!$_FILES['image']['error'])
@@ -47,7 +49,7 @@ $requiredField = ['title', 'firstName', 'lastName', 'email', 'phone', 'dob', 're
     'resCity', 'resZip', 'resState', 'marStatus', 'empStatus', 'employer', 'comm', 'image'];
 
 // Add required fields specific to registration
-if ( ! $update)
+if (!$update)
 {
     array_push($requiredField, ['password', 'confirm']);
 }
@@ -64,4 +66,5 @@ foreach ($errorList as $key => $value)
         break;
     }
 }
+
 ?>

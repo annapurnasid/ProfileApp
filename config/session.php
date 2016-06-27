@@ -19,8 +19,8 @@ class session
      * Function to initialize session fields
      *
      * @access public
-     * @param  string $value
      * @param  string $key
+     * @param  string $value
      * @return void
      */
     function init($key, $value)
