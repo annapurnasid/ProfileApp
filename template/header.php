@@ -5,6 +5,7 @@
  */
 
 require_once('config/session.php');
+
 $objSes = new session();
 $resultSes = $objSes->checkSession();
 $loggedIn = FALSE;
@@ -25,7 +26,7 @@ if ($resultSes)
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <?php 
-            if(!$loggedIn)
+            if (!$loggedIn)
             {
         ?>
                 <ul class="nav navbar-nav">

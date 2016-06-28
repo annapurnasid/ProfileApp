@@ -1,8 +1,12 @@
 <?php
 
+/*
+  @Author : Mfsi_Annapurnaa
+  @purpose : Session Opertaions
+ */
+
 class session
 {
-
     /**
      * Function to start session
      *
@@ -41,10 +45,8 @@ class session
         {
             return TRUE;
         }
-        else
-        {
-            return FALSE;
-        }
+
+        return FALSE;
     }
 
     /**
@@ -59,7 +61,6 @@ class session
         session_unset();
         session_destroy();
     }
-
 }
 
 ?>

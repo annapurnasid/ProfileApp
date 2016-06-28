@@ -1,5 +1,8 @@
 <?php
-
+/*
+  @Author : Mfsi_Annapurnaa
+  @purpose : Query Operations
+ */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -9,7 +12,6 @@ require_once ('config/session.php');
 
 class queryOperation
 {
-
     public $conn;
     public $connObj;
     public $result;
@@ -37,6 +39,12 @@ class queryOperation
      */
     function getEmployeeDetail($id = '')
     {
+        $joinQuery = "FROM Employee 
+            JOIN Address AS Residence ON Employee.empId = Residence.empId 
+            AND Residence.addressType = 'residence'
+            JOIN Address AS Office ON Employee.empId = Office.empId 
+            AND Office.addressType = 'office'";
+        
         // To fetch the details for update, after log in
         if (!empty($id))
         {
@@ -45,13 +53,8 @@ class queryOperation
                 Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
                 Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
                 AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
-                Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, Employee.note
-                FROM Employee 
-                JOIN Address AS Residence ON Employee.empId = Residence.empId 
-                AND Residence.addressType = 'residence'
-                JOIN Address AS Office ON Employee.empId = Office.empId 
-                AND Office.addressType = 'office'
-                HAVING EmpID = $id";
+                Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
+                Employee.note " . $joinQuery;
         }
         // To fetch the details to display
         else
@@ -68,12 +71,7 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note
-                FROM Employee 
-                JOIN Address AS Residence ON Employee.empId = Residence.empId 
-                AND Residence.addressType = 'residence'
-                JOIN Address AS Office ON Employee.empId = Office.empId 
-                AND Office.addressType = 'office'";
+                Employee.note AS Note " . $joinQuery;
         }
 
         // If connection made, return query result
@@ -85,7 +83,7 @@ class queryOperation
      *
      * @access public
      * @param string $table
-     * @param column $field
+     * @param string $field
      * @param array  $condition
      * @return array
      */
@@ -96,7 +94,6 @@ class queryOperation
         // If $condition has some value 
         if (0 < count($condition))
         {
-
             // Add WHERE to concate condition with query
             $selectQuery .= ' WHERE ';
 
@@ -105,7 +102,7 @@ class queryOperation
 
             foreach ($condition as $key => $val)
             {
-
+                
                 // Check if $condition is array i.e it has multiple values
                 if (is_array($val))
                 {
@@ -146,7 +143,6 @@ class queryOperation
      *
      * @access public
      * @param string $table
-     * @param array $data
      * @param array $condition
      * @return void
      */
@@ -166,10 +162,10 @@ class queryOperation
      * Function for inserting employee details
      *
      * @access public
-     * @param string $table
-     * @param array $data
-     * @param array $condition
-     * @param boolean $update
+     * @param string  $table
+     * @param array   $data
+     * @param array   $condition
+     * @param boolean $isUpdate
      * @return void
      */
     function insertUpdate($table, $data, $condition = '', $isUpdate = FALSE)
@@ -211,7 +207,6 @@ class queryOperation
         }
 
         // Use session variable
-
         if (!$isUpdate)
         {
             // Id of the last inserted record
@@ -221,7 +216,6 @@ class queryOperation
 
         return TRUE;
     }
-
 }
 
 ?>

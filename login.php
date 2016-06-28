@@ -1,9 +1,9 @@
 <?php
 /*
   @Author : Mfsi_Annapurnaa
-  @purpose : handle thelisting of employee data.
-  : Deletion of a row
+  @purpose : Login page
  */
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -15,7 +15,7 @@ $obj = new queryOperation();
 
 if (!empty($_POST))
 {
-    if(!empty($_POST['email']) && !empty($_POST['password']))
+    if (!empty($_POST['email']) && !empty($_POST['password']))
     {
         $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
@@ -50,6 +50,7 @@ else
 {
     $error = FALSE;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

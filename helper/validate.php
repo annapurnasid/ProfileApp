@@ -39,8 +39,10 @@ $employeeIdUpdate = isset($inputData['postData']['employeeId']) ? $inputData['po
 
 if (!$_FILES['image']['error'])
 {
-    $name = $_FILES['image']['name']; //file name uploaded
+    // Name of uploaded file
+    $name = $_FILES['image']['name']; 
 }
+
 $error = FALSE;
 $valObj = new validateInput($inputData, $update);
 

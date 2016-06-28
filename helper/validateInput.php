@@ -23,14 +23,14 @@ class validateInput
      *
      * @access public
      * @param  array  $input
-     * @param  int    $up 
+     * @param  int    $update 
      * @return void
      */
-    function __construct($input, $up)
+    function __construct($input, $update)
     {
         $this->inputData = $input['postData'];
         $this->fileData = $input['fileData'];
-        $this->update = $up;
+        $this->update = $update;
     }
 
     /**
@@ -38,7 +38,7 @@ class validateInput
      *
      * @access public
      * @param  array $requiredField  
-     * @return array $this->errorList
+     * @return array
      */
     function required($requiredField)
     {
@@ -62,20 +62,25 @@ class validateInput
                     case 'lastName':
                         $this->errorList = $this->alphabets($value, $key);
                         break;
+
                     case 'email':
                         $this->errorList = $this->email($value, $key);
                         break;
+
                     case 'phone':
                     case 'resZip':
                     case 'ofcZip':
                         $this->errorList = $this->number($value, $key);
                         break;
+
                     case 'empStatus':
                         $this->errorList = $this->employement($value, $key);
                         break;
+
                     case 'password':
                         $this->errorList = $this->password($value, $key);
                         break;
+
                     case 'comm':
                         $this->errorList = $this->communication($value, $key);
                         break;
@@ -110,7 +115,7 @@ class validateInput
      * @access public
      * @param  string $value
      * @param  string $key
-     * @return array $this->errorList
+     * @return array
      */
     function alphabets($value, $key)
     {
@@ -119,6 +124,7 @@ class validateInput
         {
             $this->errorList[$key] = 'Only letters allowed';
         }
+
         return $this->errorList;
     }
 
@@ -128,7 +134,7 @@ class validateInput
      * @access public
      * @param  string $value
      * @param  string $key
-     * @return array $this->errorList
+     * @return array
      */
     function email($value, $key)
     {
@@ -158,7 +164,7 @@ class validateInput
      * @access public
      * @param  string $value
      * @param  string $key
-     * @return array $this->errorList
+     * @return array
      */
     function number($value, $key)
     {
@@ -170,7 +176,6 @@ class validateInput
                 $this->errorList[$key] = 'Invalid phone number';
             }
         }
-
         // Validate zip
         else
         {
@@ -191,7 +196,7 @@ class validateInput
      * @param  int    $imageSize
      *  @param string $imageTmp
      *  @param string $imageExt
-     * @return array $this->errorList
+     * @return array
      */
     function image($name, $imageSize, $imageTmp, $imageExt)
     {
@@ -207,7 +212,6 @@ class validateInput
         }
 
         // Image size validation
-
         if (MAXSIZE < $imageSize)
         {
             $this->errorList['image'] = 'File size must be excately 2 MB';
@@ -219,7 +223,6 @@ class validateInput
             move_uploaded_file($imageTmp, IMAGEPATH . $name);
         }
 
-
         return $this->errorList;
     }
 
@@ -229,7 +232,7 @@ class validateInput
      * @access public
      * @param  string $value
      * @param  string $key
-     * @return array $this->errorList
+     * @return array
      */
     function employement($value, $key)
     {
@@ -237,9 +240,7 @@ class validateInput
         if ('self-employed' === $value)
         {
             $this->inputData['employer'] = 'Self';
-            //$employer = $this->inputData['employer'];
         }
-
         else if ('employed' === $value && '' === $this->inputData['employer'])
         {
             $this->errorList['employer'] = 'Specify Your employer';
@@ -254,7 +255,7 @@ class validateInput
      * @access public
      * @param  string $value
      * @param  string $key
-     * @return array $this->errorList
+     * @return array
      */
     function password($value, $key)
     {
@@ -264,7 +265,6 @@ class validateInput
         {
             $this->errorList[$key] = 'Minimum 8 characters required';
         }
-
         // Validate password confirmation
         else if ($this->inputData['confirm'] !== $value)
         {
@@ -273,13 +273,20 @@ class validateInput
 
         return $this->errorList;
     }
-    
+
+    /**
+     * Function to validate input communication
+     *
+     * @access public
+     * @param  string $value
+     * @param  string $key
+     * @return array
+     */
     function communication($value, $key)
     {
         //echo $key. '===' . $value; exit;
         return $this->errorList;
     }
-
 }
 ?>
 

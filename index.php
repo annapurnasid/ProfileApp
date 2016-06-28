@@ -1,15 +1,20 @@
 <?php
+/*
+  @Author : Mfsi_Annapurnaa
+  @purpose : Index page
+ */
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('config/session.php');
 $objSes = new session();
-if(TRUE == $objSes->checkSession())
+
+if(TRUE === $objSes->checkSession())
 {
     $objSes->signOut();
 }
-
 
 ?>
 

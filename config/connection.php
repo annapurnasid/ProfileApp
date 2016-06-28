@@ -1,5 +1,8 @@
 <?php
-
+/*
+  @Author : Mfsi_Annapurnaa
+  @purpose : Db connection operations
+ */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -17,7 +20,7 @@ class connection
      *
      * @access public
      * @param  void
-     * @return connection object $conn
+     * @return object
      */
     function makeConnection()
     {
@@ -69,7 +72,6 @@ class connection
     {
         mysqli_close();
     }
-
 }
 
 ?>
