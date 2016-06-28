@@ -183,7 +183,7 @@ else
                                              value="<?php echo ($update) ? $row['title'] : 
                                              (isset($_POST['title']) ? $_POST['title'] : ''); ?>">
                                         <span class="error"><?php echo $errorList['title'];?></span>
-                                        <p id="titleErr"></p>
+                                        <p id="titleErr" class="error"></p>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <input type="text" name = "firstName" class="form-control" 
@@ -192,7 +192,7 @@ else
                                             ['firstName']) ? $_POST['firstName'] : ''); ?>">
                                         <span class="error"><?php echo $errorList['firstName'];?>
                                         </span>
-                                        <p id="firstNameErr"></p>
+                                        <p id="firstNameErr" class="error"></p>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <input type="text" name = "middleName" class="form-control" 
@@ -201,7 +201,7 @@ else
                                             ($_POST['middleName']) ? $_POST['middleName'] : ''); ?>">
                                         <span class="error"><?php echo $errorList['middleName'];?>
                                         </span>
-                                        <p id="middleNameErr"></p>
+                                        <p id="middleNameErr" class="error"></p>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <input type="text" name = "lastName" class="form-control" 
@@ -210,7 +210,7 @@ else
                                             ['lastName']) ? $_POST['lastName'] : ''); ?>">
                                         <span class="error"><?php echo $errorList['lastName'];?>
                                         </span>
-                                        <p id="lastNameErr"></p>
+                                        <p id="lastNameErr" class="error"></p>
                                     </div>
                                 </div>
                                 <!-- Email input-->
@@ -225,7 +225,7 @@ else
                                             input-md" value="<?php echo ($update) ? $row['email'] : 
                                             (isset($_POST['email']) ? $_POST['email'] : ''); ?>">
                                         <span class="error"><?php echo $errorList['email'];?></span>
-                                        <p id="emailErr"></p>
+                                        <p id="emailErr" class="error"></p>
                                     </div>
                                 </div>
                                 <?php if (!$update)
@@ -239,7 +239,7 @@ else
                                             placeholder="***************" class="form-control 
                                             input-md">
                                         <span class="error"><?php echo $errorList['password'];?></span>
-                                        <p id="passwordErr"></p>
+                                        <p id="passwordErr" class="error"></p>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -251,7 +251,7 @@ else
                                             placeholder="***************" class="form-control 
                                             input-md">
                                         <span class="error"><?php echo $errorList['confirm'];?></span>
-                                        <p id="confirmErr"></p>
+                                        <p id="confirmErr" class="error"></p>
                                     </div>
                                 </div>
                                 <?php } ?>
@@ -267,7 +267,7 @@ else
                                             (isset($_POST['phone']) ? $inputData['postData']['phone']
                                             : ''); ?>">
                                         <span class="error"><?php echo $errorList['phone'];?></span>
-                                        <p id="phoneErr"></p>
+                                        <p id="phoneErr" class="error"></p>
                                     </div>
                                 </div>
                                 <!--Radio button for gender-->
@@ -307,7 +307,7 @@ else
                                             value="<?php echo ($update) ? $row['dateOfBirth'] : 
                                             (isset($_POST['dob']) ? $_POST['dob'] : ''); ?>"/>
                                         <span class="error"><?php echo $errorList['dob'];?></span>
-                                        <p id="dobErr"></p>
+                                        <p id="dobErr" class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -328,7 +328,7 @@ else
                                             $_POST['resStreet'] : '');?>">
                                         <span class="error"><?php echo $errorList['resStreet'];?>
                                         </span>
-                                        <p id="resStreetErr"></p>
+                                        <p id="resStreetErr" class="error"></p>
                                         <!-- City-->
                                         <input id="inputResCity" name="resCity" type="text" placeholder="city" 
                                             class="form-control input-md address" value="<?php echo 
@@ -363,7 +363,7 @@ else
                                             ?>
                                         </select>
                                         <span class="error"><?php echo $errorList['resState'];?></span>
-                                        <p id="resStateErr"></p>
+                                        <p id="resStateErr" class="error"></p>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <label for="Address">Office Address</label>
@@ -442,7 +442,7 @@ else
                                             </option>
                                         </select>
                                         <span class="error"><?php echo $errorList['marStatus'];?></span>
-                                        <p id="marStatusErr"></p>
+                                        <p id="marStatusErr" class="error"></p>
                                     </div>
                                 </div>
                                 <!-- Radio button for employment status-->
@@ -509,7 +509,7 @@ else
                                             ($update) ? $row['employer'] : (isset($_POST['employer']) ? 
                                             $inputData['postData']['employer'] : ''); ?> ">
                                         <span class="error"><?php echo $errorList['employer'];?></span>
-                                        <p id="employErr"></p>
+                                        <p id="employErr" class="error"></p>
                                     </div>
                                 </div>
                                 <!-- Image Upload -->
@@ -612,7 +612,7 @@ else
                                                 </label>
                                             </div>
                                             <span class="error"><?php echo $errorList['comm'];?></span>
-                                            <p id="commErr"></p>
+                                            <p id="commErr" class="error"></p>
                                         </div>
                                     </div>
                                 </div>
