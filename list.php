@@ -1,12 +1,9 @@
 <?php
-/**
-  *@Author : Mfsi_Annapurnaa
-  *@purpose : Handle listing of employee data and delete operation
-  */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Handle listing of employee data and delete operation
+ */
 
 require_once('config/session.php');
 require_once('config/queryOperation.php');

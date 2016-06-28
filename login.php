@@ -1,17 +1,15 @@
 <?php
-/**
-  *@Author : Mfsi_Annapurnaa
-  *@purpose : Login page
-  */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Login page
+ */
 
 require_once('config/queryOperation.php');
 require_once('config/session.php');
 
 $obj = new queryOperation();
+$error = FALSE;
 
 if (!empty($_POST))
 {
@@ -48,10 +46,6 @@ if (!empty($_POST))
     {
         $error = 'Enter username and password';
     }
-}
-else
-{
-    $error = FALSE;
 }
 
 ?>

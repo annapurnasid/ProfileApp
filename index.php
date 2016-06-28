@@ -1,17 +1,14 @@
 <?php
-/**
-  *@Author : Mfsi_Annapurnaa
-  *@purpose : Index page
-  */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Index page
+ */
 
 require_once('config/session.php');
 $objSes = new session();
 
-if(TRUE === $objSes->checkSession())
+if ($objSes->checkSession())
 {
     $objSes->signOut();
 }

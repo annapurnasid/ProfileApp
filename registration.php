@@ -1,9 +1,9 @@
 <?php
+
 /**
-  *@Author  : Mfsi_Annapurnaa
-  *@purpose : Registration form layout.
-           : Update operaton on the emplolyee data
-  */
+ * @Author  : Mfsi_Annapurnaa
+ * @purpose : Registration form layout and Update operaton on the emplolyee data
+ */
 
 require_once('config/queryOperation.php');
 require_once('config/session.php');

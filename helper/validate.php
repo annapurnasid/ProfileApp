@@ -1,9 +1,9 @@
 <?php
 
 /**
-  *@Author : Mfsi_Annapurnaa
-  *@purpose : Form Validation
-  */
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Form Validation
+ */
 
 require_once('validateInput.php');
 $inputData['postData'] = $_POST;

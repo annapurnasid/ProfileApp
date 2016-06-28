@@ -1,7 +1,8 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Common navigation bar for all pages
+
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Common navigation bar for all pages
  */
 
 require_once('config/session.php');

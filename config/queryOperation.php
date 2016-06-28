@@ -1,8 +1,9 @@
 <?php
+
 /**
-  *@Author : Mfsi_Annapurnaa
-  *@purpose : Query Operations
-  */
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Query Operations
+ */
 
 require_once('config/connection.php');
 require_once ('config/session.php');
@@ -53,9 +54,9 @@ class queryOperation
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
                 Employee.note " . $joinQuery;
         }
-        // To fetch the details to display
         else
         {
+            // To fetch the details to display
             $sqlQuery = "SELECT Employee.empId AS EmpID,
                 CONCAT(Employee.title, ' ', Employee.firstName, 
                 ' ', Employee.middleName, ' ', Employee.lastName) AS Name,
@@ -161,6 +162,7 @@ class queryOperation
     {
         $count = 0;
         $fields = '';
+
         foreach ($data as $key => $val)
         {
             if (0 !== $count++)

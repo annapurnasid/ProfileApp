@@ -1,13 +1,12 @@
 <?php
 
 /**
-  *@Author : Mfsi_Annapurnaa
-  *@purpose : Form Validation
-  */
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Form Validation
+ */
 
 class validateInput
 {
-
     public $inputData;
     public $fileData;
     public $update;
@@ -79,10 +78,6 @@ class validateInput
 
                     case 'password':
                         $this->errorList = $this->password($value, $key);
-                        break;
-
-                    case 'comm':
-                        $this->errorList = $this->communication($value, $key);
                         break;
 
                     default:
@@ -177,9 +172,9 @@ class validateInput
                 $this->errorList[$key] = 'Invalid phone number';
             }
         }
-        // Validate zip
         else
         {
+            // Validate zip
             if (!preg_match('/^\d{6}$/', $value))
             {
                 $this->errorList[$key] = 'Invalid zip';
@@ -195,8 +190,8 @@ class validateInput
      * @access public
      * @param  string $name
      * @param  int    $imageSize
-     *  @param string $imageTmp
-     *  @param string $imageExt
+     * @param  string  $imageTmp
+     * @param  string  $imageExt
      * @return array
      */
     function image($name, $imageSize, $imageTmp, $imageExt)
@@ -272,20 +267,6 @@ class validateInput
             $this->errorList['confirm'] = 'Passwords do not match';
         }
 
-        return $this->errorList;
-    }
-
-    /**
-     * Function to validate input communication
-     *
-     * @access public
-     * @param  string $value
-     * @param  string $key
-     * @return array
-     */
-    function communication($value, $key)
-    {
-        //echo $key. '===' . $value; exit;
         return $this->errorList;
     }
 }
