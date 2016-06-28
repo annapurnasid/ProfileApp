@@ -303,10 +303,11 @@ else
                                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">D.O.B</label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and assign the value if it is new or update form -->
-                                        <input type='date'  name="dob" class="form-control" 
+                                        <input id="inputDob" type='date' name="dob" class="form-control"
                                             value="<?php echo ($update) ? $row['dateOfBirth'] : 
                                             (isset($_POST['dob']) ? $_POST['dob'] : ''); ?>"/>
                                         <span class="error"><?php echo $errorList['dob'];?></span>
+                                        <p id="dobErr"></p>
                                     </div>
                                 </div>
                             </div>
@@ -320,28 +321,31 @@ else
                                         <label for="Address">Residence Address</label> 
                                         <!-- Check and assign the value if it is new or update form -->
                                         <!-- Street Name-->
-                                        <input id="Address" name="resStreet" type="text" 
+                                        <input id="inputResStreet" name="resStreet" type="text" 
                                             placeholder="Street" class="form-control input-md 
                                             address" value="<?php  echo ($update) ? 
                                             $row['resStreet'] : (isset($_POST['resStreet']) ? 
                                             $_POST['resStreet'] : '');?>">
                                         <span class="error"><?php echo $errorList['resStreet'];?>
                                         </span>
+                                        <p id="resStreetErr"></p>
                                         <!-- City-->
-                                        <input id="city" name="resCity" type="text" placeholder="city" 
+                                        <input id="inputResCity" name="resCity" type="text" placeholder="city" 
                                             class="form-control input-md address" value="<?php echo 
                                             ($update) ? $row['resCity'] : (isset($_POST['resCity']) ? 
                                             $_POST['resCity'] : '');?>">
                                         <span class="error"><?php echo $errorList['resCity'];?>
                                         </span>
+                                        <p id="resCityErr"></p>
                                         <!-- ZIp -->
-                                        <input id="zip" name="resZip" type="text" placeholder="Zip" 
+                                        <input id="inputResZip" name="resZip" type="text" placeholder="Zip" 
                                             class="form-control input-md address" value="<?php echo 
                                             ($update) ? $row['resZip'] : (isset($_POST['resZip']) ? 
                                             $_POST['resZip'] : '');?>">
                                         <span class="error"><?php echo $errorList['resZip'];?></span>
+                                        <p id="resZipErr"></p>
                                         <!-- Select State -->
-                                        <select id="resState" name="resState" class="form-control 
+                                        <select id="inputResState" name="resState" class="form-control 
                                             address">
                                             <option value="0">Select State</option>
                                             <?php 
@@ -359,6 +363,7 @@ else
                                             ?>
                                         </select>
                                         <span class="error"><?php echo $errorList['resState'];?></span>
+                                        <p id="resStateErr"></p>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <label for="Address">Office Address</label>
@@ -408,7 +413,7 @@ else
                                         for="marStatus">Marital Status</label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and select from drop down if it is new or update form -->
-                                        <select id="marStatus" name="marStatus" class="form-control" >
+                                        <select id="inputMarStatus" name="marStatus" class="form-control" >
                                             <option value="0">Status</option>
                                             <option value="single" <?php echo ($update && 
                                                 'married' == $row['marStatus']) ? 'selected' : 
@@ -437,6 +442,7 @@ else
                                             </option>
                                         </select>
                                         <span class="error"><?php echo $errorList['marStatus'];?></span>
+                                        <p id="marStatusErr"></p>
                                     </div>
                                 </div>
                                 <!-- Radio button for employment status-->
@@ -447,7 +453,7 @@ else
                                         <div class="row">
                                             <!-- Check, select the radio button if, new or update-->
                                             <div class="radio col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                <label><input type="radio" name="empStatus" 
+                                                <label><input id="employed" type="radio" name="empStatus" 
                                                     value="employed" <?php echo ($update) ? 
                                                     ($row['empStatus'] == 'employed' ? 
                                                     "checked=checked" : '') : "checked=checked";?>>
@@ -469,7 +475,7 @@ else
                                         <div class="row">
                                             <div class="radio col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <label>
-                                                    <input type="radio" name="empStatus" 
+                                                    <input id="selfEmployed" type="radio" name="empStatus" 
                                                         value="self-employed" <?php echo ($update) ?
                                                         ($row['empStatus'] == 'self-employed' ? 
                                                         "checked=checked" : '') : ((isset($_POST
@@ -498,11 +504,12 @@ else
                                     </label>  
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and assign value if it is new or update form -->
-                                        <input id="textinput" name="employer" type="text" 
+                                        <input id="inputEmployer" name="employer" type="text" 
                                             class="form-control input-md" value=" <?php echo 
                                             ($update) ? $row['employer'] : (isset($_POST['employer']) ? 
                                             $inputData['postData']['employer'] : ''); ?> ">
                                         <span class="error"><?php echo $errorList['employer'];?></span>
+                                        <p id="employErr"></p>
                                     </div>
                                 </div>
                                 <!-- Image Upload -->
@@ -561,7 +568,7 @@ else
                                             <div class="checkbox col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <label for="Communication-0">
                                                     <input type="checkbox" name="comm[]" 
-                                                        id="Communication-0" value="1" <?php echo 
+                                                        id="inputComm0" value="1" <?php echo 
                                                         ($update) ? (in_array('1', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('1', 
@@ -572,7 +579,7 @@ else
                                             <div class="checkbox col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                <label for="Communication-1">
                                                     <input type="checkbox" name="comm[]" 
-                                                        id="Communication-1" value="2" <?php echo 
+                                                        id="inputComm1" value="2" <?php echo 
                                                         ($update) ? (in_array('2', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('2', 
@@ -585,7 +592,7 @@ else
                                             <div class="checkbox col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                <label for="Communication-2">
                                                     <input type="checkbox" name="comm[]" 
-                                                        id="Communication-2" value="3" <?php echo 
+                                                        id="inputComm2" value="3" <?php echo 
                                                         ($update) ? (in_array('3', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('3', 
@@ -596,7 +603,7 @@ else
                                             <div class="checkbox col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <label for="Communication-3">
                                                     <input type="checkbox" name="comm[]" 
-                                                        id="Communication-3" value="4" <?php echo 
+                                                        id="inputComm3" value="4" <?php echo 
                                                         ($update) ? (in_array('4', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('4', 
@@ -605,6 +612,7 @@ else
                                                 </label>
                                             </div>
                                             <span class="error"><?php echo $errorList['comm'];?></span>
+                                            <p id="commErr"></p>
                                         </div>
                                     </div>
                                 </div>
