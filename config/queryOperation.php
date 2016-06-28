@@ -48,8 +48,8 @@ class queryOperation
         // To fetch the details for update, after log in
         if (!empty($id))
         {
-            $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
-                Employee.lastName, Employee.email, Employee.phone, Employee.gender, Employee.dateOfBirth, 
+            $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName,
+                Employee.middleName, Employee.lastName, Employee.email, Employee.phone, Employee.gender, Employee.dateOfBirth, 
                 Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
                 Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
                 AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
@@ -127,14 +127,6 @@ class queryOperation
             }
         }
 
-        // If fieldsare for display in userHome page, return $row 
-        if ('email, empId, password, title, firstName, lastName, middleName' === $field)
-        {
-            $result = $this->connObj->executeConnection($this->conn, $selectQuery);
-            $row = mysqli_fetch_assoc($result);
-            return $row;
-        }
-
         return $this->connObj->executeConnection($this->conn, $selectQuery);
     }
 
@@ -143,7 +135,7 @@ class queryOperation
      *
      * @access public
      * @param string $table
-     * @param array $condition
+     * @param array  $condition
      * @return void
      */
     function delete($table, $condition)
@@ -181,7 +173,7 @@ class queryOperation
 
             $col = mysqli_real_escape_string($this->conn, $key);
             $value = mysqli_real_escape_string($this->conn, $val);
-            $fields .= "$col = '$val'";
+            $fields .= "$col = '$value'";
         }
 
         // Insert values into db

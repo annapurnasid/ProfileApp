@@ -20,10 +20,13 @@ if (!empty($_POST))
         $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-        $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . $email . '\''];
+        $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\''
+            . $email . '\''];
         
         // Select the fields for display in userHome page
-        $row = $obj->select('Employee', 'email, empId, password, title, firstName, lastName, middleName', $condition);
+        $result = $obj->select('Employee', 'email, empId, password, title, firstName, lastName, '
+            . 'middleName', $condition);
+        $row = mysqli_fetch_assoc($result);
 
         if ($password !== $row['password'])
         {
@@ -70,9 +73,14 @@ else
       <?php include('template/header.php'); ?>
       <!-- Page Content -->
       <div class="container">
-          <fieldset>
+            <fieldset>
               <?php session_start();?>
-          <div><b> <h3><?php echo isset($_SESSION['insert']) ? 'Registration Successful!' : ''; unset($_SESSION['insert']); ?></h3><b></div>
+            <div><b>
+                <h3>
+                    <?php echo isset($_SESSION['insert']) ? 'Registration Successfull!' : '';
+                        unset($_SESSION['insert']); ?>
+                </h3>
+                </b></div>
           <form class="form-horizontal" action="login.php" method="POST" enctype="multipart/form-data">
          
             <!-- Text input-->
