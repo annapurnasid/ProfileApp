@@ -1,11 +1,8 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Query Operations
- */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Query Operations
+  */
 
 require_once('config/connection.php');
 require_once ('config/session.php');
@@ -32,7 +29,6 @@ class queryOperation
 
     /**
      * Function for getting all details of employee
-     *
      * @access public
      * @param  int $id
      * @return array
@@ -48,11 +44,12 @@ class queryOperation
         // To fetch the details for update, after log in
         if (!empty($id))
         {
-            $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, Employee.middleName, 
-                Employee.lastName, Employee.email, Employee.phone, Employee.gender, Employee.dateOfBirth, 
-                Residence.street AS resStreet, Residence.city AS resCity , Residence.zip AS resZip, 
-                Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
-                AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
+            $sqlQuery = "SELECT Employee.empId, Employee.title, Employee.firstName, 
+                Employee.middleName, Employee.lastName, Employee.email, Employee.phone, 
+                Employee.gender, Employee.dateOfBirth, Residence.street AS resStreet, 
+                Residence.city AS resCity , Residence.zip AS resZip, Residence.state AS resState, 
+                Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip AS ofcZip, 
+                Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
                 Employee.note " . $joinQuery;
         }
@@ -125,14 +122,6 @@ class queryOperation
                     $selectQuery .= $condition[$key] . ' ';
                 }
             }
-        }
-
-        // If fieldsare for display in userHome page, return $row 
-        if ('email, empId, password, title, firstName, lastName, middleName' === $field)
-        {
-            $result = $this->connObj->executeConnection($this->conn, $selectQuery);
-            $row = mysqli_fetch_assoc($result);
-            return $row;
         }
 
         return $this->connObj->executeConnection($this->conn, $selectQuery);

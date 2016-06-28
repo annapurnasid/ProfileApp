@@ -1,8 +1,8 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Index page
- */
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Index page
+  */
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -39,7 +39,8 @@ if(TRUE === $objSes->checkSession())
         <!-- Page Content -->
         <div class="container text-center">           
             <h1>Welcome to GetEmployed.com</h1>
-            <h3 class="primary">Fill the registration form to submit your details. You will get call for the best suitable job available for you.</h3>
+            <h3 class="primary">Fill the registration form to submit your details. 
+                You will get call for the best suitable job available for you.</h3>
             <a href="registration.php" class="btn btn-default btn-lg" role="button">Register</a>
         </div>
         <!-- Container -->

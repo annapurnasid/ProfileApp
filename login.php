@@ -1,8 +1,8 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Login page
- */
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Login page
+  */
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -20,11 +20,14 @@ if (!empty($_POST))
         $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-        $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . $email . '\''];
+        $condition = ['column' => 'Employee.email', 'operator' => '=', 
+            'val' => '\'' . $email . '\''];
         
         // Select the fields for display in userHome page
-        $row = $obj->select('Employee', 'email, empId, password, title, firstName, lastName, middleName', $condition);
-
+        $result = $obj->select('Employee', 'email, empId, password, title, firstName, lastName, '
+            . 'middleName', $condition);
+        $row = mysqli_fetch_assoc($result);
+        
         if ($password !== $row['password'])
         {
             $error = 'Invalid username or password';
@@ -67,36 +70,43 @@ else
       <link href="css/styles.css" rel="stylesheet">
    </head>
    <body>
-      <?php include('template/header.php'); ?>
-      <!-- Page Content -->
-      <div class="container">
-          <fieldset>
-              <?php session_start();?>
-          <div><b> <h3><?php echo isset($_SESSION['insert']) ? 'Registration Successful!' : ''; unset($_SESSION['insert']); ?></h3><b></div>
-          <form class="form-horizontal" action="login.php" method="POST" enctype="multipart/form-data">
-         
-            <!-- Text input-->
-            <div class="form-group">
-               <label class="col-md-4 control-label" for="email">Username</label>  
-               <div class="col-md-4">
-                  <input id="email" name="email" type="text" placeholder="xyz@gmail.com" class="form-control input-md"
-                         value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
-               </div>
-            </div>
-            <!-- Password input-->
-            <div class="form-group">
-               <label class="col-md-4 control-label" for="password">Password</label>
-               <div class="col-md-4">
-                  <input id="password" name="password" type="password" placeholder="********************" class="form-control input-md" 
-                         value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>">
-                  <span class="error"><?php echo $error;?></span>
-               </div>
-            </div>
-            <div class="row text-center">
-                    <button class = "btn btn-lg btn-primary" type = "submit">Login</button>
+        <?php include('template/header.php'); ?>
+        <!-- Page Content -->
+        <div class="container">
+            <fieldset>
+                <?php session_start();?>
+                <div><b> 
+                    <h3><?php echo isset($_SESSION['insert']) ? 'Registration Successful!' : ''; 
+                                unset($_SESSION['insert']); ?></h3>
+                    <b>
                 </div>
-         </fieldset>
-      </form>
-      </div>
+                <form class="form-horizontal" action="login.php" method="POST" 
+                    enctype="multipart/form-data">
+
+                  <!-- Text input-->
+                  <div class="form-group">
+                     <label class="col-md-4 control-label" for="email">Username</label>  
+                     <div class="col-md-4">
+                        <input id="email" name="email" type="text" placeholder="xyz@gmail.com" 
+                            class="form-control input-md"
+                               value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
+                     </div>
+                  </div>
+                  <!-- Password input-->
+                  <div class="form-group">
+                     <label class="col-md-4 control-label" for="password">Password</label>
+                     <div class="col-md-4">
+                        <input id="password" name="password" type="password" placeholder="********" 
+                            class="form-control input-md" value="<?php echo 
+                            isset($_POST['password']) ? $_POST['password'] : ''; ?>">
+                        <span class="error"><?php echo $error;?></span>
+                     </div>
+                  </div>
+                  <div class="row text-center">
+                          <button class = "btn btn-lg btn-primary" type = "submit">Login</button>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
    </body>
 </html>

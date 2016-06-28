@@ -1,8 +1,8 @@
 <?php
 
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Session Opertaions
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Session Opertaions
  */
 
 class session

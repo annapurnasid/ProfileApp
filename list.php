@@ -1,9 +1,8 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : handle thelisting of employee data.
-  : Deletion of a row
- */
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Handle listing of employee data and delete operation
+  */
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -116,10 +115,11 @@ $result = $obj->getEmployeeDetail();
                                                 'val' => "($value)"];
 
                                             // Call the required query function
-                                            $commResult = $obj->select('Communication', 'CommMedium',
-                                                $condition);
+                                            $commResult = $obj->select('Communication', 
+                                                'CommMedium', $condition);
 
-                                            while ($commRow = mysqli_fetch_array($commResult, MYSQLI_ASSOC))
+                                            while ($commRow = mysqli_fetch_array($commResult, 
+                                                    MYSQLI_ASSOC))
                                             {
                                                foreach ($commRow as $key => $value)
                                                {

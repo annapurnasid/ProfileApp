@@ -1,9 +1,9 @@
 <?php
 
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Form Validation
- */
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Form Validation
+  */
 
 require_once('validateInput.php');
 $inputData['postData'] = $_POST;
@@ -11,11 +11,13 @@ $inputData['fileData'] = $_FILES;
 
 $title = isset($inputData['postData']['title']) ? $inputData['postData']['title'] : '';
 $firstName = isset($inputData['postData']['firstName']) ? $inputData['postData']['firstName'] : '';
-$middleName = isset($inputData['postData']['middleName']) ? $inputData['postData']['middleName'] : '';
+$middleName = isset($inputData['postData']['middleName']) ? 
+    $inputData['postData']['middleName'] : '';
 $lastName = isset($inputData['postData']['lastName']) ? $inputData['postData']['lastName'] : '';
 $email = isset($inputData['postData']['email']) ? $inputData['postData']['email'] : '';
 $password = isset($inputData['postData']['password']) ? $inputData['postData']['password'] : '';
-$confirmPassword = isset($inputData['postData']['confirm']) ? $inputData['postData']['confirm'] : '';
+$confirmPassword = isset($inputData['postData']['confirm']) ? 
+    $inputData['postData']['confirm'] : '';
 $gender = isset($inputData['postData']['gender']) ? $inputData['postData']['gender'] : '';
 $dob = isset($inputData['postData']['dob']) ? $inputData['postData']['dob'] : '';
 $phone = isset($inputData['postData']['phone']) ? $inputData['postData']['phone'] : '';
@@ -35,7 +37,8 @@ $communication = (isset($inputData['postData']['comm']) && !empty($inputData['po
 $note = isset($inputData['postData']['note']) ? $inputData['postData']['note'] : '';
 $update = (isset($inputData['postData']['checkUpdate']) && 1 == $inputData['postData']['checkUpdate']) 
     ? TRUE : FALSE;
-$employeeIdUpdate = isset($inputData['postData']['employeeId']) ? $inputData['postData']['employeeId'] : '';
+$employeeIdUpdate = isset($inputData['postData']['employeeId']) ? 
+        $inputData['postData']['employeeId'] : '';
 
 if (!$_FILES['image']['error'])
 {

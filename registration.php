@@ -1,13 +1,9 @@
 <?php
-/*
-  @Author  : Mfsi_Annapurnaa
-  @purpose : Registration form layout.
+/**
+  *@Author  : Mfsi_Annapurnaa
+  *@purpose : Registration form layout.
            : Update operaton on the emplolyee data
- */
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+  */
 
 require_once('config/queryOperation.php');
 require_once('config/session.php');
@@ -145,7 +141,8 @@ else
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form action="registration.php<?php echo ($update) ? '?edit=' . $row['empId']: '';?>" 
+                    <form action="registration.php<?php echo ($update) ? '?edit=' . $row['empId']: 
+                        '';?>" 
                        method="POST" class="form-horizontal" enctype="multipart/form-data">
                         <fieldset>
                             <!-- Form Name-->
@@ -167,14 +164,15 @@ else
                             <div class="well">
                                 <h3>Personal Details</h3>
                                 <!-- Hidden fields to fetch flag value and employee id -->
-                                <input type="hidden" name="checkUpdate" value="<?php echo $update; ?>">
+                                <input type="hidden" name="checkUpdate" value="<?php echo $update;
+                                    ?>">
                                 <input type="hidden" name="employeeId" value="<?php echo ($update) ? 
                                    $row['empId'] : FALSE; ?>">
                                 <!-- Fields for name-->
                                 <div class="row form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">Name</label>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                        <!-- Check and assign the value if it is new or update form -->
+                                        <!-- Check and assign the value if new or update form -->
                                          <input type="text" name = "title" class="form-control"
                                              id="inputTitle" placeholder="Mr/Ms"
                                              value="<?php echo ($update) ? $row['title'] : 
@@ -183,17 +181,18 @@ else
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <input type="text" name = "firstName" class="form-control" 
-                                            id="inputFirstName" placeholder="First Name" value="<?php 
-                                            echo ($update) ? $row['firstName'] : (isset($_POST
+                                            id="inputFirstName" placeholder="First Name" value=
+                                            "<?php echo ($update) ? $row['firstName'] : (isset($_POST
                                             ['firstName']) ? $_POST['firstName'] : ''); ?>">
                                         <span class="error"><?php echo $errorList['firstName'];?>
                                         </span>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <input type="text" name = "middleName" class="form-control" 
-                                            id="inputMiddleName" placeholder="Middle Name" value="<?php 
-                                            echo ($update) ? $row['middleName'] : (isset
-                                            ($_POST['middleName']) ? $_POST['middleName'] : ''); ?>">
+                                            id="inputMiddleName" placeholder="Middle Name" value=
+                                            "<?php echo ($update) ? $row['middleName'] : (isset
+                                            ($_POST['middleName']) ? $_POST['middleName'] : ''); 
+                                            ?>">
                                         <span class="error"><?php echo $errorList['middleName'];?>
                                         </span>
                                     </div>
@@ -230,7 +229,8 @@ else
                                         <input type="password" id="passwordInput" name="password" 
                                             placeholder="***************" class="form-control 
                                             input-md">
-                                        <span class="error"><?php echo $errorList['password'];?></span>
+                                        <span class="error"><?php echo $errorList['password'];?>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -241,7 +241,8 @@ else
                                         <input type="password" id="confirmPassword" name="confirm" 
                                             placeholder="***************" class="form-control 
                                             input-md">
-                                        <span class="error"><?php echo $errorList['confirm'];?></span>
+                                        <span class="error"><?php echo $errorList['confirm'];?>
+                                        </span>
                                     </div>
                                 </div>
                                 <?php } ?>
@@ -291,7 +292,7 @@ else
                                 <div class="row form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">D.O.B</label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                        <!-- Check and assign the value if it is new or update form -->
+                                        <!-- Check and assign the value if new or update form -->
                                         <input type='date'  name="dob" class="form-control" 
                                             value="<?php echo ($update) ? $row['dateOfBirth'] : 
                                             (isset($_POST['dob']) ? $_POST['dob'] : ''); ?>"/>
@@ -347,7 +348,8 @@ else
                                                 } 
                                             ?>
                                         </select>
-                                        <span class="error"><?php echo $errorList['resState'];?></span>
+                                        <span class="error"><?php echo $errorList['resState'];?>
+                                        </span>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <label for="Address">Office Address</label>
@@ -365,9 +367,9 @@ else
                                             (isset($_POST['ofcCity']) ? $_POST['ofcCity'] : '');?>">
                                         <!-- Zip-->
                                         <input id="OfcZip" name="ofcZip" type="text" placeholder="Zip" 
-                                            class="form-control input-md address" value= "<?php echo ($update) ? 
-                                               $row['ofcZip'] : (isset($_POST['ofcZip']) ? 
-                                               $_POST['ofcZip'] : '');?>">
+                                            class="form-control input-md address" value= "<?php echo 
+                                            ($update) ? $row['ofcZip'] : (isset($_POST['ofcZip']) ? 
+                                            $_POST['ofcZip'] : '');?>">
                                         <span class="error"><?php echo $errorList['ofcZip'];?></span>
                                         <!-- Select State -->
                                         <select id="ofcState" name="ofcState" class="form-control 
@@ -396,7 +398,7 @@ else
                                     <label class= "col-lg-2 col-md-2 col-sm-2 col-xs-12" 
                                         for="marStatus">Marital Status</label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                        <!-- Check and select from drop down if it is new or update form -->
+                                        <!-- Check and select from drop down if new or update form -->
                                         <select id="marStatus" name="marStatus" class="form-control" >
                                             <option value="0">Status</option>
                                             <option value="single" <?php echo ($update && 
@@ -425,7 +427,8 @@ else
                                                 $_POST['marStatus']) ? 'selected' : '')); ?>>Widower
                                             </option>
                                         </select>
-                                        <span class="error"><?php echo $errorList['marStatus'];?></span>
+                                        <span class="error"><?php echo $errorList['marStatus'];?>
+                                        </span>
                                     </div>
                                 </div>
                                 <!-- Radio button for employment status-->
@@ -491,7 +494,8 @@ else
                                             class="form-control input-md" value=" <?php echo 
                                             ($update) ? $row['employer'] : (isset($_POST['employer']) ? 
                                             $inputData['postData']['employer'] : ''); ?> ">
-                                        <span class="error"><?php echo $errorList['employer'];?></span>
+                                        <span class="error"><?php echo $errorList['employer'];?>
+                                        </span>
                                     </div>
                                 </div>
                                 <!-- Image Upload -->
@@ -517,7 +521,8 @@ else
                                                            <h4 class="modal-title">Your Image</h4>
                                                         </div>
                                                         <div class = "modal-body">
-                                                            <img src = "<?php echo IMAGEPATH.($update ? 
+                                                            <img src = "<?php 
+                                                                echo IMAGEPATH.($update ? 
                                                                 $row['image'] : (isset
                                                                 ($_POST['image']) ? $_POST['image'] : 
                                                                 '')); ?>" alt = "No image" 
@@ -541,12 +546,12 @@ else
                                 <?php $communicationIds = isset($row['commId']) ? 
                                     explode(',', $row['commId']) : []; ?>
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="Communication">
-                                        Communicate via
+                                    <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" 
+                                           for="Communication">Communicate via
                                     </label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <div class="row">
-                                            <!-- Check and select check box if it is new or update form -->
+                                            <!-- Check and select check box if new or update form -->
                                             <div class="checkbox col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <label for="Communication-0">
                                                     <input type="checkbox" name="comm[]" 
@@ -554,7 +559,8 @@ else
                                                         ($update) ? (in_array('1', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('1', 
-                                                        $_POST['comm'])) ? "checked=checked" : '' );?>>
+                                                        $_POST['comm'])) ? "checked=checked" : '' );
+                                                        ?>>
                                                     E-Mail
                                                 </label>
                                             </div>
@@ -565,7 +571,8 @@ else
                                                         ($update) ? (in_array('2', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('2', 
-                                                        $_POST['comm'])) ? "checked=checked" : '' );?>>
+                                                        $_POST['comm'])) ? "checked=checked" : '' );
+                                                        ?>>
                                                     Message
                                                </label>
                                             </div>
@@ -578,7 +585,8 @@ else
                                                         ($update) ? (in_array('3', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('3', 
-                                                        $_POST['comm'])) ? "checked=checked" : '' );?>>
+                                                        $_POST['comm'])) ? "checked=checked" : '' );
+                                                        ?>>
                                                     Phone
                                                </label>
                                             </div>
@@ -589,11 +597,13 @@ else
                                                         ($update) ? (in_array('4', $communicationIds) ? 
                                                         "checked=checked" : '') : ((isset($_POST['comm']) 
                                                         && !empty($_POST['comm']) && in_array('4', 
-                                                        $_POST['comm'])) ? "checked=checked" : '' );?>>
+                                                        $_POST['comm'])) ? "checked=checked" : '' );
+                                                        ?>>
                                                     Any
                                                 </label>
                                             </div>
-                                            <span class="error"><?php echo $errorList['comm'];?></span>
+                                            <span class="error"><?php echo $errorList['comm'];?>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

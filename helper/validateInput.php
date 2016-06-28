@@ -1,9 +1,9 @@
 <?php
 
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Form Validation
- */
+/**
+  *@Author : Mfsi_Annapurnaa
+  *@purpose : Form Validation
+  */
 
 class validateInput
 {
@@ -147,7 +147,8 @@ class validateInput
         }
 
         // Check unique email
-        $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . $value . '\''];
+        $condition = ['column' => 'Employee.email', 'operator' => '=', 'val' => '\'' . 
+            $value . '\''];
         $result = $queryObj->select('Employee', 'email', $condition);
         
         if (mysqli_num_rows($result) > 0 && !$this->update)
