@@ -274,15 +274,19 @@ function validateForm() {
     }
     
     // Validate comunication
-    var comm = [];
+    var check = false;
     for (var i = 0; i < 4; i++)
     {
-        comm[i] = document.getElementById('inputComm' + i).checked;
+        check = document.getElementById('inputComm' + i).checked;
+        if(check)
+        {
+            break;
+        }
     }
     
     var commErr = document.getElementById('commErr');
     
-    if (!(comm[0] || comm[1] || comm[2] || comm[3]))
+    if (!check)
     {
         commErr.innerHTML = 'Specify your Communication medium';
         error = true;
