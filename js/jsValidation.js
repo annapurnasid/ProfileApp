@@ -23,10 +23,10 @@ function validateForm() {
         titleErr.innerHTML = 'Only characters allowed';
         error = true;
     }
-     else
-     {
-         titleErr.innerHTML = '';
-     }
+    else
+    {
+        titleErr.innerHTML = '';
+    }
     
     // Validate FirstName
     var fName = document.getElementById('inputFirstName').value;
@@ -42,10 +42,10 @@ function validateForm() {
         firstNameErr.innerHTML = 'Only characters allowed';
         error = true;
     }
-     else
-     {
-         firstNameErr.innerHTML = '';
-     }
+    else
+    {
+        firstNameErr.innerHTML = '';
+    }
      
     // Validate Middle Name
     var mName = document.getElementById('inputMiddleName').value;
@@ -56,10 +56,10 @@ function validateForm() {
         middleNameErr.innerHTML = 'Only characters allowed';
         error = true;
     }
-     else
-     {
-         middleNameErr.innerHTML = '';
-     }
+    else
+    {
+        middleNameErr.innerHTML = '';
+    }
 
      
     // Validate Last Name
@@ -76,10 +76,10 @@ function validateForm() {
         lastNameErr.innerHTML = 'Only characters allowed';
         error = true;
     }
-     else
-     {
-         lastNameErr.innerHTML = '';
-     }
+    else
+    {
+        lastNameErr.innerHTML = '';
+    }
      
      // Validate email
     var email = document.getElementById('inputEmail').value;
