@@ -2,7 +2,7 @@
 $(document).ready(function(){
     
     var textRegExp = /^[a-zA-Z]+$/;
-    var phoneRegExp = /^[0-9]+$/;
+    var numberRegExp = /^[0-9]+$/;
     var error = false;
     
     $('#register').click(function() {
@@ -18,6 +18,9 @@ $(document).ready(function(){
         var dob = $('#inputDob').val();
         var resStreet = $('#inputResStreet').val();
         var resCity = $('#inputResCity').val();
+        var resZip = $('#inputResZip').val();
+        var resState = $('#inputResState').val();
+        var marStatus = $('#inputMarStatus').val();
         
         titleVal(title);
         firstNameVal(firstName);
@@ -30,33 +33,30 @@ $(document).ready(function(){
         dobVal(dob);
         resStreetVal(resStreet);
         resCityVal(resCity);
+        resZipVal(resZip);
+        resStateVal(resState);
+        marStatusVal(marStatus);
         
         if(error){
-            console.log('die');
             return false;
         }
-        console.log('bye');
         return true;
     });
     
     function titleVal(title)
     {
-        console.log('HIII');
         if ('' === title)
         {
-            console.log('++++');
             $('#titleErr').text('Field required');
             error = true;
         }
         else if(!textRegExp.test(title))
         {
-            console.log('====');
             $('#titleErr').text('Only characters allowed');
             error = true;
         }
         else
         {
-            console.log('++++=====');
             $('#titleErr').text('');
         }
     }
@@ -76,7 +76,7 @@ $(document).ready(function(){
     
     function middleNameVal(middleName)
     {
-        if ('' !== middleName && !textRegExp.test(middleName))
+        if ('' !== middleName.trim() && !textRegExp.test(middleName))
         {
             $('#middleNameErr').text('Only characters allowed');
             error = true;
@@ -172,7 +172,7 @@ $(document).ready(function(){
             $('#phoneErr').text('Field required');
             error = true;
         }
-        else if (10 !== phone.length || !phoneRegExp.test(phone)) 
+        else if (10 !== phone.length || !numberRegExp.test(phone)) 
         {
             $('#phoneErr').text('Enter valid phone number');
             error = true;
@@ -210,6 +210,7 @@ $(document).ready(function(){
         }
     }
     
+    // Validate Residence City
     function resCityVal(resCity)
     {
         // Validate Residence city
@@ -224,6 +225,55 @@ $(document).ready(function(){
         }
     }
     
+    // Validate Residence Zip
+    function resZipVal(resZip)
+    {
+
+        if ('' === resZip)
+        {
+            $('#resZipErr').text('Field required');
+            error = true;
+        }
+        else if (6 !== resZip.length || !numberRegExp.test(resZip)) 
+        {
+            $('#resZipErr').text('Enter valid Zip');
+           error = true;
+        }
+        else
+        {
+            $('#resZipErr').text('');
+        }
+    }
+    
+    // Validate Residence state
+    function resStateVal(resState)
+    {
+
+        if ('0' === resState)
+        {
+            $('#resStateErr').text('Select a state');
+            error = true;
+        }
+        else
+        {
+            $('#resStateErr').text('');
+        }
+    }
+    
+    // Validate Marital status
+    function marStatusVal(marStatus)
+    {
+
+        if ('0' === marStatus)
+        {
+            $('#marStatusErr').text('Specify your marital status');
+            error = true;
+        }
+        else
+        {
+            $('#marStatusErr').text('');
+        }
+    }
  
 });
-
+    
