@@ -31,7 +31,7 @@ if ($objSes->checkSession())
     </head>
     <body>
         <?php
-        include('template/header.php');
+        require_once('template/header.php');
         ?>
         <!-- Page Content -->
         <div class="container text-center">           

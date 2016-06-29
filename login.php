@@ -64,7 +64,7 @@ if (!empty($_POST))
       <link href="css/styles.css" rel="stylesheet">
    </head>
    <body>
-        <?php include('template/header.php'); ?>
+        <?php require_once('template/header.php'); ?>
         <!-- Page Content -->
         <div class="container">
             <fieldset>

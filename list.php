@@ -63,7 +63,7 @@ $result = $obj->getEmployeeDetail();
         <link href="css/styles.css" rel="stylesheet">
     </head>
     <body>
-        <?php include('template/header.php'); ?>
+        <?php require_once('template/header.php'); ?>
         <!-- Page Content -->
         <div class="container-fluid">
             <table class="table table-responsive">
@@ -93,21 +93,22 @@ $result = $obj->getEmployeeDetail();
                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
                         {
                            ++$i;
-                    ?>
+                        ?>
                             <tr>
                             <?php 
                                 foreach ($row as $key => $value)
                                 {
-                            ?>
+                                ?>
                                     <td> 
                                     <?php 
-                                        if ('EmpID' === $key)
-                                        {
-                                           $value = $i;
-                                          echo $value;
-                                        }
-                                        else if ('Communication' === $key)
-                                        {
+                                    switch ($key)
+                                    {
+                                        case 'EmpID':
+                                            $value = $i;
+                                            echo $value;
+                                            break;
+
+                                        case 'Communication':
                                             $condition = ['column' => 'CommId', 'operator' => 'IN', 
                                                 'val' => "($value)"];
 
@@ -123,9 +124,9 @@ $result = $obj->getEmployeeDetail();
                                                  echo $value . '<br /> ';
                                                 }
                                             }
-                                        }
-                                        else if ('Image' === $key) 
-                                        { 
+                                            break;
+
+                                        case 'Image':
                                             $imageName = IMAGEPATH . $value;
 
                                             if (!empty($value) && file_exists($imageName))
@@ -139,10 +140,10 @@ $result = $obj->getEmployeeDetail();
                                             {
                                                echo 'No Image';
                                             }
-                                        }
-                                    else 
-                                    {
-                                        echo $value;
+                                            break;
+
+                                        default :
+                                            echo $value;     
                                     }                        
                                     ?> 
                                     </td>

@@ -13,11 +13,8 @@ $objSes = new session();
 $objSes->start();
 $result = $objSes->checkSession();
 
-if (!$result)
-{
-    $update = FALSE;
-}
-else
+$update = FALSE;
+if($result)
 {
     $update = TRUE;
     $empId = $_SESSION['id'];
@@ -41,7 +38,7 @@ $stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal P
 if (!empty($_POST))
 {
     // Include validate file
-    include('helper/validate.php');
+    require_once('helper/validate.php');
 
     if (!$error)
     {
@@ -136,7 +133,7 @@ else
         <link href="css/styles.css" rel="stylesheet">
     </head>
    <body>
-    <?php include('template/header.php')?>
+    <?php require_once('template/header.php')?>
     <!-- Page Content -->
         <div class="container">
             <div class="row">

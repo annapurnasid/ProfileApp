@@ -5,7 +5,7 @@
  * @purpose : Query Operations
  */
 
-require_once('config/connection.php');
+require_once('config/dbConnection.php');
 require_once ('config/session.php');
 
 class queryOperation

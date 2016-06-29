@@ -10,12 +10,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include constants
-include('config/constants.php');
+require_once('config/constants.php');
 
 class connection
 {
 
-    static $conn;
+    public static $conn;
 
     /**
      * Function for creating database connection
