@@ -7,6 +7,7 @@
 
 require_once('config/dbConnection.php');
 require_once ('config/session.php');
+require_once ('log/dbErrorLog.php');
 
 class queryOperation
 {
