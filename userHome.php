@@ -37,7 +37,7 @@ if (!$resultSes)
         ?>
         <!-- Page Content -->
         <div class="container text-center">           
-            <h1>Welcome to GetEmployed.com</h1>
+            <h1>Welcome to GetEmpl0yed.com</h1>
             <h3 class="primary">We are glad to welcome<b><?php echo $_SESSION['title'] . ' ' . 
                $_SESSION['firstName'] . ' ' . $_SESSION['middleName'] . ' ' . $_SESSION['lastName']; 
                 ?></b>

@@ -7,7 +7,7 @@
 
 require_once('config/dbConnection.php');
 require_once ('config/session.php');
-require_once ('log/dbErrorLog.php');
+require_once ('helper/errorHelper.php');
 
 class queryOperation
 {
@@ -53,7 +53,7 @@ class queryOperation
                 Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip AS ofcZip, 
                 Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
-                Employee.note " . $joinQuery;
+                Employee.note " . $joinQuery . "HAVING Employee.empId = $id";
         }
         else
         {
@@ -72,9 +72,16 @@ class queryOperation
                 Employee.image AS Image, 
                 Employee.note AS Note " . $joinQuery;
         }
-
+        
         // If connection made, return query result
-        return $this->connObj->executeConnection($this->conn, $sqlQuery);
+        $result = $this->connObj->executeConnection($this->conn, $sqlQuery);
+                 
+        if (!$result)
+        {
+            errorFile('Retrival failed' . mysql_error() . time());
+        }
+
+        return $result;
     }
 
     /**
@@ -126,7 +133,12 @@ class queryOperation
             }
         }
 
-        return $this->connObj->executeConnection($this->conn, $selectQuery);
+        $result = $this->connObj->executeConnection($this->conn, $selectQuery);
+        if (!$result)
+        {
+            errorFile('Operation insert/update failed' . mysql_error() . time());
+        }
+        return $result;
     }
 
     /**
@@ -145,8 +157,9 @@ class queryOperation
 
         if (!$result)
         {
-            echo 'Deletetion Failed';
+            errorFile('Deletetion Failed' . mysql_error() . time());
         }
+        
     }
 
     /**
@@ -173,9 +186,10 @@ class queryOperation
 
             $col = mysqli_real_escape_string($this->conn, $key);
             $value = mysqli_real_escape_string($this->conn, $val);
-            $fields .= "$col = '$val'";
+            $fields .= "$col = '$value'";
         }
 
+        
         // Insert values into db
         if (!$isUpdate)
         {
@@ -195,17 +209,17 @@ class queryOperation
 
         if (!$result)
         {
-            echo ($isUpdate) ? 'Update Failed!' : 'Insertion Failed!';
+            $message =  ($isUpdate) ? 'Update Failed!' : 'Insertion Failed!';
+            errorFile($message . mysql_error() . time());
         }
 
-        // Use session variable
+
         if (!$isUpdate)
         {
             // Id of the last inserted record
             $employeeId = mysqli_insert_id($this->conn);
             return $employeeId;
         }
-
         return TRUE;
     }
 }

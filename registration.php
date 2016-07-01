@@ -4,26 +4,24 @@
  * @Author  : Mfsi_Annapurnaa
  * @purpose : Registration form layout and Update operaton on the emplolyee data
  */
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once('config/queryOperation.php');
 require_once('config/session.php');
 
 $obj = new queryOperation();
 $objSes = new session();
 $objSes->start();
-$result = $objSes->checkSession();
+$resultSes = $objSes->checkSession();
 
 $update = FALSE;
-if($result)
+
+if ($resultSes)
 {
     $update = TRUE;
     $empId = $_SESSION['id'];
     $result = $obj->getEmployeeDetail($empId, $update);
-    
-    if (!$result)
-    {
-        echo 'Retrival failed' . mysql_error();
-    }
     
     $row = mysqli_fetch_assoc($result);
 }
@@ -78,7 +76,7 @@ if (!empty($_POST))
         }
         else
         {
-            array_push($empData, ['password' => $password]);
+            $empData['password'] = $password;
 
             // Insert data   
             $employeeId = $obj->insertUpdate('Employee', $empData);
@@ -92,6 +90,8 @@ if (!empty($_POST))
             $empResData = array('addressType' => 'residence', 'street' => $resStreet,
                 'city' => $resCity, 'zip' => $resZip, 'state' => $resState, 'empId' => $employeeId);
             $obj->insertUpdate('Address', $empResData);
+            
+            
             header('Location:login.php?success=1');
         }
     }
@@ -121,7 +121,8 @@ else
         <?php
            }
            else
-           {// If it is a new registration form
+           {
+            // If it is a new registration form
            ?>
         <title>Registration Form</title>
         <?php
@@ -152,7 +153,8 @@ else
                             <?php
                                }
                                else
-                               {// If it is a new registration form
+                               {
+                            // If it is a new registration form
                             ?>
                             <h1>Registration Form</h1>
                             <?php
@@ -613,33 +615,19 @@ else
                                         <textarea class="form-control" id="Note" name="note" rows="6" 
                                             placeholder="Write something about yourself"><?php echo 
                                             ($update) ? $row['note'] :(isset($_POST['note']) ? 
-                                            $_POST['note'] : ''); ?>
-                                        </textarea>
+                                            $_POST['note'] : ''); ?></textarea>
                                     </div>
                                 </div>
                                 <div class="row text-center">
-                                    <?php 
-                                        if ($update)
-                                        {
-                                    // If update form, update and clear button
-                                    ?>
-                                        <button type="submit" class="btn btn-success" role="button">
-                                            Update</button>
-                                        <button type="reset" class="btn btn-primary" role="button">
-                                            Clear</button> 
                                     <?php
-                                        }
-                                        else
-                                        {
-                                        // If new form, submit and reset button
+                                        $buttonSubmit = ($update) ? 'Update' : 'Submit';
+                                        $buttonReset = ($update) ? 'Clear' : 'Reset';
                                     ?>
+                                    
                                         <button type="submit" class="btn btn-success" role="button">
-                                            Submit</button>
+                                            <?php echo $buttonSubmit?></button>
                                         <button type="reset" class="btn btn-primary" role="button">
-                                            Reset</button>
-                                   <?php
-                                      }
-                                    ?> 
+                                            <?php echo $buttonReset?></button> 
                                 </div>
                             </div>
                         </fieldset>
