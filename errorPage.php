@@ -1,5 +1,19 @@
+<?php
+
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Error Page
+ */
+
+require_once('config/session.php');
+
+$objSes = new session();
+$objSes->start();
+$resultSes = $objSes->checkSession();
+
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,15 +26,13 @@
         <!-- Custom CSS -->
         <link href="css/styles.css" rel="stylesheet">
     </head>
-    <body>
+    <body class="errorBody">
         <?php
-        include('template/header.php');
+        require_once('template/header.php');
         ?>
         <!-- Page Content -->
-        <div class="container text-center">           
-            <h1>Welcome to GetEmployed.com</h1>
-            <h3 class="primary">Fill the registration form to submit your details. You will get call for the best suitable job available for you.</h3>
-            <a href="registration.php" class="btn btn-default btn-lg" role="button">Register</a>
+        <div class="container text-center errorPage">           
+            <img src="images/error.jpg" width="1750px" height="750px">
         </div>
         <!-- Container -->
     </body>

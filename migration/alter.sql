@@ -1,0 +1,2 @@
+ALTER TABLE  `Employee` ADD  `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER  `note` ;
+ALTER TABLE  `Employee` ADD  `dateUpdated` TIMESTAMP NOT NULL AFTER  `dateCreated` ;
