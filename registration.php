@@ -141,9 +141,9 @@ else
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form action="registration.php<?php echo ($update) ? '?edit=' . $row['empId']: 
-                        '';?>" 
-                       method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    <form id="registrationForm" action="registration.php<?php echo ($update) ? 
+                        '?edit=' . $row['empId']: '';?>" method="POST" class="form-horizontal" 
+                        enctype="multipart/form-data">
                         <fieldset>
                             <!-- Form Name-->
                             <?php 
@@ -173,38 +173,38 @@ else
                                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">Name</label>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                         <!-- Check and assign the value if it is new or update form -->
-                                         <input type="text" name = "title" class="form-control"
+                                         <input type="text" name = "title" class="form-control required alphabets"
                                              id="inputTitle" placeholder="Mr/Ms"
                                              value="<?php echo ($update) ? $row['title'] : 
                                              (isset($_POST['title']) ? $_POST['title'] : ''); ?>">
-                                        <span id="titleErr" class="error"><?php 
+                                        <span id="inputTitleErr" class="error"><?php 
                                         echo $errorList['title'];?></span>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                        <input type="text" name = "firstName" class="form-control" 
+                                        <input type="text" name = "firstName" 
+                                               class="form-control required alphabets" 
                                             id="inputFirstName" placeholder="First Name" 
                                             value="<?php echo ($update) ? $row['firstName'] : 
                                             (isset($_POST['firstName']) ? $_POST['firstName'] : ''); 
                                             ?>">
-                                        <span id="firstNameErr" class="error"><?php 
+                                        <span id="inputFirstNameErr" class="error"><?php 
                                         echo $errorList['firstName'];?>
                                         </span>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                        <input type="text" name = "middleName" class="form-control" 
-                                            id="inputMiddleName" placeholder="Middle Name" value="
-                                            <?php echo ($update) ? $row['middleName'] : (isset
-                                            ($_POST['middleName']) ? $_POST['middleName'] : ''); 
-                                            ?>">
-                                        <span id="middleNameErr" class="error"><?php 
+                                        <input type="text" name = "middleName" class="form-control alphabets" 
+                                            id="inputMiddleName" placeholder="Middle Name" 
+                                            value="<?php echo ($update) ? $row['middleName'] : (isset
+                                            ($_POST['middleName']) ? $_POST['middleName'] : ''); ?>">
+                                        <span id="inputMiddleNameErr" class="error"><?php 
                                             echo $errorList['middleName'];?></span>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                        <input type="text" name = "lastName" class="form-control" 
+                                        <input type="text" name = "lastName" class="form-control required alphabets" 
                                             id="inputLastName" placeholder="Last Name" value="<?php 
                                             echo ($update) ? $row['lastName'] : (isset($_POST
                                             ['lastName']) ? $_POST['lastName'] : ''); ?>">
-                                        <span id="lastNameErr" class="error"><?php 
+                                        <span id="inputLastNameErr" class="error"><?php 
                                             echo $errorList['lastName'];?></span>
                                     </div>
                                 </div>
@@ -216,10 +216,10 @@ else
                                         <!-- Check and assign the value if it is new or update form -->
                                         <input id="inputEmail" name="email" type="text" <?php 
                                             echo ($update) ? 'readonly' : ''; ?> 
-                                            placeholder="name@email.com" class="form-control 
+                                            placeholder="name@email.com" class="form-control required
                                             input-md" value="<?php echo ($update) ? $row['email'] : 
                                             (isset($_POST['email']) ? $_POST['email'] : ''); ?>">
-                                        <span id="emailErr" class="error"><?php 
+                                        <span id="inputEmailErr" class="error"><?php 
                                             echo $errorList['email'];?></span>
                                     </div>
                                 </div>
@@ -231,9 +231,9 @@ else
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and assign the value if it is new or update form -->
                                         <input type="password" id="inputPassword" name="password" 
-                                            placeholder="***************" class="form-control 
+                                            placeholder="********" class="form-control required password
                                             input-md">
-                                        <span id="passwordErr" class="error"><?php 
+                                        <span id="inputPasswordErr" class="error"><?php 
                                             echo $errorList['password'];?></span>
                                     </div>
                                 </div>
@@ -243,9 +243,9 @@ else
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and assign the value if it is new or update form -->
                                         <input type="password" id="inputConfirm" name="confirm" 
-                                            placeholder="***************" class="form-control 
-                                            input-md">
-                                        <span id="confirmErr" class="error"><?php 
+                                            placeholder="********" class="form-control password 
+                                            required input-md">
+                                        <span id="inputConfirmErr" class="error"><?php 
                                             echo $errorList['confirm'];?></span>
                                     </div>
                                 </div>
@@ -257,11 +257,11 @@ else
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and assign the value if it is new or update form -->
                                         <input id="inputPhone" name="phone" type="text" 
-                                            placeholder="9999999999" class="form-control input-md" 
+                                            placeholder="9999999999" class="form-control number required input-md" 
                                             value="<?php echo ($update) ? $row['phone'] : 
                                             (isset($_POST['phone']) ? $inputData['postData']['phone']
                                             : ''); ?>">
-                                        <span id="phoneErr" class="error"><?php 
+                                        <span id="inputPhoneErr" class="error"><?php 
                                             echo $errorList['phone'];?></span>
                                     </div>
                                 </div>
@@ -298,10 +298,10 @@ else
                                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12">D.O.B</label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and assign the value if it is new or update form -->
-                                        <input id="inputDob" type='date' name="dob" class="form-control"
+                                        <input id="inputDob" type='date' name="dob" class="form-control required"
                                             value="<?php echo ($update) ? $row['dateOfBirth'] : 
                                             (isset($_POST['dob']) ? $_POST['dob'] : ''); ?>"/>
-                                        <span id="dobErr" class="error"><?php 
+                                        <span id="inputDobErr" class="error"><?php 
                                             echo $errorList['dob'];?></span>
                                     </div>
                                 </div>
@@ -333,10 +333,10 @@ else
                                             echo $errorList['resCity'];?></span>
                                         <!-- ZIp -->
                                         <input id="inputResZip" name="resZip" type="text" 
-                                            placeholder="Zip" class="form-control input-md address" 
+                                            placeholder="Zip" class="form-control number input-md address" 
                                             value="<?php echo ($update) ? $row['resZip'] : 
                                             (isset($_POST['resZip']) ? $_POST['resZip'] : '');?>">
-                                        <span id="resZipErr" class="error"><?php 
+                                        <span id="inputResZipErr" class="error"><?php 
                                             echo $errorList['resZip'];?></span>
                                         <!-- Select State -->
                                         <select id="inputResState" name="resState" class="form-control 
@@ -374,11 +374,11 @@ else
                                             value= "<?php echo ($update) ? $row['ofcCity'] : 
                                             (isset($_POST['ofcCity']) ? $_POST['ofcCity'] : '');?>">
                                         <!-- Zip-->
-                                        <input id="OfcZip" name="ofcZip" type="text" 
-                                            placeholder="Zip" class="form-control input-md address" 
+                                        <input id="inputOfcZip" name="ofcZip" type="text" 
+                                            placeholder="Zip" class="form-control number input-md address" 
                                             value= "<?php echo ($update) ? $row['ofcZip'] : 
                                             (isset($_POST['ofcZip']) ? $_POST['ofcZip'] : '');?>">
-                                        <span class="error"><?php echo $errorList['ofcZip'];?>
+                                        <span id="inputOfcZipErr" class="error"><?php echo $errorList['ofcZip'];?>
                                         </span>
                                         <!-- Select State -->
                                         <select id="ofcState" name="ofcState" class="form-control 
@@ -643,8 +643,8 @@ else
                                     ?>
                                         <button id="register" type="submit" class="btn btn-success" 
                                             role="button">Submit</button>
-                                        <button type="reset" class="btn btn-primary" role="button">
-                                            Reset</button>
+                                        <button id="formReset" type="reset" class="btn btn-primary" 
+                                                role="button">Reset</button>
                                    <?php
                                       }
                                     ?> 

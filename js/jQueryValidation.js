@@ -5,196 +5,115 @@ $(document).ready(function(){
     var numberRegExp = /^[0-9]+$/;
     var error = false;
     
-    $('#register').click(function() {
+    $('#registrationForm').on('submit', function() {
         
-        var title = $('#inputTitle').val();
-        var firstName = $('#inputFirstName').val();
-        var middleName = $('#inputMiddleName').val();
-        var lastName = $('#inputLastName').val();
-        var email = $('#inputEmail').val();
-        var password = $('#inputPassword').val();
-        var confirm = $('#inputConfirm').val();
-        var phone = $('#inputPhone').val();
-        var dob = $('#inputDob').val();
-        var resStreet = $('#inputResStreet').val();
-        var resCity = $('#inputResCity').val();
-        var resZip = $('#inputResZip').val();
-        var resState = $('#inputResState').val();
-        var marStatus = $('#inputMarStatus').val();
+        // To check required fields
+        $('.required').each(function(){
+            var errField = '#'.concat($(this).attr('id'), 'Err'); 
+            
+            if ('' === $(this).val())
+            {
+                $(errField).text('Field required');
+                error = true;
+            }
+            else
+            {
+                $(errField).text('');
+            }
+            
+        });
         
-        titleVal(title);
-        firstNameVal(firstName);
-        middleNameVal(middleName);
-        lastNameVal(lastName);
-        emailVal(email);
-        passwordVal(password);
-        confirmVal(confirm, password);
-        phoneVal(phone);
-        dobVal(dob);
-        resStreetVal(resStreet);
-        resCityVal(resCity);
-        resZipVal(resZip);
-        resStateVal(resState);
-        marStatusVal(marStatus);
-        
-        if(error){
+        if (error){
             return false;
         }
         return true;
     });
-    
-    function titleVal(title)
-    {
-        if ('' === title)
-        {
-            $('#titleErr').text('Field required');
-            error = true;
-        }
-        else if(!textRegExp.test(title))
-        {
-            $('#titleErr').text('Only characters allowed');
-            error = true;
-        }
-        else
-        {
-            $('#titleErr').text('');
-        }
-    }
-    
-    function firstNameVal(firstName)
-    {
-        if ('' === firstName)
-        {
-            $('#firstNameErr').text('Field required');
-            error = true;
-        }
-        else
-        {
-            $('#firstNameErr').text('');
-        }
-    }
-    
-    function middleNameVal(middleName)
-    {
-        if ('' !== middleName.trim() && !textRegExp.test(middleName))
-        {
-            $('#middleNameErr').text('Only characters allowed');
-            error = true;
-        }
-        else
-        {
-            $('#middleNameErr').text('');
-        }
-    }
-    
-    function lastNameVal(lastName)
-    {
-        if ('' === lastName)
-        {
-            $('#lastNameErr').text('Field required');
-            error = true;
-        }
-        else
-        {
-            $('#lastNameErr').text('');
-        }
-    }
-    
-    function emailVal(email)
-    {
-        // Check if empty
-        if ('' === email)
-        {
-            $('#emailErr').text('Field required');
-            error = true;
-        }
-        else
-        {
-            atpos = email.indexOf('@');
-            dotpos = email.lastIndexOf('.');
+        
+        // To validate alphabets only field
+        $('.alphabets').on('keyup focusout',function(){
+            var errField = '#'.concat($(this).attr('id'), 'Err');
+            if ('' !== $.trim($(this).val()) && !textRegExp.test($(this).val()))
+            {
+                $(errField).text('Only characters allowed');
+                error = true;
+            }
+
+        });
+        
+        // To validate number only field
+        $('.number').on('keyup focusout',function(){
+            var errField = '#'.concat($(this).attr('id'), 'Err');
+            if ('' !== $.trim($(this).val()) && !numberRegExp.test($(this).val()))
+            {
+                $(errField).text('Only numbers allowed');
+                console.log($(errField).val());
+                error = true;
+            }
+            
+            // To check lenght in case ofphone and zip
+            $(this).on('focusout', function(){
+                switch ($(this).attr('id'))
+                {
+                    case 'inputPhone':
+                        $(errField).text((10 !== $(this).val().length) ? 'No of digits should be 10' : '');
+                    break;
+                    
+                    case 'inputResZip':
+                    case 'inputOfcZip':
+                        $(errField).text((6 !== $(this).val().length) ? 'Zip should be of length 6' : '');
+                    break;
+                }
+            });
+            
+        });
+        
+        // Validate email
+        $('#inputEmail').on('focusout', function(){
+            atpos = $(this).val().indexOf('@');
+            dotpos = $(this).val().lastIndexOf('.');
 
             // Check validity of entered mail
             if (atpos < 1 || ( dotpos - atpos < 2 )) 
             {
-               $('#emailErr').text('Enter valid email');
+               $('#inputEmailErr').text('Enter valid email');
                error = true;
             }
             else
             {
-              $('#emailErr').text(''); 
+              $('#inputEmailErr').text(''); 
             }
-        }
-    }
-    
-    // Validate password
-    function passwordVal(password)
-    {
-        if ('' === password)
-        {
-            $('#passwordErr').text('Field required');
-            error = true;
-        }
-        else if (8 > password.length) 
-        {
-           $('#passwordErr').text('Password should be minimum 8 characters');
-           error = true;
-        }
-        else
-        {
-          $('#passwordErr').text(''); 
-        }
-    }
-    
-    function confirmVal(confirm,password)
-    {
-        // Validate confirm
-        if ('' === confirm)
-        {
-            $('#confirmErr').text('Field required');
-            error = true;
-        }
-        else if (confirm !== password) 
-        {
-           $('#confirmErr').text('Password do not match');
-           error = true;
-        }
-        else
-        {
-          $('#confirmErr').text('');
-        }
-    }
-    
-    function phoneVal(phone)
-    {
-        // Validate phone number
-        if ('' === phone)
-        {
-            $('#phoneErr').text('Field required');
-            error = true;
-        }
-        else if (10 !== phone.length || !numberRegExp.test(phone)) 
-        {
-            $('#phoneErr').text('Enter valid phone number');
-            error = true;
-        }
-        else
-        {
-            $('#phoneErr').text('');  
-        }
-    }
-    
-    function dobVal(dob)
-    {
-        if ('' === dob)
-        {
-            $('#dobErr').text('Field required');
-            error = true;
-        }
-        else
-        {
-            $('#dobErr').text(''); 
-        }
-    }
+        });
+        
+        // Validate password
+        $('.password').on('focusout', function(){
+            var errField = '#'.concat($(this).attr('id'), 'Err');
+            switch ($(this).attr('id'))
+            {
+                case 'inputPassword':
+                    $(errField).text((8 !== $(this).val().length) ? 'Password should be minimun 8 characters' : '');
+                break;
+
+                case 'inputConfirm':
+                    if ($('#inputPassword').val() !== $(this).val())
+                    {
+                        $(errField).text('Password do not match');
+                    }
+                    else
+                    {
+                        $(errField).text('');
+                    }
+                    
+                break;
+            }
+            });
+            
+        });
+        
+        // Reset form
+        $('#formReset').on('click', function(){
+            $('.error').text('');
+        });
+
     
     function resStreetVal(resStreet)
     {
@@ -275,5 +194,5 @@ $(document).ready(function(){
         }
     }
  
-});
+
     
