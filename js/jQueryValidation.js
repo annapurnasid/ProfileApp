@@ -8,17 +8,14 @@ $(document).ready(function(){
     $('#registrationForm').on('submit', function() {
         
         // To check required fields
-        $('.required').each(function(){
-            var errField = '#'.concat($(this).attr('id'), 'Err'); 
+        $('.required').each(function() {
             
-            if ('' === $(this).val() || '0' === $(this).val())
-            {
+            var errField = '#'.concat($(this).attr('id'), 'Err'); 
+            $(errField).text('');
+            
+            if ('' === $(this).val() || '0' === $(this).val()) {
                 $(errField).text('Field required');
                 error = true;
-            }
-            else
-            {
-                $(errField).text('');
             }
             
         });
@@ -27,10 +24,11 @@ $(document).ready(function(){
     });
         
         // To validate alphabets only field
-        $('.alphabets').on('keyup focusout',function(){
+        $('.alphabets').on('keyup focusout', function() {
+            
             var errField = '#'.concat($(this).attr('id'), 'Err');
-            if ('' !== $.trim($(this).val()) && !textRegExp.test($(this).val()))
-            {
+
+            if ('' !== $.trim($(this).val()) && !textRegExp.test($(this).val())) {
                 $(errField).text('Only characters allowed');
                 error = true;
             }
@@ -38,104 +36,91 @@ $(document).ready(function(){
         });
         
         // To validate number only field
-        $('.number').on('keyup focusout',function(){
+        $('.number').on('keyup focusout', function() {
             var errField = '#'.concat($(this).attr('id'), 'Err');
-            if ('' !== $.trim($(this).val()) && !numberRegExp.test($(this).val()))
-            {
+
+            if ('' !== $.trim($(this).val()) && !numberRegExp.test($(this).val())) {
                 $(errField).text('Only numbers allowed');
                 error = true;
             }
             
             // To check length in case of phone and zip
-            $(this).on('focusout', function(){
-                switch ($(this).attr('id'))
-                {
+            $(this).on('focusout', function() {
+                switch ($(this).attr('id')) {
+
                     case 'inputPhone':
-                        if(10 !== $(this).val().length)
-                        {
+                        $(errField).text('');
+                        
+                        if (10 !== $(this).val().length) {
                             $(errField).text('No of digits should be 10');
                             error = true;
-
                         }
-                        else
-                        {
-                            $(errField).text('');
-                        }
+                        
                     break;
                     
                     case 'inputResZip':
                     case 'inputOfcZip':
-                        if(6 !== $(this).val().length)
-                        {
+                        $(errField).text('');
+                        
+                        if(6 !== $(this).val().length) {
                             $(errField).text('Zip should be of length 6');
                             error = true;
+                        }
 
-                        }
-                        else
-                        {
-                            $(errField).text('');
-                        }
                     break;
                 }
             });
-            
         });
         
         // Validate email
-        $('#inputEmail').on('focusout', function(){
+        $('#inputEmail').on('focusout', function() {
+            
             atpos = $(this).val().indexOf('@');
             dotpos = $(this).val().lastIndexOf('.');
 
             // Check validity of entered mail
-            if (atpos < 1 || ( dotpos - atpos < 2 )) 
-            {
+            $('#inputEmailErr').text('');
+            
+            if (1 > atpos  || ( 2 > (dotpos - atpos) )) {
                $('#inputEmailErr').text('Enter valid email');
                error = true;
             }
-            else
-            {
-              $('#inputEmailErr').text(''); 
-            }
-        });
-        
-        // Validate password
-        $('.password').on('focusout', function(){
-            var errField = '#'.concat($(this).attr('id'), 'Err');
-            switch ($(this).attr('id'))
-            {
-                case 'inputPassword':
-                    if(8 !== $(this).val().length)
-                        {
-                            $(errField).text('Password should be minimun 8 characters');
-                            error = true;
-
-                        }
-                        else
-                        {
-                            $(errField).text('');
-                        }
-                break;
-
-                case 'inputConfirm':
-                    if($('#inputPassword').val() !== $(this).val())
-                        {
-                            $(errField).text('Password do not match');
-                            error = true;
-
-                        }
-                        else
-                        {
-                            $(errField).text('');
-                        }
-                break;
-            }
-            });
             
         });
         
-        // Reset form
-        $('#formReset').on('click', function(){
-            $('.error').text('');
-        });
+        // Validate password
+        $('.password').on('focusout', function() {
+            
+            var errField = '#'.concat($(this).attr('id'), 'Err');
+            
+            switch ($(this).attr('id')) {
 
-   
+                case 'inputPassword':
+                    $(errField).text('');
+                    
+                    if (8 !== $(this).val().length) {
+                        $(errField).text('Password should be minimun 8 characters');
+                        error = true;
+                    }
+                    
+                break;
+
+                case 'inputConfirm':
+                    $(errField).text('');
+                    
+                    if ($('#inputPassword').val() !== $(this).val()) {
+                        $(errField).text('Password do not match');
+                        error = true;
+
+                    }
+                    
+                break;
+            }
+        });
+            
+    });
+        
+    // Reset form
+    $('#formReset').on('click', function() {
+        $('.error').text('');
+    });
