@@ -317,29 +317,28 @@ else
                                         <!-- Check and assign the value if it is new or update form -->
                                         <!-- Street Name-->
                                         <input id="inputResStreet" name="resStreet" type="text" 
-                                            placeholder="Street" class="form-control input-md 
+                                            placeholder="Street" class="form-control input-md required
                                             address" value="<?php  echo ($update) ? 
                                             $row['resStreet'] : (isset($_POST['resStreet']) ? 
                                             $_POST['resStreet'] : '');?>">
-                                        <span class="error"><?php echo $errorList['resStreet'];?>
+                                        <span id="inputResStreetErr" class="error"><?php echo $errorList['resStreet'];?>
                                         </span>
-                                        <p id="resStreetErr" class="error"></p>
                                         <!-- City-->
                                         <input id="inputResCity" name="resCity" type="text" 
-                                            placeholder="city" class="form-control input-md 
+                                            placeholder="city" class="form-control input-md required
                                             address" value="<?php echo ($update) ? $row['resCity'] :
                                             (isset($_POST['resCity']) ? $_POST['resCity'] : '');?>">
-                                        <span id="resCityErr" class="error"><?php 
+                                        <span id="inputResCityErr" class="error"><?php 
                                             echo $errorList['resCity'];?></span>
                                         <!-- ZIp -->
                                         <input id="inputResZip" name="resZip" type="text" 
-                                            placeholder="Zip" class="form-control number input-md address" 
+                                            placeholder="Zip" class="form-control number required input-md address" 
                                             value="<?php echo ($update) ? $row['resZip'] : 
                                             (isset($_POST['resZip']) ? $_POST['resZip'] : '');?>">
                                         <span id="inputResZipErr" class="error"><?php 
                                             echo $errorList['resZip'];?></span>
                                         <!-- Select State -->
-                                        <select id="inputResState" name="resState" class="form-control 
+                                        <select id="inputResState" name="resState" class="form-control required
                                             address">
                                             <option value="0">Select State</option>
                                             <?php 
@@ -356,7 +355,7 @@ else
                                                 } 
                                             ?>
                                         </select>
-                                        <span id="resStateErr" class="error"><?php 
+                                        <span id="inputResStateErr" class="error"><?php 
                                             echo $errorList['resState'];?></span>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -381,7 +380,7 @@ else
                                         <span id="inputOfcZipErr" class="error"><?php echo $errorList['ofcZip'];?>
                                         </span>
                                         <!-- Select State -->
-                                        <select id="ofcState" name="ofcState" class="form-control 
+                                        <select id="ofcState" name="ofcState" class="form-control
                                              address">
                                             <option value="0">Select State</option>
                                             <?php 
@@ -409,7 +408,7 @@ else
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                         <!-- Check and select from drop down if it is new or update form -->
                                         <select id="inputMarStatus" name="marStatus" 
-                                            class="form-control" >
+                                            class="form-control required" >
                                             <option value="0">Status</option>
                                             <option value="single" <?php echo ($update && 
                                                 'married' == $row['marStatus']) ? 'selected' : 
@@ -437,7 +436,7 @@ else
                                                 $_POST['marStatus']) ? 'selected' : '')); ?>>Widower
                                             </option>
                                         </select>
-                                        <span id="marStatusErr" class="error"><?php 
+                                        <span id="inputMarStatusErr" class="error"><?php 
                                             echo $errorList['marStatus'];?></span>
                                     </div>
                                 </div>

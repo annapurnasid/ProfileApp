@@ -11,7 +11,7 @@ $(document).ready(function(){
         $('.required').each(function(){
             var errField = '#'.concat($(this).attr('id'), 'Err'); 
             
-            if ('' === $(this).val())
+            if ('' === $(this).val() || '0' === $(this).val())
             {
                 $(errField).text('Field required');
                 error = true;
@@ -23,10 +23,7 @@ $(document).ready(function(){
             
         });
         
-        if (error){
-            return false;
-        }
-        return true;
+        return (error) ? false : true;
     });
         
         // To validate alphabets only field
@@ -46,21 +43,38 @@ $(document).ready(function(){
             if ('' !== $.trim($(this).val()) && !numberRegExp.test($(this).val()))
             {
                 $(errField).text('Only numbers allowed');
-                console.log($(errField).val());
                 error = true;
             }
             
-            // To check lenght in case ofphone and zip
+            // To check length in case of phone and zip
             $(this).on('focusout', function(){
                 switch ($(this).attr('id'))
                 {
                     case 'inputPhone':
-                        $(errField).text((10 !== $(this).val().length) ? 'No of digits should be 10' : '');
+                        if(10 !== $(this).val().length)
+                        {
+                            $(errField).text('No of digits should be 10');
+                            error = true;
+
+                        }
+                        else
+                        {
+                            $(errField).text('');
+                        }
                     break;
                     
                     case 'inputResZip':
                     case 'inputOfcZip':
-                        $(errField).text((6 !== $(this).val().length) ? 'Zip should be of length 6' : '');
+                        if(6 !== $(this).val().length)
+                        {
+                            $(errField).text('Zip should be of length 6');
+                            error = true;
+
+                        }
+                        else
+                        {
+                            $(errField).text('');
+                        }
                     break;
                 }
             });
@@ -90,19 +104,29 @@ $(document).ready(function(){
             switch ($(this).attr('id'))
             {
                 case 'inputPassword':
-                    $(errField).text((8 !== $(this).val().length) ? 'Password should be minimun 8 characters' : '');
+                    if(8 !== $(this).val().length)
+                        {
+                            $(errField).text('Password should be minimun 8 characters');
+                            error = true;
+
+                        }
+                        else
+                        {
+                            $(errField).text('');
+                        }
                 break;
 
                 case 'inputConfirm':
-                    if ($('#inputPassword').val() !== $(this).val())
-                    {
-                        $(errField).text('Password do not match');
-                    }
-                    else
-                    {
-                        $(errField).text('');
-                    }
-                    
+                    if($('#inputPassword').val() !== $(this).val())
+                        {
+                            $(errField).text('Password do not match');
+                            error = true;
+
+                        }
+                        else
+                        {
+                            $(errField).text('');
+                        }
                 break;
             }
             });
@@ -114,85 +138,4 @@ $(document).ready(function(){
             $('.error').text('');
         });
 
-    
-    function resStreetVal(resStreet)
-    {
-        // Validate Residence street
-        if ('' === resStreet)
-        {
-            $('#resStreetErr').text('Field required');
-            error = true;
-        }
-        else
-        {
-            $('#resStreetErr').text('');
-        }
-    }
-    
-    // Validate Residence City
-    function resCityVal(resCity)
-    {
-        // Validate Residence city
-        if ('' === resCity)
-        {
-            $('#resCityErr').text('Field required');
-            error = true;
-        }
-        else
-        {
-            $('#resCityErr').text('');
-        }
-    }
-    
-    // Validate Residence Zip
-    function resZipVal(resZip)
-    {
-
-        if ('' === resZip)
-        {
-            $('#resZipErr').text('Field required');
-            error = true;
-        }
-        else if (6 !== resZip.length || !numberRegExp.test(resZip)) 
-        {
-            $('#resZipErr').text('Enter valid Zip');
-           error = true;
-        }
-        else
-        {
-            $('#resZipErr').text('');
-        }
-    }
-    
-    // Validate Residence state
-    function resStateVal(resState)
-    {
-
-        if ('0' === resState)
-        {
-            $('#resStateErr').text('Select a state');
-            error = true;
-        }
-        else
-        {
-            $('#resStateErr').text('');
-        }
-    }
-    
-    // Validate Marital status
-    function marStatusVal(marStatus)
-    {
-
-        if ('0' === marStatus)
-        {
-            $('#marStatusErr').text('Specify your marital status');
-            error = true;
-        }
-        else
-        {
-            $('#marStatusErr').text('');
-        }
-    }
- 
-
-    
+   
