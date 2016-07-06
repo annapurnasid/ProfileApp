@@ -33,7 +33,7 @@ body
     background-size: cover;
 }
 
-.btn
+.reg
 {
     margin: 8px;
 }
@@ -43,10 +43,9 @@ body
     color: #FF0000;
 }
 
-.table td, th, tr
+.table td, thead, tr, th
 {
     border: 0.5px solid #000000;
-    border-top: 0.5px solid #000000 !important;
 }
 
 .vcenter

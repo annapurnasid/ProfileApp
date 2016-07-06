@@ -50,6 +50,7 @@ if (isset($_GET['delete']))
 // Call the required query function
 $result = $obj->getEmployeeDetail();
 
+$search = false;
 ?>
 
 <!DOCTYPE html>
@@ -65,13 +66,38 @@ $result = $obj->getEmployeeDetail();
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="css/styles.css" rel="stylesheet">
+        <script src='js/jquery.js'></script>
+        <script src="js/newjQuery.js"></script>
+        <script type="text/javascript">
+        id = <?php echo $_SESSION['id']; ?>;
+        </script>
     </head>
     <body>
         <?php include('template/header.php'); ?>
         <!-- Page Content -->
-        <div class="container-fluid">
-            <table class="table table-responsive">
-                <tbody>
+        <div class="container-fluid" >
+       <form id="searchForm" method="POST" class="form-horizontal">
+            <fieldset>
+                <!-- Form Name -->
+                <!-- Search input-->
+                
+
+                        <div class="row form-group center-block well col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <label  class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="nameSearch">Name</label>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                            <input id="nameSearch"  name="nameSearch" type="search" class="form-control input-md">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <button type="button" id="searchButton" class="btn btn-info search">
+                                <span class="glyphicon glyphicon-search"></span> Search
+                            </button>
+                        </div>
+                        </div>
+                    
+            </fieldset>
+        </form>
+            <table class="table table-responsive" id="display">
+                <thead>
                     <tr>
                         <!-- Column headers -->
                         <th>Serial No.</th>
@@ -91,8 +117,11 @@ $result = $obj->getEmployeeDetail();
                         <th>Edit</th>
                        <th>Delete</th>
                    </tr>
+                   </thead>
+                <tbody id="employeeListTableBody">
                     <?php
                         $i = 0;
+                        
                         // Continue till the last record 
                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
                         {

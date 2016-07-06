@@ -208,6 +208,35 @@ class queryOperation
 
         return TRUE;
     }
+    
+    function searchData($name)
+    {   
+        $query = "SELECT Employee.empId AS EmpID,
+                CONCAT(Employee.title, ' ', Employee.firstName, 
+                ' ', Employee.middleName, ' ', Employee.lastName) AS Name,
+                Employee.email AS EmailID, 
+                Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
+                CONCAT(Residence.street, '<br />' , Residence.city , '<br />',
+                Residence.zip,'<br />', Residence.state ) AS Res,
+                CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />',
+                Office.state) AS Ofc,
+                Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
+                Employee.employer AS Employer, Employee.commId AS Communication,
+                Employee.image AS Image, 
+                Employee.note AS Note FROM Employee 
+                JOIN Address AS Residence ON Employee.empId = Residence.empId 
+                AND Residence.addressType = 'residence'
+                JOIN Address AS Office ON Employee.empId = Office.empId 
+                AND Office.addressType = 'office' 
+                WHERE Employee.title LIKE '%$name%' OR
+                Employee.firstName LIKE '%$name%' OR
+                Employee.middleName LIKE '%$name%' OR 
+                Employee.lastName LIKE '%$name%'";
+        $result = $this->connObj->executeConnection($this->conn, $query);
+        return $result;
+    }
 }
 
 ?>
+
+
