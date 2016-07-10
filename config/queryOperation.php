@@ -37,7 +37,7 @@ class queryOperation
      * @param  int $id
      * @return array
      */
-    function getEmployeeDetail($id = '')
+    function getEmployeeDetail($id = '', $limit=0)
     {
         $joinQuery = "FROM Employee 
             JOIN Address AS Residence ON Employee.empId = Residence.empId 
@@ -71,7 +71,7 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note " . $joinQuery;
+                Employee.note AS Note " . $joinQuery. "LIMIT " . $limit . ", 10";
         }
 
         // If connection made, return query result
@@ -209,6 +209,13 @@ class queryOperation
         return TRUE;
     }
     
+    /**
+     * Function to return search details
+     *
+     * @access public
+     * @param string  $name
+     * @return array
+     */
     function searchData($name)
     {   
         $query = "SELECT Employee.empId AS EmpID,
@@ -235,8 +242,21 @@ class queryOperation
         $result = $this->connObj->executeConnection($this->conn, $query);
         return $result;
     }
+    
+    /**
+     * Function to return total no of employee records 
+     *
+     * @access public
+     * @param string  $name
+     * @return array
+     */
+    function countRecord()
+    {   
+        $query = "SELECT count(empId) from Employee";
+        $result = $this->connObj->executeConnection($this->conn, $query);
+        $rowCount = mysqli_fetch_row($result);
+        return $rowCount;
+    }
 }
-
-?>
 
 

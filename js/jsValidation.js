@@ -1,9 +1,7 @@
-  // Reset form
+// Reset form
 function resetForm() {
     document.getElementById("regForm").reset();
-    errorList = document.getElementsByClassName('error')
-    
-    for(i = 0; i < required.length; i++)
+    errorList = document.getElementsByClassName('error'); 
 }
 
 function validateForm() {
@@ -13,7 +11,7 @@ function validateForm() {
     
     required = document.getElementsByClassName('required');
 
-    for(i = 0; i < required.length; i++) 
+    for (i = 0; i < required.length; i++) 
     {
         id = required[i].getAttribute('id');
         inputVal = document.getElementById(id).value;
@@ -64,7 +62,7 @@ function validateForm() {
     
     alphabet = document.getElementsByClassName('alphabet');
 
-    for(i = 0; i < alphabet.length; i++) 
+    for (i = 0; i < alphabet.length; i++) 
     {
         id = alphabet[i].getAttribute('id');
         inputVal = document.getElementById(id).value;
@@ -111,7 +109,6 @@ function validateForm() {
                             inputError.innerHTML = 'Zip should be of length 6';
                             error = true;
                         }
-                        
                         break;
                 }
             }
@@ -121,10 +118,12 @@ function validateForm() {
       
     // Validate comunication
     var check = false;
+    
     for (var i = 0; i < 4; i++)
     {
         check = document.getElementById('inputComm' + i).checked;
-        if(check)
+        
+        if (check)
         {
             break;
         }
@@ -132,6 +131,7 @@ function validateForm() {
     
     var commErr = document.getElementById('commErr');
     commErr.innerHTML = '';
+    
     if (!check) {
         commErr.innerHTML = 'Specify your Communication medium';
         error = true;

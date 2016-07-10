@@ -14,7 +14,6 @@ require_once('config/queryOperation.php');
 
 $objSes = new session();
 $objSes->start();
-
 $resultSes = $objSes->checkSession();
 
 if (!$resultSes)
@@ -23,6 +22,21 @@ if (!$resultSes)
 }
 
 $obj = new queryOperation();
+
+// Total no of rows
+$rowCount = $obj->countRecord();
+
+// Results per page
+$rowPerPage = 10;
+
+// No of required pages
+$pageCount = ceil($rowCount[0]/$rowPerPage);
+
+// If total rows is < 10
+if ($pageCount < 1)
+{
+    $pageCount = 1;
+}
 
 // Delete a row
 if (isset($_GET['delete']))
@@ -48,7 +62,7 @@ if (isset($_GET['delete']))
 }
 
 // Call the required query function
-$result = $obj->getEmployeeDetail();
+//$result = $obj->getEmployeeDetail();
 
 $search = false;
 ?>
@@ -66,11 +80,6 @@ $search = false;
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="css/styles.css" rel="stylesheet">
-        <script src='js/jquery.js'></script>
-        <script src="js/newjQuery.js"></script>
-        <script type="text/javascript">
-        id = <?php echo $_SESSION['id']; ?>;
-        </script>
     </head>
     <body>
         <?php include('template/header.php'); ?>
@@ -96,118 +105,23 @@ $search = false;
                     
             </fieldset>
         </form>
-            <table class="table table-responsive" id="display">
-                <thead>
-                    <tr>
-                        <!-- Column headers -->
-                        <th>Serial No.</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Gender</th>
-                        <th>Date of Birth</th>
-                        <th>Office Address</th>
-                        <th>Residential Address</th>
-                        <th>Marital  Status</th>
-                        <th>Employement Status</th>
-                        <th>Employer</th>
-                        <th>Communication</th>
-                         <th>Image</th>
-                        <th>Note</th>
-                        <th>Edit</th>
-                       <th>Delete</th>
-                   </tr>
-                   </thead>
-                <tbody id="employeeListTableBody">
-                    <?php
-                        $i = 0;
-                        
-                        // Continue till the last record 
-                        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
-                        {
-                           ++$i;
-                    ?>
-                            <tr>
-                            <?php 
-                                foreach ($row as $key => $value)
-                                {
-                            ?>
-                                    <td> 
-                                    <?php 
-                                        if ('EmpID' === $key)
-                                        {
-                                           $value = $i;
-                                          echo $value;
-                                        }
-                                        else if ('Communication' === $key)
-                                        {
-                                            $condition = ['column' => 'CommId', 'operator' => 'IN', 
-                                                'val' => "($value)"];
+            <div class="listDisplay">
+                <table class="table table-responsive" id="display">
 
-                                            // Call the required query function
-                                            $commResult = $obj->select('Communication', 'CommMedium',
-                                                $condition);
-
-                                            while ($commRow = mysqli_fetch_array($commResult, MYSQLI_ASSOC))
-                                            {
-                                               foreach ($commRow as $key => $value)
-                                               {
-                                                 echo $value . '<br /> ';
-                                                }
-                                            }
-                                        }
-                                        else if ('Image' === $key) 
-                                        { 
-                                            $imageName = IMAGEPATH . $value;
-
-                                            if (!empty($value) && file_exists($imageName))
-                                            {
-                                        ?>
-                                                <img src = "<?php echo $imageName;?>" alt = "No image" 
-                                                    height = "50" width = "50">
-                                        <?php 
-                                            }
-                                            else
-                                            {
-                                               echo 'No Image';
-                                            }
-                                        }
-                                    else 
-                                    {
-                                        echo $value;
-                                    }                        
-                                    ?> 
-                                    </td>
-                                <?php 
-                                    } 
-                                ?>
-                                    <!--Edit graphic-->
-                                    <td>
-                                    <?php 
-                                            if ( $_SESSION['id'] === $row['EmpID'])
-                                            { 
-                                    ?>
-                                                <a href="registration.php">
-                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                </a>
-                                    <?php 
-                                        
-                                            } 
-                                    ?>
-                                    </td>
-                                    <!--Delete graphic-->
-                                    <td>
-                                        <a href="list.php?delete=<?php echo $row['EmpID']; ?>">
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php 
-                                }
-                            ?>
-                </tbody>
-            </table>
+                </table>
+            </div>
+            <div id="paginationControls">
+                <ul>
+                    
+                </ul>
+            </div>
         </div>
     <!-- Container -->
+    
+     <script src='js/jquery.js'></script>
+        <script src="js/newjQuery.js"></script>
+         <script type="text/javascript">
+        id = <?php echo $_SESSION['id']; ?>;
+        </script>
     </body>
 </html>
