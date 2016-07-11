@@ -4,7 +4,7 @@
  * @Author  : Mfsi_Annapurnaa
  * @purpose : Registration form layout and Update operaton on the emplolyee data
  */
-
+ 
 require_once('config/queryOperation.php');
 require_once('config/session.php');
 
@@ -21,7 +21,7 @@ else
 {
     $update = TRUE;
     $empId = $_SESSION['id'];
-    $result = $obj->getEmployeeDetail($empId, $update);
+    $result = $obj->getEmployeeDetail($update, $empId);
     
     if (!$result)
     {
@@ -115,6 +115,7 @@ else
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="js/jsValidation.js"></script>
         <?php 
            // If the form is for updating
            if ($update)
@@ -143,7 +144,7 @@ else
                 <div class="col-lg-12">
                     <form id="registrationForm" action="registration.php<?php echo ($update) ? 
                         '?edit=' . $row['empId']: '';?>" method="POST" class="form-horizontal" 
-                        enctype="multipart/form-data">
+                        enctype="multipart/form-data" onsubmit="return validateForm();">
                         <fieldset>
                             <!-- Form Name-->
                             <?php 
@@ -265,7 +266,7 @@ else
                                             echo $errorList['phone'];?></span>
                                     </div>
                                 </div>
-                                <!--Radio button for gender-->
+                                 <!--Radio button for gender-->
                                 <div class="row form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 " 
                                         for="gender">Gender</label>
@@ -661,3 +662,4 @@ else
         <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
+

@@ -34,7 +34,7 @@ class queryOperation
      * @param  int $id
      * @return array
      */
-    function getEmployeeDetail($id = '')
+    function getEmployeeDetail($limit=0, $id = '')
     {
         $joinQuery = "FROM Employee 
             JOIN Address AS Residence ON Employee.empId = Residence.empId 
@@ -52,7 +52,7 @@ class queryOperation
                 Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip AS ofcZip, 
                 Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
-                Employee.note " . $joinQuery;
+                Employee.note " . $joinQuery . "WHERE Employee.empId = " . $id;
         }
         else
         {
@@ -69,9 +69,9 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note " . $joinQuery;
+                Employee.note AS Note " . $joinQuery. " LIMIT " . $limit . ", 5";
         }
-
+        
         // If connection made, return query result
         return $this->connObj->executeConnection($this->conn, $sqlQuery);
     }
@@ -133,7 +133,7 @@ class queryOperation
      *
      * @access public
      * @param string $table
-     * @param array $condition
+     * @param array  $condition
      * @return void
      */
     function delete($table, $condition)
@@ -172,7 +172,7 @@ class queryOperation
 
             $col = mysqli_real_escape_string($this->conn, $key);
             $value = mysqli_real_escape_string($this->conn, $val);
-            $fields .= "$col = '$val'";
+            $fields .= "$col = '$value'";
         }
 
         // Insert values into db
@@ -207,6 +207,55 @@ class queryOperation
 
         return TRUE;
     }
+    
+    /**
+     * Function to return search details
+     *
+     * @access public
+     * @param string  $name
+     * @return array
+     */
+    function searchData($name)
+    {   
+        $query = "SELECT Employee.empId AS EmpID,
+                CONCAT(Employee.title, ' ', Employee.firstName, 
+                ' ', Employee.middleName, ' ', Employee.lastName) AS Name,
+                Employee.email AS EmailID, 
+                Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
+                CONCAT(Residence.street, '<br />' , Residence.city , '<br />',
+                Residence.zip,'<br />', Residence.state ) AS Res,
+                CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />',
+                Office.state) AS Ofc,
+                Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
+                Employee.employer AS Employer, Employee.commId AS Communication,
+                Employee.image AS Image, 
+                Employee.note AS Note FROM Employee 
+                JOIN Address AS Residence ON Employee.empId = Residence.empId 
+                AND Residence.addressType = 'residence'
+                JOIN Address AS Office ON Employee.empId = Office.empId 
+                AND Office.addressType = 'office' 
+                WHERE Employee.title LIKE '%$name%' OR
+                Employee.firstName LIKE '%$name%' OR
+                Employee.middleName LIKE '%$name%' OR 
+                Employee.lastName LIKE '%$name%'";
+        $result = $this->connObj->executeConnection($this->conn, $query);
+        return $result;
+    }
+    
+    /**
+     * Function to return total no of employee records 
+     *
+     * @access public
+     * @param string  $name
+     * @return array
+     */
+    function countRecord()
+    {   
+        $query = "SELECT count(empId) from Employee";
+        $result = $this->connObj->executeConnection($this->conn, $query);
+        $rowCount = mysqli_fetch_row($result);
+        return $rowCount;
+    }
 }
 
-?>
+

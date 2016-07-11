@@ -15,4 +15,7 @@ define('DBPASSWORD', 'mindfire', TRUE);
 define('DBNAME', 'RegistrationInfo', TRUE);
 define('MAXSIZE', 2097152, TRUE);
 
+// Results per page
+define('ROWPERPAGE', 5, TRUE);
+
 ?>
