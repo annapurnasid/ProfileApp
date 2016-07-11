@@ -96,7 +96,7 @@ function resultHTML(data) {
             html += '</tr>';
             i++;
         });
-
+        
         html += '</tbody></table>';
         $("#display").html(html);
     }
