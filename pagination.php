@@ -9,7 +9,16 @@ $obj = new queryOperation();
 
 $jsonResult = array();
 
-$result = $obj->getEmployeeDetail();
+$pn = $_POST['pageNo'];
+$pageCount = $_POST['totalPage'];
+$rowPerPage = 5;
+$start = 0;
+
+if (1 !== $pn) {
+    $start = $pn * $rowPerPage;
+}
+
+$result = $obj->getEmployeeDetail($start);
 
 if (!$result)
 {

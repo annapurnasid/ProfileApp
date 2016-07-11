@@ -25,7 +25,7 @@ else
 {
     $update = TRUE;
     $empId = $_SESSION['id'];
-    $result = $obj->getEmployeeDetail($empId, $update);
+    $result = $obj->getEmployeeDetail($update, $empId);
     
     if (!$result)
     {

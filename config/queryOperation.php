@@ -37,7 +37,7 @@ class queryOperation
      * @param  int $id
      * @return array
      */
-    function getEmployeeDetail($id = '', $limit=0)
+    function getEmployeeDetail($limit=0, $id = '')
     {
         $joinQuery = "FROM Employee 
             JOIN Address AS Residence ON Employee.empId = Residence.empId 
@@ -54,7 +54,7 @@ class queryOperation
                 Residence.state AS resState, Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip 
                 AS ofcZip, Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
-                Employee.note " . $joinQuery;
+                Employee.note " . $joinQuery . "WHERE Employee.empId = " . $id;
         }
         // To fetch the details to display
         else
@@ -71,7 +71,7 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note " . $joinQuery. "LIMIT " . $limit . ", 10";
+                Employee.note AS Note " . $joinQuery. " LIMIT " . $limit . ", 5";
         }
 
         // If connection made, return query result

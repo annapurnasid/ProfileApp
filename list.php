@@ -27,7 +27,7 @@ $obj = new queryOperation();
 $rowCount = $obj->countRecord();
 
 // Results per page
-$rowPerPage = 10;
+$rowPerPage = 5;
 
 // No of required pages
 $pageCount = ceil($rowCount[0]/$rowPerPage);
@@ -122,6 +122,9 @@ $search = false;
         <script src="js/newjQuery.js"></script>
          <script type="text/javascript">
         id = <?php echo $_SESSION['id']; ?>;
+        rowPerPage = <?php echo $rowPerPage ?>; // results per page
+        pageCount = <?php echo $pageCount?>;
+        pn = 1;
         </script>
     </body>
 </html>
