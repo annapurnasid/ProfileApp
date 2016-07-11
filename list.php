@@ -1,8 +1,7 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : handle thelisting of employee data.
-  : Deletion of a row
+/**
+ * @Author  : Mfsi_Annapurnaa
+ * @purpose : handle thelisting of employee data and deletion ofrow.
  */
 
 ini_set('display_errors', 1);

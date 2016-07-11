@@ -12,12 +12,12 @@ $( document ).ready(function(){
         var name = $('#nameSearch').val();
 
         $.ajax({
-            url: 'searchEmployee.php', 
+            url: 'searchPaginate.php', 
             dataType : 'html',
             type : 'POST',
             data : {
                 'name' : name,
-                'search' : true
+                'action' : 'search',
             },
             success : function(data){
                 resultHTML(data);
@@ -27,6 +27,14 @@ $( document ).ready(function(){
     
 });
 
+/**
+* Function for executing pagination
+*
+* @access public
+* @param  int pageCount
+* @param  int pageNo
+* @return void
+*/
 function pagination(pageCount, pageNo)
 {
     var paginationCtrls = "";
@@ -49,12 +57,13 @@ function pagination(pageCount, pageNo)
     $("#paginationControls").html(paginationCtrls);
     
     $.ajax({
-        url: 'pagination.php', 
+        url: 'searchPaginate.php', 
         dataType : 'html',
         type : 'POST',
         data : {
             'pageNo' : pageNo,
             'totalPage' : pageCount,
+            'action' : 'pagination',
         },
         success : function(data){
             resultHTML(data);
@@ -62,6 +71,13 @@ function pagination(pageCount, pageNo)
     });
 }
 
+/**
+* Function for executing search result
+*
+* @access public
+* @param  object data
+* @return void
+*/
 function resultHTML(data) {
     var resultSearch = JSON.parse(data);
     var html = '';
@@ -112,5 +128,6 @@ function resultHTML(data) {
     else {
         html = '<h1>Sorry! No result found</h1>';
         $("#display").html(html);
+        $("#paginationControls").html('');
     }
 }

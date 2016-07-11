@@ -1,7 +1,7 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Query Operations
+/**
+ * @Author  : Mfsi_Annapurnaa
+ * @purpose : Query operation.
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

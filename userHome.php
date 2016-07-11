@@ -1,7 +1,7 @@
 <?php
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Display after login
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Display after login
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

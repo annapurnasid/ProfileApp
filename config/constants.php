@@ -1,8 +1,7 @@
 <?php
-
-/*
-  @Author : Mfsi_Annapurnaa
-  @purpose : Constants Declaration
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Constants Declaration
  */
 
 //Constant for image path

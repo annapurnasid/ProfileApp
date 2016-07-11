@@ -1,8 +1,7 @@
 <?php
-/*
-  @Author  : Mfsi_Annapurnaa
-  @purpose : Registration form layout.
-           : Update operaton on the emplolyee data
+/**
+ * @Author  : Mfsi_Annapurnaa
+ * @purpose : Registration form layout andupdate employee data.
  */
 
 ini_set('display_errors', 1);
