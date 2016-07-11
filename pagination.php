@@ -11,11 +11,10 @@ $jsonResult = array();
 
 $pn = $_POST['pageNo'];
 $pageCount = $_POST['totalPage'];
-$rowPerPage = 5;
 $start = 0;
 
-if (1 !== $pn) {
-    $start = $pn * $rowPerPage;
+if (1 !== (int) $pn) {
+    $start = ($pn-1) * ROWPERPAGE;
 }
 
 $result = $obj->getEmployeeDetail($start);

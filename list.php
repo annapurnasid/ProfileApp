@@ -26,11 +26,8 @@ $obj = new queryOperation();
 // Total no of rows
 $rowCount = $obj->countRecord();
 
-// Results per page
-$rowPerPage = 5;
-
 // No of required pages
-$pageCount = ceil($rowCount[0]/$rowPerPage);
+$pageCount = ceil($rowCount[0]/ROWPERPAGE);
 
 // If total rows is < 10
 if ($pageCount < 1)
@@ -61,9 +58,6 @@ if (isset($_GET['delete']))
     $obj->delete('Employee', $condition);
 }
 
-// Call the required query function
-//$result = $obj->getEmployeeDetail();
-
 $search = false;
 ?>
 
@@ -89,8 +83,6 @@ $search = false;
             <fieldset>
                 <!-- Form Name -->
                 <!-- Search input-->
-                
-
                         <div class="row form-group center-block well col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <label  class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="nameSearch">Name</label>
                         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
@@ -102,29 +94,24 @@ $search = false;
                             </button>
                         </div>
                         </div>
-                    
             </fieldset>
         </form>
             <div class="listDisplay">
                 <table class="table table-responsive" id="display">
-
                 </table>
             </div>
             <div id="paginationControls">
-                <ul>
-                    
+                <ul>  
                 </ul>
             </div>
         </div>
     <!-- Container -->
-    
      <script src='js/jquery.js'></script>
-        <script src="js/newjQuery.js"></script>
-         <script type="text/javascript">
+    <script src="js/newjQuery.js"></script>
+    <script type="text/javascript">
         id = <?php echo $_SESSION['id']; ?>;
-        rowPerPage = <?php echo $rowPerPage ?>; // results per page
         pageCount = <?php echo $pageCount?>;
         pn = 1;
-        </script>
+    </script>
     </body>
 </html>

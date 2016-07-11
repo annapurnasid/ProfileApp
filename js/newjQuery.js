@@ -1,34 +1,12 @@
+/**
+ * @Author  : Mfsi_Annapurnaa
+ * @purpose : Perform Jquery operation
+ */
 
 $( document ).ready(function(){
 
-        var paginationCtrls = "";
-                
-        // Only if there is more than 1 page worth of results give the user pagination controls
-        if(1 !== pageCount){
-            if (pn > 1) {
-                paginationCtrls += '<button onclick="updatePn(' + (pn-1) + ')">&lt</button>';
-            }
-            paginationCtrls += ' &nbsp; &nbsp; <b>Page '+ pn +' of '+ pageCount +'</b> &nbsp; &nbsp; ';
-            if (pn !== pageCount) {
-                paginationCtrls += '<button onclick="updatePn(' + (pn+1) + ')" style="height: 30px;\n\
-                width: 30px">&gt</button>';
-            }
-        }
-        
-        $("#paginationControls").html(paginationCtrls);
-                
-        $.ajax({
-            url: 'pagination.php', 
-            dataType : 'html',
-            type : 'POST',
-            data : {
-                'pageNo' : pn,
-                'totalPage' : pageCount,
-            },
-            success : function(data){
-                resultHTML(data);
-            }
-        });
+    // Call Pagination ajax from server
+    pagination(pageCount, pn);
     
     $('#searchButton').on('click', function() {
         var name = $('#nameSearch').val();
@@ -49,8 +27,39 @@ $( document ).ready(function(){
     
 });
 
-function updatePn(pageNo){
-    pn = pageNo;
+function pagination(pageCount, pageNo)
+{
+    var paginationCtrls = "";
+
+    // Only if there is more than 1 page worth of results give the user pagination controls
+    if (1 !== pageCount) {
+        
+        if (1 < pageNo) {
+            paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo-1) + ')">&lt</button>';
+        }
+
+        paginationCtrls += ' &nbsp; &nbsp; <b>Page '+ pageNo +' of '+ pageCount +'</b> &nbsp; &nbsp; ';
+
+        if (pageNo !== pageCount) {
+            paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo+1) + ')" style="height: 30px;\n\
+            width: 30px">&gt</button>';
+        }
+    }
+
+    $("#paginationControls").html(paginationCtrls);
+    
+    $.ajax({
+        url: 'pagination.php', 
+        dataType : 'html',
+        type : 'POST',
+        data : {
+            'pageNo' : pageNo,
+            'totalPage' : pageCount,
+        },
+        success : function(data){
+            resultHTML(data);
+        }
+    });
 }
 
 function resultHTML(data) {
@@ -96,7 +105,7 @@ function resultHTML(data) {
             html += '</tr>';
             i++;
         });
-        
+
         html += '</tbody></table>';
         $("#display").html(html);
     }

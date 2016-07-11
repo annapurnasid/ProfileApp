@@ -73,7 +73,7 @@ class queryOperation
                 Employee.image AS Image, 
                 Employee.note AS Note " . $joinQuery. " LIMIT " . $limit . ", 5";
         }
-
+        
         // If connection made, return query result
         return $this->connObj->executeConnection($this->conn, $sqlQuery);
     }
