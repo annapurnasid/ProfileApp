@@ -5,7 +5,12 @@
  * @purpose : Registration form layout and Update operaton on the emplolyee data
  */
  
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once('config/queryOperation.php');
+//require_once('roleResPerm.php');
 require_once('config/session.php');
 
 $obj = new queryOperation();
@@ -21,6 +26,10 @@ else
 {
     $update = TRUE;
     $empId = $_SESSION['id'];
+    
+//    $rrpObj = new aclOperation();
+//    $rrpObj->roleResourcePermission($_SESSION['role']);
+    
     $result = $obj->getEmployeeDetail($update, $empId);
     
     if (!$result)
@@ -81,9 +90,9 @@ if (!empty($_POST))
         }
         else
         {
-            array_push($empData, ['password' => $password]);
+            $empData['password'] = $password;
 
-            // Insert data   
+            // Insert data
             $employeeId = $obj->insertUpdate('Employee', $empData);
 
             // Insert office address detail
@@ -115,7 +124,6 @@ else
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="js/jsValidation.js"></script>
         <?php 
            // If the form is for updating
            if ($update)
@@ -144,7 +152,7 @@ else
                 <div class="col-lg-12">
                     <form id="registrationForm" action="registration.php<?php echo ($update) ? 
                         '?edit=' . $row['empId']: '';?>" method="POST" class="form-horizontal" 
-                        enctype="multipart/form-data" onsubmit="return validateForm();">
+                        enctype="multipart/form-data">
                         <fieldset>
                             <!-- Form Name-->
                             <?php 

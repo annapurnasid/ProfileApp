@@ -3,8 +3,13 @@
  * @Author  : Mfsi_Annapurnaa
  * @purpose : handle thelisting of employee data and deletion ofrow.
  */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 require_once('config/session.php');
+require_once('roleResPerm.php');
 require_once('config/queryOperation.php');
 
 $objSes = new session();
@@ -15,6 +20,12 @@ if (!$resultSes)
 {
     header('Location:login.php');
 }
+$rrpObj = new aclOperation();
+
+$role = $_SESSION['role'];
+$resource = pathinfo($_SERVER['REQUEST_URI'])['filename'];
+
+$rrpObj->roleResourcePermission($role, $resource);
 
 $obj = new queryOperation();
 
@@ -30,27 +41,35 @@ if ($pageCount < 1)
     $pageCount = 1;
 }
 
+
+
 // Delete a row
 if (isset($_GET['delete']))
 {
-    $empId = $_GET['delete'];
+    $requestedAction = isset($_GET['action']) ? $_GET['action'] : '';
+    if($rrpObj->isAllowed($requestedAction, $role, $resource))
+        {
+            $empId = $_GET['delete'];
 
-    // Extract image name and delete it
-    $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
-    $result = $obj->select('Employee', 'image', $condition);
-    $img = mysqli_fetch_array($result);
+            // Extract image name and delete it
+            $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+            $result = $obj->select('Employee', 'image', $condition);
+            $img = mysqli_fetch_array($result);
 
-    if (file_exists($img['image']))
-    {
-        unlink(IMAGEPATH . $img['image']);
-    }
-    // Delete the address detail
-    $condition = ['column' => 'Address.empId', 'operator' => '=', 'val' => $empId];
-    $obj->delete('Address', $condition);
+            if (file_exists($img['image']))
+            {
+                unlink(IMAGEPATH . $img['image']);
+            }
+            // Delete the address detail
+            $condition = ['column' => 'Address.empId', 'operator' => '=', 'val' => $empId];
+            $obj->delete('Address', $condition);
 
-    // Delete the employee detail
-    $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
-    $obj->delete('Employee', $condition);
+            // Delete the employee detail
+            $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+
+            $obj->delete('Employee', $condition);
+        
+        }
 }
 
 $search = false;
@@ -102,7 +121,7 @@ $search = false;
         </div>
     <!-- Container -->
      <script src='js/jquery.js'></script>
-    <script src="js/newjQuery.js"></script>
+    <script src="js/jsOperations.js"></script>
     <script type="text/javascript">
         id = <?php echo $_SESSION['id']; ?>;
         pageCount = <?php echo $pageCount?>;

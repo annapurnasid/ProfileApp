@@ -16,11 +16,13 @@ $(document).ready(function(){
             if ('' === $(this).val() || '0' === $(this).val()) {
                 $(errField).text('Field required');
                 error = true;
+                console.log($(this));
             }
             
         });
-        
-        return (error) ? false : true;
+        var t = (error) ? false : true;
+        console.log(t);
+        return t;
     });
         
         // To validate alphabets only field

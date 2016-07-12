@@ -115,7 +115,7 @@ function resultHTML(data) {
             html += '</td>';
 
             // Delete graphic-->
-            html += '<td><a href="list.php?delete=' + object['EmpID'] + '"><span \n\
+            html += '<td><a href="list.php?delete=' + object['EmpID'] + '&action=del"><span \n\
                 class="glyphicon glyphicon-remove"></span></a></td>';
 
             html += '</tr>';

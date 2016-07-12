@@ -23,7 +23,7 @@ if (!empty($_POST))
         
         // Select the fields for display in userHome page
         $result = $obj->select('Employee', 'email, empId, password, title, firstName, lastName, '
-            . 'middleName', $condition);
+            . 'middleName, roleId', $condition);
         $row = mysqli_fetch_assoc($result);
         
         if ($password !== $row['password'])
@@ -39,6 +39,9 @@ if (!empty($_POST))
             $objSes->init('firstName', $row['firstName']);
             $objSes->init('middleName', $row['middleName']);
             $objSes->init('lastName', $row['lastName']);
+            $objSes->init('roleId', $row['roleId']);
+            
+            $obj->fetchRole();
             header('Location:userHome.php');
         } 
     }

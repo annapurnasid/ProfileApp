@@ -69,7 +69,7 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note " . $joinQuery. " LIMIT " . $limit . ", 5";
+                Employee.note AS Note " . $joinQuery. " LIMIT " . $limit . "," . ROWPERPAGE;
         }
         
         // If connection made, return query result
@@ -138,8 +138,9 @@ class queryOperation
      */
     function delete($table, $condition)
     {
-        $deleteQuery = 'DELETE FROM ' . $table . ' WHERE ' . $condition[column] . ' ' .
-                $condition[operator] . ' ' . $condition[val];
+        $deleteQuery = 'DELETE FROM ' . $table . ' WHERE ' . $condition['column'] . ' ' .
+                $condition['operator'] . ' ' . $condition['val'];
+
         $result = $this->connObj->executeConnection($this->conn, $deleteQuery);
 
         if (!$result)
@@ -256,6 +257,40 @@ class queryOperation
         $rowCount = mysqli_fetch_row($result);
         return $rowCount;
     }
-}
+    
+    
+    function fetchRole()
+    {
+        
+        $fetchDetail = "SELECT edit, del, ad, view, al, res.resource, r.role
+            FROM RoleResourcePermission rrp
+            JOIN Resource res on res.resourceId = rrp.resourceId
+            JOIN Role r ON r.roleId = rrp.roleId
+            WHERE rrp.roleId ='" . $_SESSION['roleId'] . "'"; 
+        $result = $this->connObj->executeConnection($this->conn, $fetchDetail);
 
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $role = $row['role'];
+        $resource = $row['resource'];
+        $_SESSION[$role][$resource]['edit'] = $row['edit'];
+            $_SESSION[$role][$resource]['del'] = $row['del'];
+            $_SESSION[$role][$resource]['ad'] = $row['ad'];
+            $_SESSION[$role][$resource]['view'] = $row['view'];
+            $_SESSION[$role][$resource]['al'] = $row['al'];
+        
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+
+            $resource = $row['resource'];
+            $_SESSION[$role][$resource]['edit'] = $row['edit'];
+            $_SESSION[$role][$resource]['del'] = $row['del'];
+            $_SESSION[$role][$resource]['ad'] = $row['ad'];
+            $_SESSION[$role][$resource]['view'] = $row['view'];
+            $_SESSION[$role][$resource]['al'] = $row['al'];
+        }
+        
+        $_SESSION['role'] = $role;
+
+        return $result;
+    }
+}
 
