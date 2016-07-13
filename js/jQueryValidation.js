@@ -21,7 +21,6 @@ $(document).ready(function(){
             
         });
         var t = (error) ? false : true;
-        console.log(t);
         return t;
     });
         
@@ -87,14 +86,14 @@ $(document).ready(function(){
                $('#inputEmailErr').text('Enter valid email');
                error = true;
             }
-            
+ 
         });
         
         // Validate password
         $('.password').on('focusout', function() {
             
             var errField = '#'.concat($(this).attr('id'), 'Err');
-            
+
             switch ($(this).attr('id')) {
 
                 case 'inputPassword':

@@ -65,7 +65,7 @@ function pagination(pageCount, pageNo)
             'totalPage' : pageCount,
             'action' : 'pagination',
         },
-        success : function(data){
+        success : function(data) {
             resultHTML(data);
         }
     });
@@ -88,13 +88,11 @@ function resultHTML(data) {
             <th>Employement Status</th><th>Employer</th><th>Communication</th><th>Image</th>\n\
             <th>Note</th>';
     
-    if (1 === editPermission)
-    {
+    if (1 === editPermission) {
         html += '<th>Edit</th>';
     }
     
-    if (1 === deletePermission)
-    {
+    if (1 === deletePermission) {
         html += '<th>Delete</th>';
     }
    
@@ -107,12 +105,14 @@ function resultHTML(data) {
             for(var key in object) {
 
                 html += '<td>';
-                if ('EmpID' === key)
-                {
+                if ('EmpID' === key) {
                    html += i;
                 }
-                else
-                {
+                else if ('Image' === key) {
+                    html += ("" !== object[key]) ?  '<img src="' + path + object[key] + '">' :
+                        'No image';
+                }
+                else {
                     html += object[key];
                 }
 
@@ -121,21 +121,18 @@ function resultHTML(data) {
             html += '<td>';
             
             
-            if('admin' === role && 1 === editPermission)
-            {
+            if('admin' === role && 1 === editPermission) {
                 html += '<a href="registration.php?edit=' + object['EmpID'] + '&action=edit">\n\
                     <span  class="glyphicon glyphicon-pencil"></span></a>';
             }
-            else if ( id == object['EmpID'] && 1 === editPermission)
-            { 
+            else if ( id == object['EmpID'] && 1 === editPermission) { 
                 html += '<a href="registration.php"><span  class="glyphicon glyphicon-pencil"></span></a>';
             }
             
             html += '</td>';
             
             // Delete graphic-->
-            if (1 === deletePermission)
-            {
+            if (1 === deletePermission) {
                 html += '<td><a href="list.php?delete=' + object['EmpID'] + '&action=del"><span \n\
                     class="glyphicon glyphicon-remove"></span></a></td>';
             }

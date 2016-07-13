@@ -18,6 +18,12 @@
     padding: 0 15px;
 }
 
+img
+{
+    height: 65px;
+    width: 65px;
+}
+
 @media(min-width:768px)
 {
     .navbar-fixed-top .navbar-brand
@@ -56,14 +62,17 @@ body
 {
     padding: 0px;
 }
+
 .panelContainer
 {
     width: 300px;
 }
+
 .capitalize
 {
     text-transform: capitalize;
 }
+
 .panel
 {
     margin-bottom: 1px;

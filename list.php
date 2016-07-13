@@ -139,6 +139,7 @@ $search = false;
         deletePermission = <?php echo $_SESSION[$role][$resource]['remove'] ?>;
         editPermission = <?php echo $_SESSION[$role][$resource]['edit'] ?>;
         role= '<?php echo $_SESSION['role'] ?>';
+        path= '<?php echo IMAGEPATH ?>';
     </script>
     </body>
 </html>

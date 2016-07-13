@@ -26,9 +26,6 @@ else
 {
     $update = TRUE;
     $empId = 'admin' === $_SESSION['role'] ?  $_GET['edit'] : $_SESSION['id'];
-    
-//    $rrpObj = new aclOperation();
-//    $rrpObj->roleResourcePermission($_SESSION['role']);
    
     $result = $obj->getEmployeeDetail($update, $empId);
     
@@ -38,6 +35,10 @@ else
     }
     
     $row = mysqli_fetch_assoc($result);
+//    echo '<pre>';
+//    print_r($row); 
+//    echo ; 
+//    exit;
 }
 
 $stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam',
@@ -525,7 +526,8 @@ else
                                         $row['image'] : (isset($_POST['image']) ? $_POST['image'] : 
                                         ''); ?>" />
                                     <?php
-                                        if ($update)
+                                        if ($update && isset($row['image']) && !empty($row['image'])
+                                                && file_exists(IMAGEPATH . $row['image']))
                                         {
                                     ?>
                                             <!-- Modal -->
