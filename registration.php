@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('config/queryOperation.php');
-//require_once('roleResPerm.php');
+require_once('roleResPerm.php');
 require_once('config/session.php');
 
 $obj = new queryOperation();
@@ -25,11 +25,11 @@ if (!$result)
 else
 {
     $update = TRUE;
-    $empId = $_SESSION['id'];
+    $empId = 'admin' === $_SESSION['role'] ?  $_GET['edit'] : $_SESSION['id'];
     
 //    $rrpObj = new aclOperation();
 //    $rrpObj->roleResourcePermission($_SESSION['role']);
-    
+   
     $result = $obj->getEmployeeDetail($update, $empId);
     
     if (!$result)

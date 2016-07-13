@@ -54,6 +54,9 @@ if ($resultSes)
                       <a href="list.php">Employee Data</a>
                    </li>
                    <li>
+                      <a href="dashboard.php">Dashboard</a>
+                   </li>
+                   <li>
                        <a href="signOut.php">Sign Out</a>
                    </li>
                 </ul>

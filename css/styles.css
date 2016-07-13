@@ -52,3 +52,19 @@ body
 {
     vertical-align: middle;
 }
+.nameSearch
+{
+    padding: 0px;
+}
+.panelContainer
+{
+    width: 300px;
+}
+.capitalize
+{
+    text-transform: capitalize;
+}
+.panel
+{
+    margin-bottom: 1px;
+}

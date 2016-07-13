@@ -20,9 +20,15 @@ if (!$resultSes)
 {
     header('Location:login.php');
 }
+
 $rrpObj = new aclOperation();
 
 $role = $_SESSION['role'];
+
+//echo '<pre>';
+//print_r($_SESSION['role']);exit; 
+//echo $_SESSION[$role][$resource]['del'];exit;
+
 $resource = pathinfo($_SERVER['REQUEST_URI'])['filename'];
 
 $rrpObj->roleResourcePermission($role, $resource);
@@ -41,12 +47,11 @@ if ($pageCount < 1)
     $pageCount = 1;
 }
 
-
-
 // Delete a row
 if (isset($_GET['delete']))
 {
     $requestedAction = isset($_GET['action']) ? $_GET['action'] : '';
+
     if($rrpObj->isAllowed($requestedAction, $role, $resource))
         {
             $empId = $_GET['delete'];
@@ -97,16 +102,21 @@ $search = false;
             <fieldset>
                 <!-- Form Name -->
                 <!-- Search input-->
-                        <div class="row form-group center-block well col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <label  class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="nameSearch">Name</label>
-                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
-                            <input id="nameSearch"  name="nameSearch" type="search" class="form-control input-md">
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                            <button type="button" id="searchButton" class="btn btn-info search">
-                                <span class="glyphicon glyphicon-search"></span> Search
-                            </button>
-                        </div>
+                        <div class="row form-group center-block well col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 nameSearch">
+                                <input id="nameSearch"  name="nameSearch" type="search" 
+                                       class="form-control  input-md" placeholder="Search name">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 nameSearch">
+                                <button type="button" id="searchButton" class="btn btn-info search">
+                                    <span class="glyphicon glyphicon-search"></span> Search
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                                </button>
+                            </div>
                         </div>
             </fieldset>
         </form>
@@ -126,6 +136,9 @@ $search = false;
         id = <?php echo $_SESSION['id']; ?>;
         pageCount = <?php echo $pageCount?>;
         pn = 1;
+        deletePermission = <?php echo $_SESSION[$role][$resource]['remove'] ?>;
+        editPermission = <?php echo $_SESSION[$role][$resource]['edit'] ?>;
+        role= '<?php echo $_SESSION['role'] ?>';
     </script>
     </body>
 </html>

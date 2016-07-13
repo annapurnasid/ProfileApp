@@ -258,11 +258,10 @@ class queryOperation
         return $rowCount;
     }
     
-    
     function fetchRole()
     {
-        
-        $fetchDetail = "SELECT edit, del, ad, view, al, res.resource, r.role
+
+        $fetchDetail = "SELECT edit, remove, addNew, view, allowAll, res.resource, r.role
             FROM RoleResourcePermission rrp
             JOIN Resource res on res.resourceId = rrp.resourceId
             JOIN Role r ON r.roleId = rrp.roleId
@@ -270,26 +269,36 @@ class queryOperation
         $result = $this->connObj->executeConnection($this->conn, $fetchDetail);
 
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        $role = $row['role'];
-        $resource = $row['resource'];
-        $_SESSION[$role][$resource]['edit'] = $row['edit'];
-            $_SESSION[$role][$resource]['del'] = $row['del'];
-            $_SESSION[$role][$resource]['ad'] = $row['ad'];
-            $_SESSION[$role][$resource]['view'] = $row['view'];
-            $_SESSION[$role][$resource]['al'] = $row['al'];
-        
-        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
+        $role = $row['role'];
+
+        if ('0' !== $row['view'] || (0 !== $row['remove']) || (0 !== $row['addNew'])
+                ||  (0 !==  $row['allowAll']) || (0 !==  $row['edit']))
+        {
             $resource = $row['resource'];
             $_SESSION[$role][$resource]['edit'] = $row['edit'];
-            $_SESSION[$role][$resource]['del'] = $row['del'];
-            $_SESSION[$role][$resource]['ad'] = $row['ad'];
+            $_SESSION[$role][$resource]['remove'] = $row['remove'];
+            $_SESSION[$role][$resource]['addNew'] = $row['addNew'];
             $_SESSION[$role][$resource]['view'] = $row['view'];
-            $_SESSION[$role][$resource]['al'] = $row['al'];
+            $_SESSION[$role][$resource]['allowAll'] = $row['allowAll'];
         }
-        
-        $_SESSION['role'] = $role;
+ 
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
+            if ('0' !== $row['view'] || (0 !== $row['remove']) || (0 !== $row['addNew'])
+                ||  (0 !==  $row['allowAll']) || (0 !==  $row['edit']))
+            {
+                $resource = $row['resource'];
+                $_SESSION[$role][$resource]['edit'] = $row['edit'];
+                $_SESSION[$role][$resource]['remove'] = $row['remove'];
+                $_SESSION[$role][$resource]['addNew'] = $row['addNew'];
+                $_SESSION[$role][$resource]['view'] = $row['view'];
+                $_SESSION[$role][$resource]['allowAll'] = $row['allowAll'];
+            }
+        }
+
+        $_SESSION['role'] = $role;
+ 
         return $result;
     }
 }

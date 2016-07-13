@@ -79,13 +79,26 @@ function pagination(pageCount, pageNo)
 * @return void
 */
 function resultHTML(data) {
+    
     var resultSearch = JSON.parse(data);
     var html = '';
     html += '<table class="table table-responsive" id="display"><thead><tr><th>Serial No.</th>\n\
             <th>Name</th><th>Email</th><th>Phone</th><th>Gender</th><th>Date of Birth</th>\n\
             <th>Office Address</th><th>Residential Address</th>\n\<th>Marital  Status</th>\n\
             <th>Employement Status</th><th>Employer</th><th>Communication</th><th>Image</th>\n\
-            <th>Note</th><th>Edit</th><th>Delete</th></tr></thead><tbody id="employeeListTableBody">'
+            <th>Note</th>';
+    
+    if (1 === editPermission)
+    {
+        html += '<th>Edit</th>';
+    }
+    
+    if (1 === deletePermission)
+    {
+        html += '<th>Delete</th>';
+    }
+   
+    html += '</tr></thead><tbody id="employeeListTableBody">';
                 
     if (0 !== resultSearch.length) {
         var i = 1;
@@ -107,16 +120,25 @@ function resultHTML(data) {
             }
             html += '<td>';
             
-            if ( id == object['EmpID'])
+            
+            if('admin' === role && 1 === editPermission)
+            {
+                html += '<a href="registration.php?edit=' + object['EmpID'] + '&action=edit">\n\
+                    <span  class="glyphicon glyphicon-pencil"></span></a>';
+            }
+            else if ( id == object['EmpID'] && 1 === editPermission)
             { 
                 html += '<a href="registration.php"><span  class="glyphicon glyphicon-pencil"></span></a>';
             }
             
             html += '</td>';
-
+            
             // Delete graphic-->
-            html += '<td><a href="list.php?delete=' + object['EmpID'] + '&action=del"><span \n\
-                class="glyphicon glyphicon-remove"></span></a></td>';
+            if (1 === deletePermission)
+            {
+                html += '<td><a href="list.php?delete=' + object['EmpID'] + '&action=del"><span \n\
+                    class="glyphicon glyphicon-remove"></span></a></td>';
+            }
 
             html += '</tr>';
             i++;
