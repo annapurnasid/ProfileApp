@@ -30,7 +30,8 @@ switch ($action)
         break;
 }
 
-if (!$result) {
+if (!$result)
+{
     errorFile('Retrival failed' . mysql_error() . time());
 }
 

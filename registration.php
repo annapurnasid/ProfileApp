@@ -18,6 +18,8 @@ $objSes = new session();
 $objSes->start();
 $result = $objSes->checkSession();
 
+$rrpObj = new aclOperation();
+
 if (!$result)
 {
     $update = FALSE;
@@ -25,6 +27,11 @@ if (!$result)
 else
 {
     $update = TRUE;
+
+    $resource = pathinfo($_SERVER['REQUEST_URI'])['filename'];
+    $role = $_SESSION['role'];
+    $rrpObj->isAllowed($role, $resource);
+
     $empId = 'admin' === $_SESSION['role'] ?  $_GET['edit'] : $_SESSION['id'];
    
     $result = $obj->getEmployeeDetail($update, $empId);
@@ -35,10 +42,6 @@ else
     }
     
     $row = mysqli_fetch_assoc($result);
-//    echo '<pre>';
-//    print_r($row); 
-//    echo ; 
-//    exit;
 }
 
 $stateList = array('Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam',

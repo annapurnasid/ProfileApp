@@ -120,7 +120,7 @@ $(document).ready(function(){
         });
             
     });
-        
+ 
     // Reset form
     $('#formReset').on('click', function() {
         $('.error').text('');

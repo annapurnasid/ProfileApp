@@ -50,9 +50,8 @@ if ($pageCount < 1)
 // Delete a row
 if (isset($_GET['delete']))
 {
-    $requestedAction = isset($_GET['action']) ? $_GET['action'] : '';
 
-    if($rrpObj->isAllowed($requestedAction, $role, $resource))
+    if($rrpObj->isAllowed($role, $resource))
         {
             $empId = $_GET['delete'];
 
@@ -125,8 +124,7 @@ $search = false;
                 </table>
             </div>
             <div id="paginationControls">
-                <ul>  
-                </ul>
+                <ul></ul>
             </div>
         </div>
     <!-- Container -->

@@ -3,29 +3,32 @@
  * @purpose : Perform Jquery operation
  */
 
-$( document ).ready(function(){
+$( document ).ready(function() {
 
-    // Call Pagination ajax from server
-    pagination(pageCount, pn);
-    
-    $('#searchButton').on('click', function() {
-        var name = $('#nameSearch').val();
+    if (-1 !== (window.location.href).search('list')) {
+        // Execute only if it is List page 
+        // Call Pagination ajax from server
+        pagination(pageCount, pn);
 
-        $.ajax({
-            url: 'searchPaginate.php', 
-            dataType : 'html',
-            type : 'POST',
-            data : {
-                'name' : name,
-                'action' : 'search',
-            },
-            success : function(data){
-                resultHTML(data);
-            }
+        $('#searchButton').on('click', function() {
+            var name = $('#nameSearch').val();
+
+            $.ajax({
+                url: 'searchPaginate.php', 
+                dataType : 'html',
+                type : 'POST',
+                data : {
+                    'name' : name,
+                    'action' : 'search',
+                },
+                success : function(data){
+                    resultHTML(data);
+                }
+            });
         });
-    });
-    
+    }
 });
+
 
 /**
 * Function for executing pagination
@@ -35,13 +38,12 @@ $( document ).ready(function(){
 * @param  int pageNo
 * @return void
 */
-function pagination(pageCount, pageNo)
-{
+function pagination(pageCount, pageNo) {
     var paginationCtrls = "";
 
     // Only if there is more than 1 page worth of results give the user pagination controls
     if (1 !== pageCount) {
-        
+
         if (1 < pageNo) {
             paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo-1) + ')">&lt</button>';
         }
@@ -55,7 +57,7 @@ function pagination(pageCount, pageNo)
     }
 
     $("#paginationControls").html(paginationCtrls);
-    
+
     $.ajax({
         url: 'searchPaginate.php', 
         dataType : 'html',
@@ -133,7 +135,7 @@ function resultHTML(data) {
             
             // Delete graphic-->
             if (1 === deletePermission) {
-                html += '<td><a href="list.php?delete=' + object['EmpID'] + '&action=del"><span \n\
+                html += '<td><a href="list.php?delete=' + object['EmpID'] + '&action=remove"><span \n\
                     class="glyphicon glyphicon-remove"></span></a></td>';
             }
 
@@ -150,3 +152,41 @@ function resultHTML(data) {
         $("#paginationControls").html('');
     }
 }
+
+// To update permission
+$('#changePermission').on('click', function() {
+    
+    var permResult = {};
+    var resourceId = {};
+    resourceId['list'] = $('#listId').val();
+    resourceId['dashboard'] = $('#dashboardId').val();
+    resourceId['registration'] = $('#registrationId').val();
+
+    $('.checkBox').each(function() {
+        
+        var key = $(this).attr('name');
+        var chkId = $(this).attr('id');
+        
+        permResult[key] = (permResult[key]) ? (permResult[key]) : {};
+        permResult[key][chkId] = '0';
+
+        if ($(this).prop("checked")) {    
+            permResult[key][chkId] = '1';
+        }
+
+    });
+
+    $.ajax({
+        url: 'changePermission.php', 
+        dataType : 'html',
+        type : 'POST',
+        data : {
+            'permData' : permResult,
+            'resourceId' : resourceId,
+        },
+        success : function(data){
+            resultHTML(data);
+        }
+    });
+    
+});

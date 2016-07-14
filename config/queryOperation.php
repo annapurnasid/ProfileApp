@@ -261,19 +261,24 @@ class queryOperation
     function fetchRole()
     {
 
+        if(!isset($_SESSION['roleId'])){
+            return FALSE;
+        }
+        
         $fetchDetail = "SELECT edit, remove, addNew, view, allowAll, res.resource, r.role
             FROM RoleResourcePermission rrp
             JOIN Resource res on res.resourceId = rrp.resourceId
-            JOIN Role r ON r.roleId = rrp.roleId
-            WHERE rrp.roleId ='" . $_SESSION['roleId'] . "'"; 
+            JOIN Role r ON r.roleId = rrp.roleId";
+
+        $fetchDetail .= " WHERE rrp.roleId ='" . $_SESSION['roleId'] . "'";
+
         $result = $this->connObj->executeConnection($this->conn, $fetchDetail);
 
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
+        
         $role = $row['role'];
-
         if ('0' !== $row['view'] || (0 !== $row['remove']) || (0 !== $row['addNew'])
-                ||  (0 !==  $row['allowAll']) || (0 !==  $row['edit']))
+            ||  (0 !==  $row['allowAll']) || (0 !==  $row['edit']))
         {
             $resource = $row['resource'];
             $_SESSION[$role][$resource]['edit'] = $row['edit'];
@@ -282,8 +287,9 @@ class queryOperation
             $_SESSION[$role][$resource]['view'] = $row['view'];
             $_SESSION[$role][$resource]['allowAll'] = $row['allowAll'];
         }
- 
-        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+        {
 
             if ('0' !== $row['view'] || (0 !== $row['remove']) || (0 !== $row['addNew'])
                 ||  (0 !==  $row['allowAll']) || (0 !==  $row['edit']))
@@ -295,11 +301,34 @@ class queryOperation
                 $_SESSION[$role][$resource]['view'] = $row['view'];
                 $_SESSION[$role][$resource]['allowAll'] = $row['allowAll'];
             }
+
         }
 
         $_SESSION['role'] = $role;
  
-        return $result;
+    }
+
+    function permissionResult()
+    {
+         if(!isset($_SESSION['roleId'])){
+            return FALSE;
+        }
+
+        $fetchDetail = "SELECT edit, remove, addNew, view, allowAll, res.resource, r.role, res.resourceId
+            FROM RoleResourcePermission rrp
+            JOIN Resource res on res.resourceId = rrp.resourceId
+            JOIN Role r ON r.roleId = rrp.roleId WHERE rrp.roleId !='" . $_SESSION['roleId'] . "'";
+
+        $result = $this->connObj->executeConnection($this->conn, $fetchDetail);
+
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+        {
+            $resPreResult[$row['resource']] = $row;
+        }
+//        echo '<pre>';
+//        print_r($resPreResult); exit;
+        return $resPreResult;
+
     }
 }
 
