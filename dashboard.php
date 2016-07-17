@@ -21,27 +21,16 @@ $role = $_SESSION['role'];
 
 $obj = new queryOperation();
 
-if('admin' === $role)
+if ('admin' === $role)
 {
     $permissionResult = $obj->permissionResult();
+
     foreach ($permissionResult as $key => $value)
     {
         unset($permissionResult[$key]['role']);
         unset($permissionResult[$key]['resource']);
     }
 }
-
-//echo '<pre>';
-//print_r($permissionResult);
-//
-//echo $permissionResult['list']['resourceId'];
-//exit;
-// echo '<pre>';
-// foreach ($_SESSION[$role] as $key => $value)
-//{
-//    echo $key;
-//}
-//print_r($_SESSION[$role]['dashboard']); exit;
 
 ?>
 <!DOCTYPE html>
@@ -82,10 +71,7 @@ if('admin' === $role)
                                 //echo $key;
                                 $resource = $key;?>
                                 <tr>
-                                <td class="capitalize">
-                                    <input type="hidden" name="checkUpdate" id="<?php echo $resource . 'Id' ?>"
-                                       value="<?php echo $permissionResult[$resource]['resourceId'] ?>">
-                                    <b><?php echo $resource?></b>
+                                <td class="capitalize"><b><?php echo $resource?></b>
                                 </td>
                                 <?php
                                 foreach ($permissionResult[$resource] as $key => $allowed)

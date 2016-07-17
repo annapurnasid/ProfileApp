@@ -34,7 +34,7 @@ class queryOperation
      * @param  int $id
      * @return array
      */
-    function getEmployeeDetail($limit=0, $id = '')
+    function getEmployeeDetail($limit=0, $id = '', $order, $name)
     {
         $joinQuery = "FROM Employee 
             JOIN Address AS Residence ON Employee.empId = Residence.empId 
@@ -42,6 +42,16 @@ class queryOperation
             JOIN Address AS Office ON Employee.empId = Office.empId 
             AND Office.addressType = 'office'";
         
+        $sort = $order === '' ? '' : (' ORDER BY Name ' . $order);
+        $searchJoin ='';
+        if('' !== $name)
+        {
+            $searchJoin = "WHERE Employee.title LIKE '%$name%' OR
+                Employee.firstName LIKE '%$name%' OR
+                Employee.middleName LIKE '%$name%' OR 
+                Employee.lastName LIKE '%$name%'";
+        }
+
         // To fetch the details for update, after log in
         if (!empty($id))
         {
@@ -57,6 +67,7 @@ class queryOperation
         else
         {
             // To fetch the details to display
+            
             $sqlQuery = "SELECT Employee.empId AS EmpID,
                 CONCAT(Employee.title, ' ', Employee.firstName, 
                 ' ', Employee.middleName, ' ', Employee.lastName) AS Name,
@@ -69,7 +80,8 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note " . $joinQuery. " LIMIT " . $limit . "," . ROWPERPAGE;
+                Employee.note AS Note " . $joinQuery. $searchJoin .  $sort . " LIMIT " . $limit . "," . ROWPERPAGE;
+            //echo $sqlQuery; 
         }
         
         // If connection made, return query result
@@ -210,40 +222,6 @@ class queryOperation
     }
     
     /**
-     * Function to return search details
-     *
-     * @access public
-     * @param string  $name
-     * @return array
-     */
-    function searchData($name)
-    {   
-        $query = "SELECT Employee.empId AS EmpID,
-                CONCAT(Employee.title, ' ', Employee.firstName, 
-                ' ', Employee.middleName, ' ', Employee.lastName) AS Name,
-                Employee.email AS EmailID, 
-                Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
-                CONCAT(Residence.street, '<br />' , Residence.city , '<br />',
-                Residence.zip,'<br />', Residence.state ) AS Res,
-                CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />',
-                Office.state) AS Ofc,
-                Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
-                Employee.employer AS Employer, Employee.commId AS Communication,
-                Employee.image AS Image, 
-                Employee.note AS Note FROM Employee 
-                JOIN Address AS Residence ON Employee.empId = Residence.empId 
-                AND Residence.addressType = 'residence'
-                JOIN Address AS Office ON Employee.empId = Office.empId 
-                AND Office.addressType = 'office' 
-                WHERE Employee.title LIKE '%$name%' OR
-                Employee.firstName LIKE '%$name%' OR
-                Employee.middleName LIKE '%$name%' OR 
-                Employee.lastName LIKE '%$name%'";
-        $result = $this->connObj->executeConnection($this->conn, $query);
-        return $result;
-    }
-    
-    /**
      * Function to return total no of employee records 
      *
      * @access public
@@ -257,11 +235,19 @@ class queryOperation
         $rowCount = mysqli_fetch_row($result);
         return $rowCount;
     }
-    
+
+    /**
+     * Function to fetch current user's details
+     *
+     * @access public
+     * @param 
+     * @return void
+     */
     function fetchRole()
     {
 
-        if(!isset($_SESSION['roleId'])){
+        if (!isset($_SESSION['roleId']))
+        {
             return FALSE;
         }
         
@@ -308,13 +294,21 @@ class queryOperation
  
     }
 
+    /**
+     * Function to fetch the permission for members other than admin
+     *
+     * @access public
+     * @param
+     * @return array
+     */
     function permissionResult()
     {
-         if(!isset($_SESSION['roleId'])){
+        if (!isset($_SESSION['roleId']))
+        {
             return FALSE;
         }
 
-        $fetchDetail = "SELECT edit, remove, addNew, view, allowAll, res.resource, r.role, res.resourceId
+        $fetchDetail = "SELECT edit, remove, addNew, view, allowAll, res.resource, r.role
             FROM RoleResourcePermission rrp
             JOIN Resource res on res.resourceId = rrp.resourceId
             JOIN Role r ON r.roleId = rrp.roleId WHERE rrp.roleId !='" . $_SESSION['roleId'] . "'";
@@ -325,10 +319,31 @@ class queryOperation
         {
             $resPreResult[$row['resource']] = $row;
         }
-//        echo '<pre>';
-//        print_r($resPreResult); exit;
+
         return $resPreResult;
 
+    }
+    
+    /**
+     * Function to change permission by admin
+     *
+     * @access public
+     * @param string $resource
+     * @param array  $permission
+     * @return array
+     */
+    function changePermission($resource, $permission)
+    {
+        $permissionQuery = "UPDATE RoleResourcePermission
+            JOIN Resource ON Resource.resourceId = RoleResourcePermission.resourceId
+            SET addNew ='" . $permission['addNew'] . "', edit ='" . $permission['edit'] ."', "
+                . "remove ='" . $permission['remove'] ." ', view ='" . $permission['view'] . "',"
+                . " allowAll ='" . $permission['allowAll'] ."' "
+                . "WHERE roleId != 1 AND Resource.resource='" . $resource . "'" ;
+
+
+        $result = $this->connObj->executeConnection($this->conn, $permissionQuery);
+        return $result;
     }
 }
 

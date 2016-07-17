@@ -8,48 +8,44 @@ require_once('config/queryOperation.php');
 $obj = new queryOperation();
 $jsonResult = array();
 
-$action = $_POST['action'];
+$name = $_POST['name'];
 
-switch ($action)
+$order = $_POST['order'];
+
+$pn = $_POST['pageNo'];
+$pageCount = $_POST['totalPage'];
+$start = 0;
+
+if (1 !== (int) $pn)
 {
-    case 'search':
-        $name = $_POST['name'];
-        $result = $obj->searchData($name);
-        break;
-    
-    case 'pagination':
-        $pn = $_POST['pageNo'];
-        $pageCount = $_POST['totalPage'];
-        $start = 0;
-
-        if (1 !== (int) $pn) {
-            $start = ($pn-1) * ROWPERPAGE;
-        }
-
-        $result = $obj->getEmployeeDetail($start);
-        break;
+    $start = ($pn-1) * ROWPERPAGE;
 }
+
+$result = $obj->getEmployeeDetail($start, '', $order, $name);
 
 if (!$result)
 {
     errorFile('Retrival failed' . mysql_error() . time());
 }
 
-while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+{
     
     $condition = ['column' => 'CommId', 'operator' => 'IN', 'val' => '(' . 
-        $row['Communication'] . ')'];
+    $row['Communication'] . ')'];
 
     // Call the required query function
     $commResult = $obj->select('Communication', 'CommMedium',
-        $condition);
+    $condition);
 
-    while ($commRow = mysqli_fetch_array($commResult, MYSQLI_ASSOC)) {
-       foreach ($commRow as $key => $value) {
+    while ($commRow = mysqli_fetch_array($commResult, MYSQLI_ASSOC))
+    {
+        foreach ($commRow as $key => $value)
+        {
             $row['medium'][] = $value;
         }
     }
-    
+
     $row['Communication'] = $row['medium'];
     unset($row['medium']);
     $jsonResult[] = $row;

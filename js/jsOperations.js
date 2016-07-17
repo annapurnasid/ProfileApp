@@ -8,23 +8,31 @@ $( document ).ready(function() {
     if (-1 !== (window.location.href).search('list')) {
         // Execute only if it is List page 
         // Call Pagination ajax from server
-        pagination(pageCount, pn);
+
+        var name = '';
+        var order = '';
+        pagination(pageCount, pn, name, order);
 
         $('#searchButton').on('click', function() {
-            var name = $('#nameSearch').val();
+            name = $('#nameSearch').val();
+            pagination(pageCount, pn, name, '');
+        });
 
-            $.ajax({
-                url: 'searchPaginate.php', 
-                dataType : 'html',
-                type : 'POST',
-                data : {
-                    'name' : name,
-                    'action' : 'search',
-                },
-                success : function(data){
-                    resultHTML(data);
-                }
-            });
+        $('#sortList').on('click', function() {
+            order = sortAscen ? 'ASC' : 'DESC';
+            pagination(pageCount, pn, name, order);
+            var html = '';
+            
+            if (sortAscen) {
+                sortAscen = false;
+                html = '<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>';
+            } 
+            else {
+               sortAscen = true;
+               html = '<span class="glyphicon glyphicon-sort-by-alphabet"></span>';
+            }
+            
+            $(this).html(html);
         });
     }
 });
@@ -38,20 +46,21 @@ $( document ).ready(function() {
 * @param  int pageNo
 * @return void
 */
-function pagination(pageCount, pageNo) {
+function pagination(pageCount, pageNo, name, order) {
+    console.log(name);
     var paginationCtrls = "";
 
     // Only if there is more than 1 page worth of results give the user pagination controls
     if (1 !== pageCount) {
 
         if (1 < pageNo) {
-            paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo-1) + ')">&lt</button>';
+            paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo-1) + ',' + "'" + name + "'" + ',' + "'" + order + "'" + ')">&lt</button>';
         }
 
         paginationCtrls += ' &nbsp; &nbsp; <b>Page '+ pageNo +' of '+ pageCount +'</b> &nbsp; &nbsp; ';
 
         if (pageNo !== pageCount) {
-            paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo+1) + ')" style="height: 30px;\n\
+            paginationCtrls += '<button onclick="pagination(' + pageCount + ',' + (pageNo+1) + ',' + "'" + name + "'" + ',' + "'" + order + "'" + ')" style="height: 30px;\n\
             width: 30px">&gt</button>';
         }
     }
@@ -65,7 +74,8 @@ function pagination(pageCount, pageNo) {
         data : {
             'pageNo' : pageNo,
             'totalPage' : pageCount,
-            'action' : 'pagination',
+            'name' : name,
+            'order' : order,
         },
         success : function(data) {
             resultHTML(data);
@@ -158,9 +168,6 @@ $('#changePermission').on('click', function() {
     
     var permResult = {};
     var resourceId = {};
-    resourceId['list'] = $('#listId').val();
-    resourceId['dashboard'] = $('#dashboardId').val();
-    resourceId['registration'] = $('#registrationId').val();
 
     $('.checkBox').each(function() {
         
@@ -182,7 +189,6 @@ $('#changePermission').on('click', function() {
         type : 'POST',
         data : {
             'permData' : permResult,
-            'resourceId' : resourceId,
         },
         success : function(data){
             resultHTML(data);

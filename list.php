@@ -47,6 +47,10 @@ if ($pageCount < 1)
     $pageCount = 1;
 }
 
+// To set the ascending or descending order
+$sortAscend = TRUE;
+$sortButton = 'glyphicon-sort-by-alphabet';
+
 // Delete a row
 if (isset($_GET['delete']))
 {
@@ -111,9 +115,9 @@ $search = false;
                                     <span class="glyphicon glyphicon-search"></span> Search
                                 </button>
                             </div>
-                            <div>
-                                <button type="button" class="btn btn-default btn-sm">
-                                    <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                <button type="button" class="btn btn-default btn-sm" id="sortList">
+                                    <span class="glyphicon <?php echo $sortButton; ?>"></span>
                                 </button>
                             </div>
                         </div>
@@ -138,6 +142,7 @@ $search = false;
         editPermission = <?php echo $_SESSION[$role][$resource]['edit'] ?>;
         role= '<?php echo $_SESSION['role'] ?>';
         path= '<?php echo IMAGEPATH ?>';
+        sortAscen = '<?php echo $sortAscend ?>';
     </script>
     </body>
 </html>
