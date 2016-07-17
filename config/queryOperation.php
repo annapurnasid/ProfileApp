@@ -34,7 +34,7 @@ class queryOperation
      * @param  int $id
      * @return array
      */
-    function getEmployeeDetail($limit=0, $id = '', $order, $name)
+    function getEmployeeDetail($limit=0, $id = '', $order='', $name='')
     {
         $joinQuery = "FROM Employee 
             JOIN Address AS Residence ON Employee.empId = Residence.empId 
@@ -62,7 +62,8 @@ class queryOperation
                 Office.street AS ofcStreet, Office.city AS ofcCity , Office.zip AS ofcZip, 
                 Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
-                Employee.note " . $joinQuery . "WHERE Employee.empId = " . $id;
+                Employee.note " . $joinQuery . " WHERE Employee.empId = " . $id;
+            //echo $sqlQuery; exit;
         }
         else
         {
