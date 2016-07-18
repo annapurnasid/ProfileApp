@@ -1,159 +1,140 @@
-<?php 
-   /*
-  @Author : Mfsi_Annapurnaa
-  @purpose : handle thelisting of employee data.
-  : Deletion of a row
+<?php
+
+/**
+ * @Author  : Mfsi_Annapurnaa
+ * @purpose : handle thelisting of employee data and deletion ofrow.
  */
 
-require_once('config/dbConnect.php');
+require_once('config/session.php');
+require_once('roleResPerm.php');
+require_once('config/queryOperation.php');
+
+$objSes = new session();
+$objSes->start();
+$resultSes = $objSes->checkSession();
+
+if (!$resultSes)
+{
+    header('Location:login.php');
+}
+
+$rrpObj = new aclOperation();
+
+$role = $_SESSION['role'];
+
+$resource = pathinfo($_SERVER['REQUEST_URI'])['filename'];
+
+$rrpObj->roleResourcePermission($role, $resource);
+
+$obj = new queryOperation();
+
+// Total no of rows
+$rowCount = $obj->countRecord();
+
+// No of required pages
+$pageCount = ceil($rowCount[0]/ROWPERPAGE);
+
+// If total rows is < 10
+if ($pageCount < 1)
+{
+    $pageCount = 1;
+}
+
+// To set the ascending or descending order
+$sortAscend = TRUE;
+
 // Delete a row
 if (isset($_GET['delete']))
 {
-    $empId = $_GET['delete'];
 
-    // Extract image name and delete it
-    $imgQuery = "SELECT image FROM Employee WHERE Employee.empId = $empId";
-    $img = mysqli_fetch_array(mysqli_query($conn, $imgQuery));
-    unlink(IMAGEPATH . $img['image']);
-
-    $deleteAddress = "DELETE
-         FROM Address
-         WHERE Address.empId = $empId";
-    $deleteEmployee = "DELETE
-         FROM Employee
-         WHERE Employee.empId = $empId";
-
-    $delResultAddr = mysqli_query($conn, $deleteAddress);
-    $delResultEmp = mysqli_query($conn, $deleteEmployee);
-
-    if (!$delResultAddr && !$delResultEmp)
+    if ($rrpObj->isAllowed($role, $resource))
     {
-        echo 'Deletion failed' . mysql_error();
-        header('Location:list.php');
+        $empId = $_GET['delete'];
+
+        // Extract image name and delete it
+        $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+        $result = $obj->select('Employee', 'image', $condition);
+        $img = mysqli_fetch_array($result);
+
+        if (file_exists($img['image']))
+        {
+            unlink(IMAGEPATH . $img['image']);
+        }
+        
+        // Delete the address detail
+        $condition = ['column' => 'Address.empId', 'operator' => '=', 'val' => $empId];
+        $obj->delete('Address', $condition);
+
+        // Delete the employee detail
+        $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+
+        $obj->delete('Employee', $condition);
     }
 }
 
-// Query to fetch data from database
-$displayQuery = "SELECT Employee.empId AS EmpID, CONCAT(Employee.title, ' ', Employee.firstName, 
-      ' ', Employee.middleName, ' ', Employee.lastName) AS Name, Employee.email AS EmailID, 
-      Employee.phone AS Phone, Employee.gender AS Gender, Employee.dateOfBirth AS Dob, 
-      CONCAT(Residence.street, '<br />' , Residence.city , '<br />', Residence.zip,'<br />', 
-      Residence.state ) AS Res,
-      CONCAT(Office.street, '<br />', Office.city , '<br />',  Office.zip, '<br />', Office.state) AS Ofc,
-      Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
-      Employee.employer AS Employer, Employee.commId AS Communication, Employee.image AS Image, 
-      Employee.note AS Note
-      FROM Employee 
-      JOIN Address AS Residence ON Employee.empId = Residence.empId 
-      AND Residence.addressType = 'residence'
-      JOIN Address AS Office ON Employee.empId = Office.empId 
-      AND Office.addressType = 'office'";
-
-$result = mysqli_query($conn, $displayQuery);
-if (!$result)
-{
-    echo 'Operation failed' . mysql_error();
-    header('Location:list.php');
-}
+$search = false;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <title>Get Empl0yed</title>
-      <!-- Bootstrap Core CSS -->
-      <link href="css/bootstrap.min.css" rel="stylesheet">
-      <!-- Custom CSS -->
-      <link href="css/styles.css" rel="stylesheet">
-   </head>
-   <body>
-      <?php include('template/header.php'); ?>
-      <!-- Page Content -->
-      <div class="container-fluid">
-         <table class="table table-responsive">
-            <tbody>
-                  <tr>
-                  <!-- Column headers -->
-                     <th>Serial No.</th>
-                     <th>Name</th>
-                     <th>Email</th>
-                     <th>Phone</th>
-                     <th>Gender</th>
-                     <th>Date of Birth</th>
-                     <th>Office Address</th>
-                     <th>Residential Address</th>
-                     <th>Marital  Status</th>
-                     <th>Employement Status</th>
-                     <th>Employer</th>
-                     <th>Communication</th>
-                      <th>Image</th>
-                     <th>Note</th>
-                     <th>Edit</th>
-                     <th>Delete</th>
-                  </tr>
-               <?php
-               $i = 0;
-               // Continue till the last record 
-                  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                     ++$i;?>
-                     <tr>
-                        <?php foreach ($row as $key => $value)
-                        {
-                        ?>
-                        <td> <?php 
-                        if ('EmpID' === $key)
-                        {
-                           $value = $i;
-                           echo $value;
-                        }
-                        else if ('Communication' === $key)
-                        {
-                           $commQuery = "SELECT CommMedium FROM  `Communication` WHERE  `CommId` 
-                              IN ($value)";
-                           $commResult = mysqli_query($conn, $commQuery);
-
-                           while ($commRow = mysqli_fetch_array($commResult, MYSQLI_ASSOC))
-                           {
-                              foreach ($commRow as $key => $value)
-                              {
-                                 echo $value . '<br /> ';
-                              }
-                           }
-                        }
-                        else if ('Image' === $key) 
-                           { ?>
-                           <img src = "<?php echo IMAGEPATH.$value;?>" alt = "No image" height = "50"
-                               width = "50"><?php
-                        }
-                        else 
-                        {
-                           echo $value;
-                        }                        
-                        ?> </td>
-                        <?php 
-                        } 
-                        ?>
-                        <!--Edit graphic-->
-                        <td><a href="registration.php?edit=<?php echo $row['EmpID']; ?>">
-                           <span class="glyphicon glyphicon-pencil"></span>
-                           </a>
-                        </td>
-                        <!--Delete graphic-->
-                        <td><a href="list.php?delete=<?php echo $row['EmpID']; ?>">
-                           <span class="glyphicon glyphicon-remove"></span>
-                           </a>
-                        </td>
-                     </tr>
-                  <?php 
-                  }
-                  ?>
-            </tbody>
-         </table>
-      </div>
-      <!-- Container -->
-   </body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Get Empl0yed</title>
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="css/styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <?php include('template/header.php'); ?>
+        <!-- Page Content -->
+        <div class="container-fluid" >
+       <form id="searchForm" method="POST" class="form-horizontal">
+            <fieldset>
+                <!-- Form Name -->
+                <!-- Search input-->
+                        <div class="row form-group center-block well col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 nameSearch">
+                                <input id="nameSearch"  name="nameSearch" type="search" 
+                                       class="form-control  input-md" placeholder="Search name">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 nameSearch">
+                                <button type="button" id="searchButton" class="btn btn-info search">
+                                    <span class="glyphicon glyphicon-search"></span> Search
+                                </button>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                <button type="button" class="btn btn-default btn-sm" id="sortList">
+                                    <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                                </button>
+                            </div>
+                        </div>
+            </fieldset>
+        </form>
+            <div class="listDisplay">
+                <table class="table table-responsive" id="display">
+                </table>
+            </div>
+            <div id="paginationControls">
+                <ul></ul>
+            </div>
+        </div>
+    <!-- Container -->
+     <script src='js/jquery.js'></script>
+    <script src="js/jsOperations.js"></script>
+    <script type="text/javascript">
+        id = <?php echo $_SESSION['id']; ?>;
+        pageCount = <?php echo $pageCount?>;
+        pageNumber = 1;
+        deletePermission = <?php echo $_SESSION[$role][$resource]['remove'] ?>;
+        editPermission = <?php echo $_SESSION[$role][$resource]['edit'] ?>;
+        role= '<?php echo $_SESSION['role'] ?>';
+        path= '<?php echo IMAGEPATH ?>';
+        sortAscen = '<?php echo $sortAscend ?>';
+    </script>
+    </body>
 </html>
