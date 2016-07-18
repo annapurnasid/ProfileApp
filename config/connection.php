@@ -5,10 +5,6 @@
  * @purpose : Db connection operations
  */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Include constants
 include('config/constants.php');
 
@@ -75,5 +71,3 @@ class connection
         mysqli_close();
     }
 }
-
-?>

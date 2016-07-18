@@ -1,8 +1,10 @@
 <?php
+
 /**
  * @Author  : Mfsi_Annapurnaa
  * @purpose : Search operation and Pagination
  */
+
 require_once('config/queryOperation.php');
 
 $obj = new queryOperation();
@@ -12,13 +14,13 @@ $name = $_POST['name'];
 
 $order = $_POST['order'];
 
-$pn = $_POST['pageNo'];
+$pageNumber = $_POST['pageNo'];
 $pageCount = $_POST['totalPage'];
 $start = 0;
 
-if (1 !== (int) $pn)
+if (1 !== (int) $pageNumber)
 {
-    $start = ($pn-1) * ROWPERPAGE;
+    $start = ($pageNumber-1) * ROWPERPAGE;
 }
 
 $result = $obj->getEmployeeDetail($start, '', $order, $name);

@@ -1,8 +1,7 @@
-// Reset form
-function resetForm() {
-    document.getElementById("regForm").reset();
-    errorList = document.getElementsByClassName('error'); 
-}
+/**
+ * @Author : Mfsi_Annapurnaa
+ * @purpose : Form Validation
+ */
 
 function validateForm() {
     var textRegExp = /^[a-zA-Z]+$/;

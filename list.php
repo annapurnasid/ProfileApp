@@ -1,12 +1,9 @@
 <?php
+
 /**
  * @Author  : Mfsi_Annapurnaa
  * @purpose : handle thelisting of employee data and deletion ofrow.
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 
 require_once('config/session.php');
 require_once('roleResPerm.php');
@@ -24,10 +21,6 @@ if (!$resultSes)
 $rrpObj = new aclOperation();
 
 $role = $_SESSION['role'];
-
-//echo '<pre>';
-//print_r($_SESSION['role']);exit; 
-//echo $_SESSION[$role][$resource]['del'];exit;
 
 $resource = pathinfo($_SERVER['REQUEST_URI'])['filename'];
 
@@ -49,35 +42,34 @@ if ($pageCount < 1)
 
 // To set the ascending or descending order
 $sortAscend = TRUE;
-$sortButton = 'glyphicon-sort-by-alphabet';
 
 // Delete a row
 if (isset($_GET['delete']))
 {
 
-    if($rrpObj->isAllowed($role, $resource))
+    if ($rrpObj->isAllowed($role, $resource))
+    {
+        $empId = $_GET['delete'];
+
+        // Extract image name and delete it
+        $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+        $result = $obj->select('Employee', 'image', $condition);
+        $img = mysqli_fetch_array($result);
+
+        if (file_exists($img['image']))
         {
-            $empId = $_GET['delete'];
-
-            // Extract image name and delete it
-            $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
-            $result = $obj->select('Employee', 'image', $condition);
-            $img = mysqli_fetch_array($result);
-
-            if (file_exists($img['image']))
-            {
-                unlink(IMAGEPATH . $img['image']);
-            }
-            // Delete the address detail
-            $condition = ['column' => 'Address.empId', 'operator' => '=', 'val' => $empId];
-            $obj->delete('Address', $condition);
-
-            // Delete the employee detail
-            $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
-
-            $obj->delete('Employee', $condition);
-        
+            unlink(IMAGEPATH . $img['image']);
         }
+        
+        // Delete the address detail
+        $condition = ['column' => 'Address.empId', 'operator' => '=', 'val' => $empId];
+        $obj->delete('Address', $condition);
+
+        // Delete the employee detail
+        $condition = ['column' => 'Employee.empId', 'operator' => '=', 'val' => $empId];
+
+        $obj->delete('Employee', $condition);
+    }
 }
 
 $search = false;
@@ -117,7 +109,7 @@ $search = false;
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                 <button type="button" class="btn btn-default btn-sm" id="sortList">
-                                    <span class="glyphicon <?php echo $sortButton; ?>"></span>
+                                    <span class="glyphicon glyphicon-sort-by-alphabet"></span>
                                 </button>
                             </div>
                         </div>
@@ -137,7 +129,7 @@ $search = false;
     <script type="text/javascript">
         id = <?php echo $_SESSION['id']; ?>;
         pageCount = <?php echo $pageCount?>;
-        pn = 1;
+        pageNumber = 1;
         deletePermission = <?php echo $_SESSION[$role][$resource]['remove'] ?>;
         editPermission = <?php echo $_SESSION[$role][$resource]['edit'] ?>;
         role= '<?php echo $_SESSION['role'] ?>';

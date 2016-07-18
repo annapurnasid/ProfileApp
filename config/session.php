@@ -62,5 +62,3 @@ class session
         session_destroy();
     }
 }
-
-?>

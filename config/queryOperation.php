@@ -31,7 +31,10 @@ class queryOperation
     /**
      * Function for getting all details of employee
      * @access public
-     * @param  int $id
+     * @param  int    $limit
+     * @param  int    $id
+     * @param  string $order
+     * @param  string $name
      * @return array
      */
     function getEmployeeDetail($limit=0, $id = '', $order='', $name='')
@@ -44,7 +47,7 @@ class queryOperation
         
         $sort = $order === '' ? '' : (' ORDER BY Name ' . $order);
         $searchJoin ='';
-        if('' !== $name)
+        if ('' !== $name)
         {
             $searchJoin = "WHERE Employee.title LIKE '%$name%' OR
                 Employee.firstName LIKE '%$name%' OR
@@ -63,7 +66,6 @@ class queryOperation
                 Office.state AS ofcState, Employee.maritalStatus AS marStatus, Employee.empStatus, 
                 Employee.image, Employee.employer, Employee.commId, Employee.note, Employee.password, 
                 Employee.note " . $joinQuery . " WHERE Employee.empId = " . $id;
-            //echo $sqlQuery; exit;
         }
         else
         {
@@ -81,8 +83,8 @@ class queryOperation
                 Employee.maritalStatus AS marStatus, Employee.empStatus AS EmploymentStatus, 
                 Employee.employer AS Employer, Employee.commId AS Communication,
                 Employee.image AS Image, 
-                Employee.note AS Note " . $joinQuery. $searchJoin .  $sort . " LIMIT " . $limit . "," . ROWPERPAGE;
-            //echo $sqlQuery; 
+                Employee.note AS Note " . $joinQuery. $searchJoin .  $sort . " LIMIT " . $limit . 
+                "," . ROWPERPAGE;
         }
         
         // If connection made, return query result
@@ -292,7 +294,6 @@ class queryOperation
         }
 
         $_SESSION['role'] = $role;
- 
     }
 
     /**

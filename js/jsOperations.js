@@ -11,16 +11,16 @@ $( document ).ready(function() {
 
         var name = '';
         var order = '';
-        pagination(pageCount, pn, name, order);
+        pagination(pageCount, pageNumber, name, order);
 
         $('#searchButton').on('click', function() {
             name = $('#nameSearch').val();
-            pagination(pageCount, pn, name, '');
+            pagination(pageCount, pageNumber, name, '');
         });
 
         $('#sortList').on('click', function() {
             order = sortAscen ? 'ASC' : 'DESC';
-            pagination(pageCount, pn, name, order);
+            pagination(pageCount, pageNumber, name, order);
             var html = '';
             
             if (sortAscen) {
@@ -133,7 +133,7 @@ function resultHTML(data) {
             html += '<td>';
             
             
-            if('admin' === role && 1 === editPermission) {
+            if ('admin' === role && 1 === editPermission) {
                 html += '<a href="registration.php?edit=' + object['EmpID'] + '&action=edit">\n\
                     <span  class="glyphicon glyphicon-pencil"></span></a>';
             }

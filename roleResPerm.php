@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Author : Mfsi_Annapurnaa
  * @purpose : ACL Operations
@@ -31,12 +32,8 @@ class aclOperation
     */
     function isAllowed($role, $resource)
     {
-        
-          $requestedAction = isset($_GET['action']) ? $_GET['action'] : '';
-//        echo $requestedAction;
-//        echo '<pre>';
-//        print_r($_SESSION);
-//        exit;
+
+        $requestedAction = isset($_GET['action']) ? $_GET['action'] : '';
 
         if ('edit' === $requestedAction)
         {

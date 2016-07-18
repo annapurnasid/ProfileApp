@@ -13,5 +13,3 @@ $obj->signOut();
 
 header('Location:login.php');
 
-?>
-
